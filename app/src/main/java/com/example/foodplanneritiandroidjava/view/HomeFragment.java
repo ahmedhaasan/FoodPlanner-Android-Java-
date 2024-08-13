@@ -13,18 +13,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
+import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.presenter.DailyMealPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements MealsCallBack {
+public class HomeFragment extends Fragment implements  OnDailyMealShows {
 
 
     CardView dailyMealCardView ;
     ImageView dailyMealImage;
     TextView dailyMealName ;
+
+    ///
+    List<Meal> randomMeal ;
+    DailyMealPresenter presenter ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,17 +55,32 @@ public class HomeFragment extends Fragment implements MealsCallBack {
         dailyMealCardView = view.findViewById(R.id.dailyMealCardView);
         dailyMealImage = view.findViewById(R.id.dailyMealImage);
         dailyMealName = view.findViewById(R.id.dailyMealName);
+        randomMeal = new ArrayList<>();
+        // intialize presenter
+        presenter = new DailyMealPresenter(new MealsRemoteDataSource(),this);
+        presenter.geDailyMeal();
+
+
+
+
     }
 
 
-    // implemented methods from MealsCall Back InterFace
-    @Override
-    public void onMealsSuccess(List<Meal> meals) {
 
+    // implemented from
+    @Override
+    public void showDailyMeals(List<Meal> meals) {
+        randomMeal.addAll(meals);
+        // this for image
+        dailyMealName.setText(randomMeal.get(0).getName());
+        Glide.with(this)
+                .load(randomMeal.get(0).getThumbnail())
+                .apply(new RequestOptions().override(200, 200))
+                .into(dailyMealImage);
     }
 
     @Override
-    public void onMealsFailure(String message) {
+    public void showDailyError(String message) {
 
     }
 }

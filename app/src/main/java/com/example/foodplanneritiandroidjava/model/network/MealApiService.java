@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.model;
+package com.example.foodplanneritiandroidjava.model.network;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.AreaResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.CategoriesResponse;

@@ -2,9 +2,10 @@ package com.example.foodplanneritiandroidjava.model.network;
 
 import android.util.Log;
 
-import com.example.foodplanneritiandroidjava.model.MealApiService;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.CategoriesResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.MealsResponse;
 
 import java.util.List;
 
@@ -55,6 +56,25 @@ public class MealsRemoteDataSource {
             public void onFailure(Call<CategoriesResponse> call, Throwable throwable) {
               callBack.onFailurResult(throwable.toString());
               Log.i("Error","network Called Failed"+throwable.getMessage());
+            }
+        });
+    }
+
+
+    // call random
+    public void makeRandomMealCall(MealsCallBack mealsCallBack){
+        MealApiService service  = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getRandomMeal();   // to return random meal
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                mealsCallBack.onMealsSuccess(meals);
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                mealsCallBack.onMealsFailure(throwable.toString());
             }
         });
     }
