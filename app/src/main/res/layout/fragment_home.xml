@@ -8,10 +8,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/dailyMealCardView"
-        android:layout_width="331dp"
-        android:layout_height="212dp"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="19dp"
+        android:layout_width="365dp"
+        android:layout_height="207dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dailyMealText">
 
@@ -34,15 +36,27 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:padding="10sp"
-            android:text="@string/dailyMeal" />
+            android:text="@string/dailyMeal"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/dailyMealText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:text="@string/dailyMealText"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/dailyMealCardView"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="409dp"
+        android:layout_height="465dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailyMealCardView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

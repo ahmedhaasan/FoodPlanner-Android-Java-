@@ -14,12 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
-import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
-import com.example.foodplanneritiandroidjava.presenter.DailyMealPresenter;
+import com.example.foodplanneritiandroidjava.presenter.dailyMeal.DailyMealPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,22 +59,22 @@ public class HomeFragment extends Fragment implements  OnDailyMealShows {
         presenter.geDailyMeal();
 
 
-
-
     }
 
 
+    private void updateMealCard(List<Meal> meal) {
+        dailyMealName.setText(meal.get(0).getName());
+        // Load image using Glide
+        Glide.with(this)
+                .load(meal.get(0).getThumbnail())
+                .into(dailyMealImage);
+    }
 
     // implemented from
     @Override
     public void showDailyMeals(List<Meal> meals) {
         randomMeal.addAll(meals);
-        // this for image
-        dailyMealName.setText(randomMeal.get(0).getName());
-        Glide.with(this)
-                .load(randomMeal.get(0).getThumbnail())
-                .apply(new RequestOptions().override(200, 200))
-                .into(dailyMealImage);
+     updateMealCard(meals);
     }
 
     @Override

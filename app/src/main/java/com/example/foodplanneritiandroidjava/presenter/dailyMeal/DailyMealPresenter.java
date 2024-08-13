@@ -1,13 +1,14 @@
-package com.example.foodplanneritiandroidjava.presenter;
+package com.example.foodplanneritiandroidjava.presenter.dailyMeal;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.presenter.DailyMealService;
 import com.example.foodplanneritiandroidjava.view.HomeFragment;
 
 import java.util.List;
 
-public class DailyMealPresenter implements DailyMealService , MealsCallBack {
+public class DailyMealPresenter implements DailyMealService, MealsCallBack {
 
     // refrence to Remote data source
     MealsRemoteDataSource remoteDataSource ;
@@ -22,7 +23,6 @@ public class DailyMealPresenter implements DailyMealService , MealsCallBack {
 
     @Override
     public void geDailyMeal() {
-
     remoteDataSource.makeRandomMealCall(this);
     }
 
