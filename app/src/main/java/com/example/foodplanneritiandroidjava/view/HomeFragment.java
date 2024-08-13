@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,9 @@ import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.presenter.category.CategoryPresenter;
 import com.example.foodplanneritiandroidjava.presenter.dailyMeal.DailyMealPresenter;
+import com.example.foodplanneritiandroidjava.view.category.CategoryAdapter;
 import com.example.foodplanneritiandroidjava.view.category.CategoryContract;
 import com.example.foodplanneritiandroidjava.view.dailyMeals.OnDailyMealShows;
 
@@ -31,10 +35,15 @@ public class HomeFragment extends Fragment implements OnDailyMealShows, Category
     CardView dailyMealCardView ;
     ImageView dailyMealImage;
     TextView dailyMealName ;
+    RecyclerView categoryRecycler;
+    LinearLayoutManager layoutManager;
 
     ///
     List<Meal> randomMeal ;
-    DailyMealPresenter presenter ;
+    List<Category> categories;
+    DailyMealPresenter dailyPresenter;
+    CategoryPresenter categoryPresenter ;
+    CategoryAdapter categoryAdapter ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +62,33 @@ public class HomeFragment extends Fragment implements OnDailyMealShows, Category
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Initialize views
         dailyMealCardView = view.findViewById(R.id.dailyMealCardView);
         dailyMealImage = view.findViewById(R.id.dailyMealImage);
         dailyMealName = view.findViewById(R.id.dailyMealName);
-        randomMeal = new ArrayList<>();
-        // intialize presenter
-        presenter = new DailyMealPresenter(new MealsRemoteDataSource(),this);
-        presenter.geDailyMeal();
 
+        // Initialize RecyclerView and set layout manager
+        categoryRecycler = view.findViewById(R.id.categoryRecycler);
+        categoryRecycler.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        categoryRecycler.setLayoutManager(layoutManager);
+
+
+        // Initialize data lists
+        randomMeal = new ArrayList<>();
+        categories = new ArrayList<>();
+
+        // Initialize adapter and set it to RecyclerView
+        categoryAdapter = new CategoryAdapter(getContext(),categories);
+        categoryRecycler.setAdapter(categoryAdapter);
+
+        // Initialize presenters
+        dailyPresenter = new DailyMealPresenter(new MealsRemoteDataSource(), this);
+        dailyPresenter.geDailyMeal();
+
+        categoryPresenter = new CategoryPresenter(new MealsRemoteDataSource(), this, categories);
+        categoryPresenter.getCategories();
 
     }
 
@@ -89,6 +117,7 @@ public class HomeFragment extends Fragment implements OnDailyMealShows, Category
     @Override
     public void showsCategories(List<Category> categories) {
 
+        categoryAdapter.setCategoryList(categories);
     }
 
     @Override

@@ -29,7 +29,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public void setCategoryList(List<Category> categories){
-        this.categories = categories;
+        this.categories.clear();
+        this.categories.addAll(categories);
+        notifyDataSetChanged();
     }
 
     @NonNull
