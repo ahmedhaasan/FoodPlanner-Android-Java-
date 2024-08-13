@@ -1,6 +1,4 @@
-package com.example.foodplanneritiandroidjava.network;
-
-import com.example.foodplanneritiandroidjava.network.PojoClasses.Meal;
+package com.example.foodplanneritiandroidjava.model.PojoClasses;
 
 import java.util.List;
 

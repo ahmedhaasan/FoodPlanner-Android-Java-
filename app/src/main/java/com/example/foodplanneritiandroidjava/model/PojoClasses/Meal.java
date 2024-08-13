@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.network.PojoClasses;
+package com.example.foodplanneritiandroidjava.model.PojoClasses;
 
 import com.google.gson.annotations.SerializedName;
 
