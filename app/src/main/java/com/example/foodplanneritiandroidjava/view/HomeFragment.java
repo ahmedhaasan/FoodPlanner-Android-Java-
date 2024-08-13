@@ -15,14 +15,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.presenter.dailyMeal.DailyMealPresenter;
+import com.example.foodplanneritiandroidjava.view.category.CategoryContract;
+import com.example.foodplanneritiandroidjava.view.dailyMeals.OnDailyMealShows;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements  OnDailyMealShows {
+public class HomeFragment extends Fragment implements OnDailyMealShows, CategoryContract {
 
 
     CardView dailyMealCardView ;
@@ -79,6 +82,17 @@ public class HomeFragment extends Fragment implements  OnDailyMealShows {
 
     @Override
     public void showDailyError(String message) {
+
+    }
+
+    // those methods implementd from Category Contract
+    @Override
+    public void showsCategories(List<Category> categories) {
+
+    }
+
+    @Override
+    public void showCategoriesError(String message) {
 
     }
 }

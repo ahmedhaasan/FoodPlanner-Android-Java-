@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view;
+package com.example.foodplanneritiandroidjava.view.dailyMeals;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 
