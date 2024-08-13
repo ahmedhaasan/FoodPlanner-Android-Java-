@@ -2,6 +2,8 @@ package com.example.foodplanneritiandroidjava.network.PojoClasses;
 
 import com.google.gson.annotations.SerializedName;
 
+
+// this class represent a Single category
 public class Category {
     @SerializedName("idCategory")
     private String id;

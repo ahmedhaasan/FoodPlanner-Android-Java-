@@ -2,6 +2,15 @@ package com.example.foodplanneritiandroidjava.network.PojoClasses;
 
 import com.google.gson.annotations.SerializedName;
 
+// this class represent a single meal
+
+/*
+Take care of this
+: filter.php - Used to get meals by category (getMealsByCategory method).
+search.php - Used to search for meals by name (searchMealsByName method).
+lookup.php - Used to get meal details by ID (getMealById method).
+random.php - Used to get a random meal (getRandomMeal method).
+ */
 public class Meal {
     @SerializedName("idMeal")
     private String id;
