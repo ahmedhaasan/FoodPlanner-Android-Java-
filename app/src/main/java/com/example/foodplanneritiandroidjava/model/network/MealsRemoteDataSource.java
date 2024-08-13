@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MealsRemoteDataSource {
-    public static String BASE_URL = "https://themealdb.com/";
+    public static String BASE_URL = "https://themealdb.com/api/json/v1/1/";
 
     private static MealsRemoteDataSource remoteDataSource = null;
 
@@ -44,9 +44,9 @@ public class MealsRemoteDataSource {
                     List<Category> categories = response.body().getCategories();
                     callBack.onSuccessCategory(categories);
                     // try to print the catigories
-                    for (Category category:categories){
-                        Log.i("Category",category.toString());
-                    }
+                    Log.d("API Response", "Categories fetched successfully: " + categories.size());
+                }else {
+                    Log.e("API Response", "Failed to fetch categories, response not successful");
                 }
 
             }
