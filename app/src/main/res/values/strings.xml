@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FoodPlanner(iti) android Java</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dailyMeal">Daily Meal Name</string>
+    <string name="dailyMealText">Daily Meal Suggested For You</string>
 </resources>
