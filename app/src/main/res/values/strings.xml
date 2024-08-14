@@ -8,4 +8,6 @@
     <string name="avilableCategory">Avilable Categories</string>
     <string name="avilable_ingredient">Avilable Ingrediants</string>
     <string name="avilable_Countries">Avilable Countries</string>
+    <string name="ingredientField">Ingrediant Field</string>
+    <string name="ingredientName">Ingrediant Name</string>
 </resources>

@@ -11,12 +11,12 @@ public class CategoryPresenter implements CategoryPresenterService, CategoriesCa
 
     MealsRemoteDataSource remoteDataSource ;
     HomeFragment homeFragment ;
-    List<Category> categories ;
 
-    public CategoryPresenter(MealsRemoteDataSource remoteDataSource, HomeFragment homeFragment,List<Category>categories) {
+
+    public CategoryPresenter(MealsRemoteDataSource remoteDataSource, HomeFragment homeFragment) {
         this.homeFragment = homeFragment;
         this.remoteDataSource = remoteDataSource;
-        this.categories = categories ;
+
     }
 
     @Override
