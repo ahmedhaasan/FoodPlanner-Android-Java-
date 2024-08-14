@@ -8,7 +8,7 @@ public class AreaResponse {
     @SerializedName("meals")
     private List<Country> country;
 
-    public List<Country> getCountry(){
+    public List<Country> getCountry() {
         return country;
     }
 }

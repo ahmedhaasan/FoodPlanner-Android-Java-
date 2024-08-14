@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id ("androidx.navigation.safeargs")
 }
 
 android {
@@ -62,4 +63,9 @@ dependencies {
     // Glide
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+    // navigation
+    implementation ("androidx.navigation:navigation-fragment:2.5.3")
+    implementation ("androidx.navigation:navigation-ui:2.5.3")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }

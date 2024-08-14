@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Country implements Serializable, Filter {
-
     @SerializedName("strArea")
     private String name;
     @Override
@@ -16,7 +15,8 @@ public class Country implements Serializable, Filter {
 
     @Override
     public String getThumb() {
-        return "https://flagsapi.com/"+getUrlForCountry() +"/flat/64.png" ;
+       // return "https://flagsapi.com/"+getUrlForCountry() +"/flat/64.png" ;
+        return "https://www.themealdb.com/images/icons/flags/big/64/" + getUrlForCountry() + ".png";
     }
 
     private String getUrlForCountry() {

@@ -173,11 +173,11 @@ public class MealsRemoteDataSource {
                     if (countries != null && !countries.isEmpty()) {
                         callBack.onCountriesSuccess(countries);
                     } else {
-                        Log.d("API Response", "No countries found in the response");
+                        Log.d("APIC Response", "No countries found in the response");
                         callBack.onCountriesFails("No countries found");
                     }
                 } else {
-                    Log.d("API Response", "Response unsuccessful or body is null");
+                    Log.d("APIC Response", "Response unsuccessful or body is null");
                     callBack.onCountriesFails("Response unsuccessful or body is null");
                 }
             }

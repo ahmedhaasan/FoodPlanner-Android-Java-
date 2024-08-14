@@ -28,10 +28,6 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
         this.countries = countries;
     }
 
-    public void setIngredientsList(List<Ingredient> ingredients) {
-        this.countries.clear();
-
-    }
 
     public void setCountries(List<Country> countries){
         if (countries != null && !countries.isEmpty()) {
@@ -82,8 +78,8 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            countryImage = itemView.findViewById(R.id.ingredient_image);
-            countryName = itemView.findViewById(R.id.ingredient_field);
+            countryImage = itemView.findViewById(R.id.countryImage); // Use the correct ID
+            countryName = itemView.findViewById(R.id.countryName);   // Use the correct ID
         }
     }
 }
