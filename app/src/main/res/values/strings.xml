@@ -5,4 +5,5 @@
     <string name="dailyMeal">Daily Meal Name</string>
     <string name="dailyMealText">Daily Meal Suggested For You</string>
     <string name="categoryField">Category Type</string>
+    <string name="avilableCategory">Avilable Categories</string>
 </resources>
