@@ -4,13 +4,13 @@ import java.util.List;
 
 public class AreaResponse {
 
-    private List<Area> meals; // The response contains a list of areas
+    private List<Country> countries; // The response contains a list of areas
 
-    public List<Area> getAreas() {
-        return meals;
+    public List<Country> getAreas() {
+        return countries;
     }
 
-    public void setAreas(List<Area> meals) {
-        this.meals = meals;
+    public void setAreas(List<Country> meals) {
+        this.countries = meals;
     }
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
@@ -29,12 +30,15 @@ import com.example.foodplanneritiandroidjava.view.Ingrediants.IngrediantsAdapter
 import com.example.foodplanneritiandroidjava.view.Ingrediants.IngrediantsContract;
 import com.example.foodplanneritiandroidjava.view.category.CategoryAdapter;
 import com.example.foodplanneritiandroidjava.view.category.CategoryContract;
+import com.example.foodplanneritiandroidjava.view.countries.CountriesAdapter;
+import com.example.foodplanneritiandroidjava.view.countries.CountriesContract;
 import com.example.foodplanneritiandroidjava.view.dailyMeals.OnDailyMealContract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract , IngrediantsContract {
+public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract , IngrediantsContract
+, CountriesContract {
 
 
     CardView dailyMealCardView ;
@@ -47,6 +51,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     List<Meal> randomMeal ;
     List<Category> categories;
     List<Ingredient> ingredients ;
+    List<Country> countries ;
     // presenters
     DailyMealPresenter dailyPresenter;
     CategoryPresenter categoryPresenter ;
@@ -54,6 +59,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     // adapters
     CategoryAdapter categoryAdapter ;
     IngrediantsAdapter ingrediantsAdapter ;
+    CountriesAdapter countriesAdapter ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,12 +103,14 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         randomMeal = new ArrayList<>();
         categories = new ArrayList<>();
         ingredients = new ArrayList<>();
+        countries = new ArrayList<>();
 
         // Initialize adapter and set it to RecyclerView
         categoryAdapter = new CategoryAdapter(getContext(),categories);
         categoryRecycler.setAdapter(categoryAdapter);
         ingrediantsAdapter = new IngrediantsAdapter(getContext(),ingredients);
         ingrediantsRecycler.setAdapter(ingrediantsAdapter);
+        countriesAdapter = new CountriesAdapter(getContext(),countries);
 
         // Initialize presenters
         dailyPresenter = new DailyMealPresenter(new MealsRemoteDataSource(), this);
@@ -157,6 +165,18 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
     @Override
     public void showsIngrediantsError(String message) {
+
+    }
+
+
+    // from Countries Contract
+    @Override
+    public void showsCountries(List<Country> countries) {
+
+    }
+
+    @Override
+    public void showCountriesError(String message) {
 
     }
 }
