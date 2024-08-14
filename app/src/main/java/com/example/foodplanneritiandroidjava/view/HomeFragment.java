@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment implements OnDailyMealShows, Category
         dailyMealName.setText(meal.get(0).getName());
         // Load image using Glide
         Glide.with(this)
-                .load(meal.get(0).getThumbnail())
+                .load(meal.get(0).getThumb())
                 .into(dailyMealImage);
     }
 

@@ -61,7 +61,7 @@ public class MealsRemoteDataSource {
     }
 
 
-    // call random
+    // call random meal
     public void makeRandomMealCall(MealsCallBack mealsCallBack){
         MealApiService service  = retrofit.create(MealApiService.class);
         Call<MealsResponse> call = service.getRandomMeal();   // to return random meal
@@ -78,5 +78,87 @@ public class MealsRemoteDataSource {
             }
         });
     }
+
+    // get meals by Category name
+    public void getMealsByCategoryName(MealsCallBack callBack,String category){
+
+
+    MealApiService service = retrofit.create(MealApiService.class);
+    Call<MealsResponse> call = service.getMealsByCategory(category);
+    call.enqueue(new Callback<MealsResponse>() {
+        @Override
+        public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+            List<Meal> meals = response.body().getMeals();
+            callBack.onMealsSuccess(meals);
+        }
+
+        @Override
+        public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+            callBack.onMealsFailure(throwable.toString());
+        }
+    });
+    }
+
+    // get meals by meal id
+    public void getMealsByCategoryID(MealsCallBack callBack,String id){
+
+
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getMealById(id);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                callBack.onMealsSuccess(meals);
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
+            }
+        });
+    }
+
+    // get meal by country
+
+    public void getMealsByCountry(MealsCallBack callBack,String country){
+
+
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getMealsByCountry(country);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                callBack.onMealsSuccess(meals);
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
+            }
+        });
+    }
+
+    // get meal by name
+    public void getMealsByName(MealsCallBack callBack,String name){
+
+
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getMealsByName(name);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                callBack.onMealsSuccess(meals);
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
+            }
+        });
+    }
+
 
 }

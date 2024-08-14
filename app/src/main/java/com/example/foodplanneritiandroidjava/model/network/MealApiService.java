@@ -23,7 +23,7 @@ public interface MealApiService {
     Call<MealsResponse> getMealsByCountry(@Query("a") String country);  // return a list of meals based on Contry
 
     @GET("lookup.php")
-    Call<MealDetailResponse> getMealById(@Query("i") String mealId);  // this meathod return detail for selected meal
+    Call<MealsResponse> getMealById(@Query("i") String mealId);  // this meathod return detail for selected meal
 
 
     @GET("random.php")
