@@ -2,10 +2,10 @@ package com.example.foodplanneritiandroidjava.model.network;
 
 import android.util.Log;
 
-import com.example.foodplanneritiandroidjava.model.PojoClasses.Area;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.AreaResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.CategoriesResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.IngredientsResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
@@ -168,8 +168,18 @@ public class MealsRemoteDataSource {
         call.enqueue(new Callback<AreaResponse>() {
             @Override
             public void onResponse(Call<AreaResponse> call, Response<AreaResponse> response) {
-                List<Area> countries = response.body().getAreas();
-                callBack.onCountriesSuccess(countries);
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Country> countries = response.body().getCountry();
+                    if (countries != null && !countries.isEmpty()) {
+                        callBack.onCountriesSuccess(countries);
+                    } else {
+                        Log.d("API Response", "No countries found in the response");
+                        callBack.onCountriesFails("No countries found");
+                    }
+                } else {
+                    Log.d("API Response", "Response unsuccessful or body is null");
+                    callBack.onCountriesFails("Response unsuccessful or body is null");
+                }
             }
 
             @Override

@@ -23,6 +23,7 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.presenter.Country.CountriesPresenter;
 import com.example.foodplanneritiandroidjava.presenter.Ingrediants.IngrediantsPresenter;
 import com.example.foodplanneritiandroidjava.presenter.category.CategoryPresenter;
 import com.example.foodplanneritiandroidjava.presenter.dailyMeal.DailyMealPresenter;
@@ -44,7 +45,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     CardView dailyMealCardView ;
     ImageView dailyMealImage;
     TextView dailyMealName ;
-    RecyclerView categoryRecycler , ingrediantsRecycler;
+    RecyclerView categoryRecycler , ingrediantsRecycler,countriesRecycler;
     LinearLayoutManager categoryLayoutManager,ingrediantLayoutManager;
 
     /// lists
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     DailyMealPresenter dailyPresenter;
     CategoryPresenter categoryPresenter ;
     IngrediantsPresenter ingrediantsPresenter;
+    CountriesPresenter countriesPresenter ;
     // adapters
     CategoryAdapter categoryAdapter ;
     IngrediantsAdapter ingrediantsAdapter ;
@@ -98,6 +100,13 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         ingrediantLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         ingrediantsRecycler.setLayoutManager(ingrediantLayoutManager);
 
+        // countries recycler
+        countriesRecycler = view.findViewById(R.id.countriesRecycler);
+        countriesRecycler.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        countriesRecycler.setLayoutManager(layoutManager);
+
 
         // Initialize data lists
         randomMeal = new ArrayList<>();
@@ -111,6 +120,8 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         ingrediantsAdapter = new IngrediantsAdapter(getContext(),ingredients);
         ingrediantsRecycler.setAdapter(ingrediantsAdapter);
         countriesAdapter = new CountriesAdapter(getContext(),countries);
+        countriesRecycler.setAdapter(countriesAdapter);
+
 
         // Initialize presenters
         dailyPresenter = new DailyMealPresenter(new MealsRemoteDataSource(), this);
@@ -121,6 +132,9 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
         ingrediantsPresenter = new IngrediantsPresenter(new MealsRemoteDataSource(),this);
         ingrediantsPresenter.getIngrediants();
+
+        countriesPresenter = new CountriesPresenter(new MealsRemoteDataSource(),this);
+        countriesPresenter.getAllCountries();
 
     }
 
@@ -173,6 +187,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void showsCountries(List<Country> countries) {
 
+            countriesAdapter.setCountries(countries);
     }
 
     @Override

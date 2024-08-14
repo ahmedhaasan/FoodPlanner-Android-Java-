@@ -1,6 +1,7 @@
 package com.example.foodplanneritiandroidjava.view.countries;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,19 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
 
     public void setIngredientsList(List<Ingredient> ingredients) {
         this.countries.clear();
-        this.countries.addAll(countries);
-        notifyDataSetChanged();
+
     }
 
     public void setCountries(List<Country> countries){
-        this.countries.clear();
-        this.countries.addAll(countries);
+        if (countries != null && !countries.isEmpty()) {
+            this.countries.clear();
+            this.countries.addAll(countries);
+        }
+        Log.d("CountriesAdapter", "Countries list size: " + this.countries.size());
+        notifyDataSetChanged();  if (countries != null) {
+            this.countries.clear();
+            this.countries.addAll(countries);
+        }
         notifyDataSetChanged();
     }
 

@@ -16,7 +16,7 @@ public class Country implements Serializable, Filter {
 
     @Override
     public String getThumb() {
-        return "https://www.themealdb.com/images/icons/flags/big/64/" + getUrlForCountry() + ".png";
+        return "https://flagsapi.com/"+getUrlForCountry() +"/flat/64.png" ;
     }
 
     private String getUrlForCountry() {
