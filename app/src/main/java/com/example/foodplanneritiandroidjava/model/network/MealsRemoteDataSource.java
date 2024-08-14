@@ -2,6 +2,8 @@ package com.example.foodplanneritiandroidjava.model.network;
 
 import android.util.Log;
 
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Area;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.AreaResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.CategoriesResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
@@ -160,5 +162,22 @@ public class MealsRemoteDataSource {
         });
     }
 
+    public void getAllCountries (CountriesCallBack callBack){
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<AreaResponse> call = service.getAllAreas();
+        call.enqueue(new Callback<AreaResponse>() {
+            @Override
+            public void onResponse(Call<AreaResponse> call, Response<AreaResponse> response) {
+                List<Area> countries = response.body().getAreas();
+                callBack.onCountriesSuccess(countries);
+            }
+
+            @Override
+            public void onFailure(Call<AreaResponse> call, Throwable throwable) {
+
+                callBack.onCountriesFails(throwable.toString());
+            }
+        });
+    }
 
 }
