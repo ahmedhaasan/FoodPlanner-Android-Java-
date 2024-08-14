@@ -6,4 +6,6 @@
     <string name="dailyMealText">Daily Meal Suggested For You</string>
     <string name="categoryField">Category Type</string>
     <string name="avilableCategory">Avilable Categories</string>
+    <string name="avilable_ingredient">Avilable Ingrediants</string>
+    <string name="avilable_Countries">Avilable Countries</string>
 </resources>

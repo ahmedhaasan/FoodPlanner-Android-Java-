@@ -6,6 +6,8 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Area;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.AreaResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.CategoriesResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.IngredientsResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.MealsResponse;
 
@@ -48,7 +50,7 @@ public class MealsRemoteDataSource {
                     callBack.onSuccessCategory(categories);
                     // try to print the catigories
                     Log.d("API Response", "Categories fetched successfully: " + categories.size());
-                }else {
+                } else {
                     Log.e("API Response", "Failed to fetch categories, response not successful");
                 }
 
@@ -56,16 +58,16 @@ public class MealsRemoteDataSource {
 
             @Override
             public void onFailure(Call<CategoriesResponse> call, Throwable throwable) {
-              callBack.onFailurResult(throwable.toString());
-              Log.i("Error","network Called Failed"+throwable.getMessage());
+                callBack.onFailurResult(throwable.toString());
+                Log.i("Error", "network Called Failed" + throwable.getMessage());
             }
         });
     }
 
 
     // call random meal
-    public void makeRandomMealCall(MealsCallBack mealsCallBack){
-        MealApiService service  = retrofit.create(MealApiService.class);
+    public void makeRandomMealCall(MealsCallBack mealsCallBack) {
+        MealApiService service = retrofit.create(MealApiService.class);
         Call<MealsResponse> call = service.getRandomMeal();   // to return random meal
         call.enqueue(new Callback<MealsResponse>() {
             @Override
@@ -82,27 +84,27 @@ public class MealsRemoteDataSource {
     }
 
     // get meals by Category name
-    public void getMealsByCategoryName(MealsCallBack callBack,String category){
+    public void getMealsByCategoryName(MealsCallBack callBack, String category) {
 
 
-    MealApiService service = retrofit.create(MealApiService.class);
-    Call<MealsResponse> call = service.getMealsByCategory(category);
-    call.enqueue(new Callback<MealsResponse>() {
-        @Override
-        public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
-            List<Meal> meals = response.body().getMeals();
-            callBack.onMealsSuccess(meals);
-        }
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getMealsByCategory(category);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                callBack.onMealsSuccess(meals);
+            }
 
-        @Override
-        public void onFailure(Call<MealsResponse> call, Throwable throwable) {
-            callBack.onMealsFailure(throwable.toString());
-        }
-    });
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
+            }
+        });
     }
 
     // get meals by meal id
-    public void getMealsByCategoryID(MealsCallBack callBack,String id){
+    public void getMealsByCategoryID(MealsCallBack callBack, String id) {
 
 
         MealApiService service = retrofit.create(MealApiService.class);
@@ -123,9 +125,7 @@ public class MealsRemoteDataSource {
 
     // get meal by country
 
-    public void getMealsByCountry(MealsCallBack callBack,String country){
-
-
+    public void getMealsByCountry(MealsCallBack callBack, String country) {
         MealApiService service = retrofit.create(MealApiService.class);
         Call<MealsResponse> call = service.getMealsByCountry(country);
         call.enqueue(new Callback<MealsResponse>() {
@@ -143,7 +143,7 @@ public class MealsRemoteDataSource {
     }
 
     // get meal by name
-    public void getMealsByName(MealsCallBack callBack,String name){
+    public void getMealsByName(MealsCallBack callBack, String name) {
 
 
         MealApiService service = retrofit.create(MealApiService.class);
@@ -162,7 +162,7 @@ public class MealsRemoteDataSource {
         });
     }
 
-    public void getAllCountries (CountriesCallBack callBack){
+    public void getAllCountries(CountriesCallBack callBack) {
         MealApiService service = retrofit.create(MealApiService.class);
         Call<AreaResponse> call = service.getAllAreas();
         call.enqueue(new Callback<AreaResponse>() {
@@ -180,4 +180,22 @@ public class MealsRemoteDataSource {
         });
     }
 
+    // get Ingridiants
+    public void getIngridiants(IngrediantsCallBack callBack) {
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<IngredientsResponse> call = service.getIngredients();
+        call.enqueue(new Callback<IngredientsResponse>() {
+            @Override
+            public void onResponse(Call<IngredientsResponse> call, Response<IngredientsResponse> response) {
+                List<Ingredient> ingredients = response.body().getIngredientItems();
+                callBack.onSuccesIngrediants(ingredients);
+            }
+
+            @Override
+            public void onFailure(Call<IngredientsResponse> call, Throwable throwable) {
+
+                callBack.onFailIngridiants(throwable.toString());
+            }
+        });
+    }
 }

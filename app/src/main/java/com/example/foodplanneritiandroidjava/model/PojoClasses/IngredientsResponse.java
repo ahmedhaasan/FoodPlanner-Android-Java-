@@ -9,7 +9,7 @@ public class IngredientsResponse {
 	@SerializedName("meals")
 	private List<Ingredient> ingredientItems;
 
-	public List<Ingredient> getMeals(){
+	public List<Ingredient> getIngredientItems(){
 		return ingredientItems;
 	}
 }

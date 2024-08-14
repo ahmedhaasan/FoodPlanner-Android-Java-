@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment implements OnDailyMealShows, Category
         dailyMealName = view.findViewById(R.id.dailyMealName);
 
         // Initialize RecyclerView and set layout manager
-        categoryRecycler = view.findViewById(R.id.categoryRecycler);
+        categoryRecycler = view.findViewById(R.id.categoryRecycler1);
         categoryRecycler.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
