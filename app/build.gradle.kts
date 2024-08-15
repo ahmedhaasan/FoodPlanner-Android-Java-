@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
+    id ("androidx.navigation.safeargs")
+    alias(libs.plugins.google.gms.google.services)
+    id ("com.google.firebase.crashlytics") // Add this line
+
+
 }
 
 android {
@@ -60,6 +65,22 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.6.1")
 
     // Glide
-    implementation ("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    // navigation
+    implementation("androidx.navigation:navigation-fragment:2.5.3")
+    implementation("androidx.navigation:navigation-ui:2.5.3")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
+        //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    // Firebase Crashlytics dependency
+    implementation ("com.google.firebase:firebase-crashlytics:18.3.7")
+
+
+
+
+
 }

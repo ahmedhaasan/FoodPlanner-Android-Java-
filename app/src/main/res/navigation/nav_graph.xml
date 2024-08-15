@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/login_fragment">
+
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="com.example.foodplanneritiandroidjava.splash_fragment"
+        android:label="fragment_splash_fragment"
+        tools:layout="@layout/fragment_splash_fragment" />
+    <fragment
+        android:id="@+id/signUp_fragment"
+        android:name="com.example.foodplanneritiandroidjava.signUp_fragment"
+        android:label="fragment_sign_up_fragment"
+        tools:layout="@layout/fragment_sign_up_fragment" >
+        <action
+            android:id="@+id/action_signUp_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.example.foodplanneritiandroidjava.login_fragment"
+        android:label="fragment_login_fragment"
+        tools:layout="@layout/fragment_login_fragment" >
+        <action
+            android:id="@+id/action_login_fragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+        <action
+            android:id="@+id/action_login_fragment_to_signUp_fragment"
+            app:destination="@id/signUp_fragment" />
+    </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.example.foodplanneritiandroidjava.HomeActivity"
+        android:label="home_activity"
+        tools:layout="@layout/home_activity" />
+</navigation>

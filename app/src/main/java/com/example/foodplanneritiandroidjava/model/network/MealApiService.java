@@ -2,6 +2,7 @@ package com.example.foodplanneritiandroidjava.model.network;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.AreaResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.CategoriesResponse;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.IngredientsResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.MealDetailResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.MealsResponse;
 
@@ -23,7 +24,7 @@ public interface MealApiService {
     Call<MealsResponse> getMealsByCountry(@Query("a") String country);  // return a list of meals based on Contry
 
     @GET("lookup.php")
-    Call<MealDetailResponse> getMealById(@Query("i") String mealId);  // this meathod return detail for selected meal
+    Call<MealsResponse> getMealById(@Query("i") String mealId);  // this meathod return detail for selected meal
 
 
     @GET("random.php")
@@ -31,6 +32,12 @@ public interface MealApiService {
 
     @GET("list.php?a=list")
     Call<AreaResponse> getAllAreas();   // return a list of areas
+
+    @GET("list.php?i=list")
+    Call<IngredientsResponse> getIngredients();
+
+/*    @GET("filter.php")
+    Call<FilterMealResponse> getMealsByIngredient(@Query("i") String ingredient);*/
 
 
 

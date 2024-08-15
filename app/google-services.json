@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1070173307",
+    "firebase_url": "https://foodplanner-iti-android-java-default-rtdb.firebaseio.com",
+    "project_id": "foodplanner-iti-android-java",
+    "storage_bucket": "foodplanner-iti-android-java.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070173307:android:ca10056627e226bb3d66de",
+        "android_client_info": {
+          "package_name": "com.example.foodplanneritiandroidjava"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070173307-8u6u7rj17gq4e8aukddmqoh8t5kboc7n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodplanneritiandroidjava",
+            "certificate_hash": "d5f95f485a821786d8dd7b9e0f2176e7b23cb9eb"
+          }
+        },
+        {
+          "client_id": "1070173307-71ljv4b38g74pbtojoiap0tosvrl803e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV-VhshGhMf_wMmBUr4d3O20_Or1dRC7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070173307-71ljv4b38g74pbtojoiap0tosvrl803e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

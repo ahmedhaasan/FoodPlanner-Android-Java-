@@ -49,6 +49,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.categoryName.setText(category.getName());
         // Load image using Glide
         Glide.with(context)
+                .clear(holder.categoryImage); // Clears any previous image
+        Glide.with(context)
                 .load(category.getThumbnail())
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.categoryImage);
@@ -59,6 +61,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return categories.size();
     }
 
+    @Override
+    public void onViewRecycled(@NonNull ViewHolder holder) {
+        super.onViewRecycled(holder);
+        Glide.with(context).clear(holder.categoryImage);
+        holder.categoryImage.setImageDrawable(null); // Clear the image
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView categoryName;
@@ -67,7 +77,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryImage = itemView.findViewById(R.id.categoryImage);
-            categoryName = itemView.findViewById(R.id.categoryField);
+            categoryName = itemView.findViewById(R.id.categoryName);
         }
     }
 }
