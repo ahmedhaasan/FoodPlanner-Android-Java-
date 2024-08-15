@@ -20,7 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class signUp_fragment extends Fragment {
 
     CircleImageView profileImage ;
-    ImageButton editProfileImage ;
+    CircleImageView editProfileImage ;
     EditText userName , email,password ;
     MaterialButton signUpButton ;
     @Override

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -39,7 +39,7 @@ import java.util.HashMap;
 
 
 public class login_fragment extends Fragment {
-    EditText registerText ;
+    TextView registerText ;
     View v1;
     MaterialButton sign_in_button;
     SignInButton signWithGoogleButton;
@@ -77,7 +77,7 @@ public class login_fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         v1 = view;
-        registerText = view.findViewById(R.id.registerText);
+        registerText = view.findViewById(R.id.notHaveAcountText);
         sign_in_button = view.findViewById(R.id.signInButton);
         signWithGoogleButton = view.findViewById(R.id.signInWithGoogleButton);
         email_layout = view.findViewById(R.id.emailInputLayout);
@@ -95,7 +95,6 @@ public class login_fragment extends Fragment {
             public void onClick(View view) {
                 // navigate to home activity
                 signIn();
-
             }
 
 
