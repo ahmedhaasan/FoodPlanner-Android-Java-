@@ -3,20 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splash_fragment">
+    app:startDestination="@id/login_fragment">
 
     <fragment
         android:id="@+id/splash_fragment"
         android:name="com.example.foodplanneritiandroidjava.splash_fragment"
         android:label="fragment_splash_fragment"
-        tools:layout="@layout/fragment_splash_fragment" >
-        <action
-            android:id="@+id/action_splash_fragment_to_signUp_fragment"
-            app:destination="@id/signUp_fragment" />
-        <action
-            android:id="@+id/action_splash_fragment_to_login_fragment"
-            app:destination="@id/login_fragment" />
-    </fragment>
+        tools:layout="@layout/fragment_splash_fragment" />
     <fragment
         android:id="@+id/signUp_fragment"
         android:name="com.example.foodplanneritiandroidjava.signUp_fragment"
@@ -34,6 +27,9 @@
         <action
             android:id="@+id/action_login_fragment_to_homeActivity"
             app:destination="@id/homeActivity" />
+        <action
+            android:id="@+id/action_login_fragment_to_signUp_fragment"
+            app:destination="@id/signUp_fragment" />
     </fragment>
     <activity
         android:id="@+id/homeActivity"
