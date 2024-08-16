@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.category;
+package com.example.foodplanneritiandroidjava.view.home.category;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 

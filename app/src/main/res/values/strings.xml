@@ -12,4 +12,8 @@
     <string name="ingredientName">Ingrediant Name</string>
     <string name="default_web_client_id">1070173307-71ljv4b38g74pbtojoiap0tosvrl803e.apps.googleusercontent.com</string>
     <string name="register">Not Have Account ? register</string>
+    <string name="favorites_item">Favorites</string>
+    <string name="home_item">Home</string>
+    <string name="search_item">Search</string>
+    <string name="week_plan_item">Week Plan</string>
 </resources>

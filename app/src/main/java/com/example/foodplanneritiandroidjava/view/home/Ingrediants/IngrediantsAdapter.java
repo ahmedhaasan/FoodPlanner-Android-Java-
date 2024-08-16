@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.Ingrediants;
+package com.example.foodplanneritiandroidjava.view.home.Ingrediants;
 
 import android.content.Context;
 import android.view.LayoutInflater;

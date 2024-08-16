@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.Ingrediants;
+package com.example.foodplanneritiandroidjava.view.home.Ingrediants;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 

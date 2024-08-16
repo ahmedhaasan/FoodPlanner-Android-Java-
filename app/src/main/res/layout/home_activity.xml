@@ -5,23 +5,34 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".view.home.HomeActivity">
 
-    <androidx.fragment.app.FragmentContainerView
+    <!--    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/homeFragmentContainer"
-        android:name="com.example.foodplanneritiandroidjava.view.HomeFragment"
+        android:name="com.example.foodplanneritiandroidjava.view.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/nav_button"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_button" />
-        />
+        />-->
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/nav_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_button" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        app:layout_constraintTop_toBottomOf="@id/homeFragmentContainer"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/nav_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/button_bar_menu"
-        android:id="@+id/nav_button"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
+        app:menu="@menu/button_bar_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

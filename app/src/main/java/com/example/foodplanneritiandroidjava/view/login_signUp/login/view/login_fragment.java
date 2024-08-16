@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava;
+package com.example.foodplanneritiandroidjava.view.login_signUp.login.view;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,10 +12,11 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.view.login_signUp.login.presenter.LoginPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,7 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 
-public class login_fragment extends Fragment {
+public class login_fragment extends Fragment implements LoginView {
     TextView registerText ;
     View v1;
     MaterialButton sign_in_button;
@@ -47,23 +48,27 @@ public class login_fragment extends Fragment {
     TextInputEditText email_edit_text, password_editText;
     Dialog loadingDialog;
 
-    //
-    FirebaseAuth authenticate;
-    FirebaseDatabase database;
-    GoogleSignInClient googleSignInClient;
-    int RC_SIGN_IN = 30;
-
+    private GoogleSignInClient googleSignInClient;
+    private static final int RC_SIGN_IN = 30;
+    private LoginPresenter loginPresenter;
+    private FirebaseAuth firebaseAuth;
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        authenticate = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        GoogleSignInOptions gson = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail().build();
-        googleSignInClient = GoogleSignIn.getClient(getContext(), gson);
+
+        // Initialize Firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // Initialize Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)) // Ensure you have this ID in your strings.xml
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+
+        loginPresenter = new LoginPresenter(this);
+
     }
 
     @Override
@@ -89,25 +94,27 @@ public class login_fragment extends Fragment {
         loadingDialog.setCancelable(false);
         loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        // handel signIn with google
-        signWithGoogleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // navigate to home activity
-                signIn();
-            }
-
-
+        // Check if user is already signed in
+        if (firebaseAuth.getCurrentUser() != null) {
+            navigateToHome(); // take care view here may be null
+        }
+        // action on button sign in
+        sign_in_button.setOnClickListener(v -> {
+            String email = email_edit_text.getText().toString().trim();
+            String password = password_editText.getText().toString().trim();
+            loadingDialog.show(); // Show loading dialog when login starts
+            loginPresenter.handleEmailPasswordLogin(email, password);
         });
 
-        // handle Not have account Register
-        registerText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment);
-
-            }
+        // action on sign in with google
+        signWithGoogleButton.setOnClickListener(v -> {
+            loadingDialog.show(); // Show loading dialog when Google Sign-In starts
+            signIn();
         });
+
+        registerText.setOnClickListener(v ->
+                Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment)
+        );
     }
 
     private void signIn() {
@@ -118,41 +125,33 @@ public class login_fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                loginPresenter.handleGoogleLogin(account.getIdToken());
+            } catch (ApiException e) {
+                loadingDialog.dismiss(); // Dismiss the loading dialog on failure
 
-        try {
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-            firebaseAuth(account.getIdToken());
-
-        } catch (ApiException e) {
-            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private void firebaseAuth(String idToken) {
+    @Override
+    public void onLoginSuccess() {
+        loadingDialog.dismiss(); // Dismiss the loading dialog on success
+        Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+        navigateToHome();    }
 
-        loadingDialog.show(); // show the progress par
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        authenticate.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(getContext(), "Account Cteated Successfully", Toast.LENGTH_SHORT).show();
-                        FirebaseUser user = authenticate.getCurrentUser();
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("name", user.getDisplayName());
-                        map.put("email", user.getEmail());
-                        map.put("profile", user.getPhotoUrl().toString());
-                        database.getReference().child("googleAuth").child(user.getUid())
-                                .setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        loadingDialog.dismiss(); // hide the progress par
-                                        Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_homeActivity);
+    @Override
+    public void onLoginFailure(String errorMessage) {
+        loadingDialog.dismiss(); // Dismiss the loading dialog on failure
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+    }
 
-                                    }
-                                });
-                    }
-                });
+    private void navigateToHome() {
+        Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_homeActivity);
+        getActivity().finish(); // Close LoginActivity
     }
 }

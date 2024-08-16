@@ -5,17 +5,17 @@
     <item
         android:id="@+id/favoriteFragment"
         android:icon="@drawable/favoritesitem"
-        android:title="Favorites" />
+        android:title="@string/favorites_item" />
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/home_itm"
-        android:title="Home" />
+        android:title="@string/home_item" />
     <item
         android:id="@+id/searchFragment"
         android:icon="@drawable/search_item"
-        android:title="Search" />
+        android:title="@string/search_item" />
     <item
         android:id="@+id/plansFragment"
         android:icon="@drawable/week_plan"
-        android:title="Week Plan" />
+        android:title="@string/week_plan_item" />
 </menu>
