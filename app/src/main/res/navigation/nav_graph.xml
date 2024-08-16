@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/splash_fragment"
-        android:name="com.example.foodplanneritiandroidjava.splash_fragment"
+        android:name="com.example.foodplanneritiandroidjava.view.login_signUp.splash_fragment"
         android:label="fragment_splash_fragment"
         tools:layout="@layout/fragment_splash_fragment" />
     <fragment
         android:id="@+id/signUp_fragment"
-        android:name="com.example.foodplanneritiandroidjava.signUp_fragment"
+        android:name="com.example.foodplanneritiandroidjava.view.login_signUp.signUp.view.signUp_fragment"
         android:label="fragment_sign_up_fragment"
         tools:layout="@layout/fragment_sign_up_fragment" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/login_fragment"
-        android:name="com.example.foodplanneritiandroidjava.login_fragment"
+        android:name="com.example.foodplanneritiandroidjava.view.login_signUp.login.view.login_fragment"
         android:label="fragment_login_fragment"
         tools:layout="@layout/fragment_login_fragment" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <activity
         android:id="@+id/homeActivity"
-        android:name="com.example.foodplanneritiandroidjava.HomeActivity"
+        android:name="com.example.foodplanneritiandroidjava.view.home.HomeActivity"
         android:label="home_activity"
         tools:layout="@layout/home_activity" />
 </navigation>

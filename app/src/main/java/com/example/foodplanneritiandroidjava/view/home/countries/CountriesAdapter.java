@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.countries;
+package com.example.foodplanneritiandroidjava.view.home.countries;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
-import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 
 import java.util.List;
 

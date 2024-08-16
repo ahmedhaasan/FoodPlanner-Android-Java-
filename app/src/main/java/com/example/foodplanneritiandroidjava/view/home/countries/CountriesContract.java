@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.countries;
+package com.example.foodplanneritiandroidjava.view.home.countries;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 

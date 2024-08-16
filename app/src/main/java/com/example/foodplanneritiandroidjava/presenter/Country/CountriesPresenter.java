@@ -3,7 +3,7 @@ package com.example.foodplanneritiandroidjava.presenter.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
-import com.example.foodplanneritiandroidjava.view.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
 
 import java.util.List;
 

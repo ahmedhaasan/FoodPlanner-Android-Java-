@@ -17,7 +17,7 @@
 
         <!-- MainActivity as the entry point -->
         <activity
-            android:name=".MainActivity"
+            android:name=".view.login_signUp.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
 
         <!-- HomeActivity (without intent filters) -->
         <activity
-            android:name=".HomeActivity"
+            android:name=".view.home.HomeActivity"
             android:exported="true">
         </activity>
 
