@@ -72,15 +72,13 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.5.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-        //firebase
+    //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     // Firebase Crashlytics dependency
-    implementation ("com.google.firebase:firebase-crashlytics:18.3.7")
-
-
-
-
+    implementation("com.google.firebase:firebase-crashlytics:18.3.7")
+    // lotti animation
+    implementation("com.airbnb.android:lottie:3.7.2")
 
 }

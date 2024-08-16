@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +45,10 @@ public class login_fragment extends Fragment implements LoginView {
     View v1;
     MaterialButton sign_in_button;
     SignInButton signWithGoogleButton;
+/*
     TextInputLayout email_layout, password_layout;
-    TextInputEditText email_edit_text, password_editText;
+*/
+    EditText email_edit_text, password_editText;
     Dialog loadingDialog;
 
     private GoogleSignInClient googleSignInClient;
@@ -85,10 +88,10 @@ public class login_fragment extends Fragment implements LoginView {
         registerText = view.findViewById(R.id.notHaveAcountText);
         sign_in_button = view.findViewById(R.id.signInButton);
         signWithGoogleButton = view.findViewById(R.id.signInWithGoogleButton);
-        email_layout = view.findViewById(R.id.emailInputLayout);
-        password_layout = view.findViewById(R.id.passwordInputLayout);
-        email_edit_text = view.findViewById(R.id.emailEditText);
-        password_editText = view.findViewById(R.id.passwordEditText);
+   /*     email_layout = view.findViewById(R.id.emailInputLayout);
+        password_layout = view.findViewById(R.id.passwordInputLayout);*/
+        email_edit_text = view.findViewById(R.id.emailField);
+        password_editText = view.findViewById(R.id.passwordField);
         loadingDialog = new Dialog(getContext());
         loadingDialog.setContentView(R.layout.loading_dialog);
         loadingDialog.setCancelable(false);
@@ -100,8 +103,8 @@ public class login_fragment extends Fragment implements LoginView {
         }
         // action on button sign in
         sign_in_button.setOnClickListener(v -> {
-            String email = email_edit_text.getText().toString().trim();
-            String password = password_editText.getText().toString().trim();
+            String email = email_edit_text.getText().toString();
+            String password = password_editText.getText().toString();
             loadingDialog.show(); // Show loading dialog when login starts
             loginPresenter.handleEmailPasswordLogin(email, password);
         });
