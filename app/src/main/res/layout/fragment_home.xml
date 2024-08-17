@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBFB">
+    android:background="#FFFBFB"
+    android:padding="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         tools:context=".view.home.HomeFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/dailyMealCardView"
-            android:layout_width="365dp"
-            android:layout_height="207dp"
-            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dailyMealText">
@@ -25,7 +28,7 @@
             <ImageView
                 android:id="@+id/dailyMealImage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:src="@drawable/ic_launcher_background" />
 
             <View
@@ -47,10 +50,10 @@
                 android:textStyle="bold|italic" />
 
             <ImageView
-                android:id="@+id/favoriteImageIcon"
+                android:id="@+id/addTo_plan_image_icon"
                 android:layout_width="50dp"
                 android:layout_height="37dp"
-                android:layout_gravity="bottom|right"
+                android:layout_gravity="right"
                 android:paddingRight="10sp"
                 android:src="@drawable/favoriteicon"
                 app:tint="@color/design_default_color_secondary_variant" />
@@ -72,7 +75,6 @@
             android:id="@+id/categoryRecycler1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="40dp"
             android:background="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +97,6 @@
             android:id="@+id/ingredientsRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:background="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +119,6 @@
             android:id="@+id/countriesRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:background="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"

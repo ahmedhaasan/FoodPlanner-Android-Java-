@@ -16,4 +16,6 @@
     <string name="home_item">Home</string>
     <string name="search_item">Search</string>
     <string name="week_plan_item">Week Plan</string>
+    <string name="mealCategoryName">Category Name</string>
+    <string name="mealCountryName">Country Name</string>
 </resources>
