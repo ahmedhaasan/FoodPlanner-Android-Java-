@@ -51,7 +51,7 @@
             tools:text="Meal Name" />
 
         <TextView
-            android:id="@+id/meal_category"
+            android:id="@+id/meal_category_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -63,7 +63,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/meal_country"
+            android:id="@+id/meal_country_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -71,9 +71,9 @@
             android:text="@string/mealCountryName"
             android:textColor="#EAEAEA"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@id/meal_category"
+            app:layout_constraintBottom_toBottomOf="@id/meal_category_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/meal_category" />
+            app:layout_constraintTop_toTopOf="@id/meal_category_name" />
 
         <ImageView
             android:id="@+id/add_favorite_image_icon"
