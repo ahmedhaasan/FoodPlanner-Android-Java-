@@ -8,12 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
+import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
 
 import java.util.List;
 
@@ -53,6 +56,17 @@ public class IngrediantsAdapter extends RecyclerView.Adapter<IngrediantsAdapter.
                 .load(ingredient.getThumb())
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.IngrediantImage);
+
+        // make an action when press on category to went to meal Fragment and shows the meals of this category
+
+        holder.IngrediantImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+                        HomeFragmentDirections.actionHomeFragmentToMealFragment(ingredient.getName(), SomeContstants.INGREDIANT);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override

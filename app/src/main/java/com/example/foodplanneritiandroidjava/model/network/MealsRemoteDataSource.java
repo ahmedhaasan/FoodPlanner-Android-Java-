@@ -92,8 +92,10 @@ public class MealsRemoteDataSource {
         call.enqueue(new Callback<MealsResponse>() {
             @Override
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+
             }
 
             @Override
@@ -128,6 +130,26 @@ public class MealsRemoteDataSource {
     public void getMealsByCountry(MealsCallBack callBack, String country) {
         MealApiService service = retrofit.create(MealApiService.class);
         Call<MealsResponse> call = service.getMealsByCountry(country);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                callBack.onMealsSuccess(meals);
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
+            }
+        });
+    }
+
+    // get meals by ingrediants
+    public void getMealsByIngrediant(MealsCallBack callBack, String ingrediant) {
+
+
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getMealsByIngredient(ingrediant);
         call.enqueue(new Callback<MealsResponse>() {
             @Override
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {

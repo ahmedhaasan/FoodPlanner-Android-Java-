@@ -18,4 +18,5 @@
     <string name="week_plan_item">Week Plan</string>
     <string name="mealCategoryName">Category Name</string>
     <string name="mealCountryName">Country Name</string>
+    <string name="constMeal">" :: Meals"</string>
 </resources>

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
@@ -22,65 +23,87 @@ import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+public class MealFragment extends Fragment implements MealsContract {
 
-public class MealFragment extends Fragment implements MealsContract{
+    TextView mealTypeParent;
+    Context context;
+    RecyclerView mealRecycler;
+    String mealType,mealSourceType ;
+    LinearLayoutManager mealManger;
 
-    Context context ;
-    RecyclerView mealRecycler ;
-    String mealType ;
-    LinearLayoutManager mealManger ;
 
-    // list of meals
-    List<Meal> mealList ;
+    // List of meals
+    List<Meal> mealList;
 
-    // meal Presenter and remote sourc  and Adapter
+    // Meal Presenter and remote source and Adapter
     MealsRemoteDataSource remoteDataSource;
-    MealPresenter mealPresenter ;
-    MealAdapter mealAdapter ;
+    MealPresenter mealPresenter;
+    MealAdapter mealAdapter;
 
+    // Default no-argument constructor (required for Fragment)
+    public MealFragment() {
+        // Required empty public constructor
+    }
 
-    public MealFragment(Context context, String mealType ) {
-        this.context = context;
-        this.mealType = mealType;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context; // Assign the context here
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // intialize the meal List ;
+
+        // Check the navigated type
+        if (getArguments() != null) {
+            MealFragmentArgs args = MealFragmentArgs.fromBundle(getArguments());
+            mealType = args.getMealType();
+           mealSourceType = args.getMealSourceType();// This will tell you if it's category, country, or ingredient
+
+        }
+
+        // Initialize the meal List
         mealList = new ArrayList<>();
+
+        // Initialize data source
         remoteDataSource = MealsRemoteDataSource.getInstance();
-        mealPresenter = new MealPresenter(remoteDataSource,this,mealType) ;
-        mealAdapter = new MealAdapter(getContext(),mealList);
+
+        // Initialize meal presenter
+        mealPresenter = new MealPresenter(remoteDataSource, this, mealType,mealSourceType);
+        mealPresenter.getMeals();
+
+        // Initialize meal adapter
+        mealAdapter = new MealAdapter(getContext(), mealList);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meal, container, false);
     }
-    // work on OnViewCreated
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mealTypeParent = view.findViewById(R.id.category_name);
+        mealTypeParent.setText(mealType);
         mealRecycler = view.findViewById(R.id.mealsRecycler);
         mealRecycler.setHasFixedSize(true);
         mealManger = new LinearLayoutManager(context);
         mealManger.setOrientation(RecyclerView.VERTICAL);
         mealRecycler.setLayoutManager(mealManger);
+        mealRecycler.setAdapter(mealAdapter);
 
     }
 
     @Override
     public void showMeals(List<Meal> meals) {
-
+        mealAdapter.setMealList(meals);
     }
 
     @Override
     public void showMealsError(String message) {
-
+        Toast.makeText(context, "error getting meals: " + message, Toast.LENGTH_SHORT).show();
     }
 }

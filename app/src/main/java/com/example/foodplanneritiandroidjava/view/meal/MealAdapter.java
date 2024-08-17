@@ -2,6 +2,7 @@ package com.example.foodplanneritiandroidjava.view.meal;
 
 import android.content.Context;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,8 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Meal meal = mealList.get(position);
+        Log.d("MealAdapter", "Binding meal: " + meal.getName() + ", " + meal.getCategory() + ", " + meal.getCountry());
+
         holder.mealName.setText(meal.getName());
         holder.countryName.setText(meal.getCountry());
         holder.categoryName.setText(meal.getCategory());

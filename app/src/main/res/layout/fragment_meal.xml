@@ -4,35 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.meal.MealFragment" >
+    android:paddingTop="20dp"
+    tools:context=".view.meal.MealFragment">
 
+    <!-- View for background color -->
     <View
         android:id="@+id/category_Name_view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="38dp"
         android:background="#80050305"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Category name TextView -->
     <TextView
         android:id="@+id/category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="44dp"
-        android:fontFamily="@font/poppins_bold_italic"
-        android:text="TextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Category Name"
         android:textColor="#EDE9E9"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/category_Name_view" />
+
+    <!-- RecyclerView for displaying meals -->
+    <TextView
+        android:id="@+id/constTextmeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/constMeal"
+        android:textColor="#EFEFEF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/category_name"
+        app:layout_constraintTop_toTopOf="@+id/category_Name_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mealsRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="35dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category_Name_view" />
 
