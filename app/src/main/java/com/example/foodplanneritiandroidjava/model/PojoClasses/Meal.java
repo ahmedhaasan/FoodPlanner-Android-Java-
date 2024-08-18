@@ -17,8 +17,8 @@ random.php - Used to get a random meal (getRandomMeal method).
  */
 
 @Entity(tableName = "meals")
+// above this class is  conseder an Entity
 public class Meal {
-
 
     @PrimaryKey
     @NonNull
