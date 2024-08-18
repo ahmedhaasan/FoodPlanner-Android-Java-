@@ -9,12 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
+import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
 
 import java.util.List;
 
@@ -61,6 +64,17 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
                 .load(country.getThumb())
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.countryImage);
+
+        // make an action when press on category to went to meal Fragment and shows the meals of this category
+
+        holder.countryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+                        HomeFragmentDirections.actionHomeFragmentToMealFragment(country.getName(), SomeContstants.COUNTRY);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
 
     }
 

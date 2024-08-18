@@ -1,6 +1,7 @@
 package com.example.foodplanneritiandroidjava.view.home.category;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,27 +9,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
+import com.example.foodplanneritiandroidjava.view.home.HomeActivity;
+import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.meal.MealFragment;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    List<Category> categories ;
+    List<Category> categories;
     private Context context;
 
 
     public CategoryAdapter(Context context, List<Category> categories) {
         this.categories = categories;
-        this.context = context ;
+        this.context = context;
     }
 
-    public void setCategoryList(List<Category> categories){
+    public void setCategoryList(List<Category> categories) {
         this.categories.clear();
         this.categories.addAll(categories);
         notifyDataSetChanged();
@@ -54,6 +60,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 .load(category.getThumbnail())
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.categoryImage);
+
+        // make an action when press on category to went to meal Fragment and shows the meals of this category
+
+        holder.categoryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+                        HomeFragmentDirections.actionHomeFragmentToMealFragment(category.getName(), SomeContstants.CATEGORY);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override

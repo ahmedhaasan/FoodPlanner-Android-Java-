@@ -7,4 +7,5 @@ import java.util.List;
 public interface CategoryContract {
     void showsCategories(List<Category> categories);
     void showCategoriesError(String message);
+
 }

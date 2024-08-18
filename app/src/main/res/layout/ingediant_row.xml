@@ -1,12 +1,14 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ingredient_card"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@android:color/transparent"> <!-- Add this line -->
+    android:background="@android:color/transparent"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="7dp"
+    tools:ignore="ExtraText"> <!-- Add this line -->
 
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
@@ -14,18 +16,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="@android:color/transparent"> <!-- Add this line -->
+        android:background="@android:color/transparent"
+        android:padding="16dp"> <!-- Add this line -->
 
         >
 
         <!-- ImageView for ingredient -->
         <ImageView
             android:id="@+id/ingredient_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="18dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

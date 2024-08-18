@@ -98,9 +98,9 @@ public class login_fragment extends Fragment implements LoginView {
         loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Check if user is already signed in
-        if (firebaseAuth.getCurrentUser() != null) {
+       /* if (firebaseAuth.getCurrentUser() != null) {
             navigateToHome(); // take care view here may be null
-        }
+        }*/
         // action on button sign in
         sign_in_button.setOnClickListener(v -> {
             String email = email_edit_text.getText().toString();
