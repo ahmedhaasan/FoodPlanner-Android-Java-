@@ -11,7 +11,8 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_mealFragment"
-            app:destination="@id/mealFragment" />
+            app:destination="@id/mealFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

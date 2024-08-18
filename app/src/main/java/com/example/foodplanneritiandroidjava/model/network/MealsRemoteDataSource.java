@@ -10,6 +10,7 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.IngredientsResponse;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.MealsResponse;
+import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class MealsRemoteDataSource {
         }
         return remoteDataSource;
     }
+
 
 
     // intialize retrofit
@@ -85,8 +87,6 @@ public class MealsRemoteDataSource {
 
     // get meals by Category name
     public void getMealsByCategoryName(MealsCallBack callBack, String category) {
-
-
         MealApiService service = retrofit.create(MealApiService.class);
         Call<MealsResponse> call = service.getMealsByCategory(category);
         call.enqueue(new Callback<MealsResponse>() {
@@ -227,6 +227,25 @@ public class MealsRemoteDataSource {
             public void onFailure(Call<IngredientsResponse> call, Throwable throwable) {
 
                 callBack.onFailIngridiants(throwable.toString());
+            }
+        });
+    }
+
+    public void getMealsById(MealsCallBack callBack, String id) {
+
+
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getMealById(id);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                List<Meal> meals = response.body().getMeals();
+                callBack.onMealsSuccess(meals);
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
             }
         });
     }

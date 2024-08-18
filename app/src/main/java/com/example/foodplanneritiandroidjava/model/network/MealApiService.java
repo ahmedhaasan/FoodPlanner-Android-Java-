@@ -25,7 +25,7 @@ public interface MealApiService {
 
     @GET("lookup.php")
     Call<MealsResponse> getMealById(@Query("i") String mealId);  // this meathod return detail for selected meal
-
+// take care of above function we my need to make it call<Detailsmeal
 
     @GET("random.php")
     Call<MealsResponse> getRandomMeal();   // return a random meal

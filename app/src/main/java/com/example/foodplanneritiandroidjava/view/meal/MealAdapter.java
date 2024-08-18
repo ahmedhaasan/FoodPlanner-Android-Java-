@@ -45,23 +45,19 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
         return  new MealAdapter.ViewHolder(v);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Meal meal = mealList.get(position);
-        Log.d("MealAdapter", "Binding meal: " + meal.getName() + ", " + meal.getCategory() + ", " + meal.getCountry());
-
         holder.mealName.setText(meal.getName());
         holder.countryName.setText(meal.getCountry());
         holder.categoryName.setText(meal.getCategory());
 
-        // put the image
         Glide.with(context)
                 .load(meal.getThumb())
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.mealImage);
 
-        // handel fav and calender below
+        // Handle favorite and calendar icons here
     }
 
     @Override

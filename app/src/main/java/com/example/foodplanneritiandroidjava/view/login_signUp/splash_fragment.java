@@ -48,7 +48,7 @@ public class splash_fragment extends Fragment {
                 // No user is signed in, navigate to the sign-in fragment
                 Navigation.findNavController(view).navigate(R.id.action_splash_fragment_to_login_fragment);
             }
-        }, 6000); // Delay of 3 seconds
+        }, 4000); // Delay of 3 seconds
 
     }
 }
