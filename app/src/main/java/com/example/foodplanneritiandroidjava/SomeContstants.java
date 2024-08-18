@@ -6,5 +6,5 @@ public class SomeContstants {
     public static String INGREDIANT = "INGREDIANT";
     public static String MEAL_NAME = "MEAL_NAME";
     public static String MEAL_ID = "MEAL_ID";
-    public static String RANDAM = "RANDAM";
+    public static String DEFAULT = "BEEF";
 }

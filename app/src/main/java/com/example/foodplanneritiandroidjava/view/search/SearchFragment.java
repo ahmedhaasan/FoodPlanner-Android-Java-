@@ -60,10 +60,6 @@ public class SearchFragment extends Fragment implements SearchContract {
         mealList = new ArrayList<>();
         mealAdapter = new MealAdapter(getContext(),mealList);
         mealsRemoteDataSource = MealsRemoteDataSource.getInstance();
-        //
-        mealSourceType = SomeContstants.RANDAM;
-        mealPresenter = new MealPresenter(mealsRemoteDataSource,this,mealSourceType);
-        mealPresenter.getMeals();
 
     }
 
@@ -95,6 +91,8 @@ public class SearchFragment extends Fragment implements SearchContract {
         searchRecycler.setLayoutManager(searchMealManager);
         // set adapter
         searchRecycler.setAdapter(mealAdapter);
+        mealPresenter = new MealPresenter(mealsRemoteDataSource,this,mealSourceType);
+
 
         /*// Initialize the presenter with the current fragment
         mealPresenter = new MealPresenter(mealsRemoteDataSource, this);*/
@@ -107,12 +105,15 @@ public class SearchFragment extends Fragment implements SearchContract {
                 mealType = searchMealField.getText().toString().trim();
                 if (!mealType.isEmpty()) {
                     // If a chip is selected, filter the meals within the current list
-                    mealPresenter.filterMeals(mealType);
+                    mealPresenter.setMealTypeAndSearchMethod(mealType,SomeContstants.CATEGORY);
+                    mealPresenter.getMeals();
                 } else {
                     Toast.makeText(getContext(), "please write anything to search", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
 
     }
     @Override

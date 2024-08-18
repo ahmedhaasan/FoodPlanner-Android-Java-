@@ -9,7 +9,6 @@ import com.example.foodplanneritiandroidjava.model.network.NetWorkParent;
 import com.example.foodplanneritiandroidjava.view.meal.MealFragment;
 import com.example.foodplanneritiandroidjava.view.search.SearchFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MealPresenter implements MealPresenterService, MealsCallBack {
@@ -19,8 +18,6 @@ public class MealPresenter implements MealPresenterService, MealsCallBack {
     SearchFragment searchFragment ;
     String mealType;
     String mealSourceType; // New field to store the type of the meal source
-    private List<Meal> currentMeals; // Store the meals fetched by chip type
-
 
 
     public MealPresenter(MealsRemoteDataSource remoteDataSource, SearchFragment searchFragment,String mealSourceType) {
@@ -78,38 +75,14 @@ public class MealPresenter implements MealPresenterService, MealsCallBack {
     // from mealCall callBack
     @Override
     public void onMealsSuccess(List<Meal> meals) {
-        currentMeals = meals; // Store the fetched meals
+        if (mealFragment != null) {
+            mealFragment.showMeals(meals);
+        }
 
         if (searchFragment != null) {
             searchFragment.showSearchList(meals);
         }
-        if (mealFragment != null) {
-            mealFragment.showMeals(meals);
-        }
     }
-
-    // below will filter the meals that come from search
-    // New method to filter current meals based on search input
-    public void filterMeals(String searchText) {
-        if (currentMeals == null || currentMeals.isEmpty()) {
-            return;
-        }
-
-        List<Meal> filteredMeals = new ArrayList<>();
-        for (Meal meal : currentMeals) {
-            if (meal.getName().toLowerCase().contains(searchText.toLowerCase())) {
-                filteredMeals.add(meal);
-            }
-        }
-
-        if (searchFragment != null) {
-            searchFragment.showSearchList(filteredMeals);
-        }
-        if (mealFragment != null) {
-            mealFragment.showMeals(filteredMeals);
-        }
-    }
-
 
     @Override
     public void onMealsFailure(String message) {
