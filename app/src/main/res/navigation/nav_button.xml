@@ -42,5 +42,17 @@
             android:name="mealSourceType"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_mealFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.foodplanneritiandroidjava.view.home.details.MealDetailsFragment"
+        android:label="MealDetailsFragment" >
+        <argument
+            android:name="mealID"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

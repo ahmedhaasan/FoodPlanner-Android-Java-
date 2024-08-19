@@ -11,11 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
@@ -57,6 +59,15 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.mealImage);
 
+        // on image press\
+        holder.mealImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
+                        MealFragmentDirections.actionMealFragmentToMealDetailsFragment(meal.getId());
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
         // Handle favorite and calendar icons here
     }
 

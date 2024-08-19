@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Ingredient implements Serializable, Filter {
+    public Ingredient (String name ){
+        this.name = name ;
+    }
 
     @SerializedName("idIngredient")
     private String id;
@@ -15,9 +18,11 @@ public class Ingredient implements Serializable, Filter {
     @SerializedName("strDescription")
     private String description;
 
+
     public String getDescription() {
         return description;
     }
+
 
     @Override
     public String getName() {

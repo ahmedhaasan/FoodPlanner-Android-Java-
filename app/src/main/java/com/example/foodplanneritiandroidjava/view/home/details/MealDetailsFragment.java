@@ -1,59 +1,56 @@
 package com.example.foodplanneritiandroidjava.view.home.details;
 
 import android.os.Bundle;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
+import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
+import com.example.foodplanneritiandroidjava.presenter.mealDetails.DetailsPresenter;
+import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
+import com.makeramen.roundedimageview.RoundedImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MealDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MealDetailsFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class MealDetailsFragment extends Fragment implements DetailsContract {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView mealIngrediantRecycler;
+    private ImageView detailedImage;
+    private ImageView detailedFavIcon, detailedPlanIcon;
+    private TextView detailMealName, detailMealCategory, detailMealCountry ,instructionSteps;
+    private VideoView mealVideo;
 
-    public MealDetailsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MealDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MealDetailsFragment newInstance(String param1, String param2) {
-        MealDetailsFragment fragment = new MealDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private LinearLayoutManager ingrediantManager;
+    private IngrediantsAdapter ingrediantsAdapter;
+    private DetailsPresenter detailsPresenter;
+    private String mealId;
+    private List<Meal> meal;
+    List<Ingredient> mealIngrediants ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            MealDetailsFragmentArgs args = MealDetailsFragmentArgs.fromBundle(getArguments());
+            mealId = args.getMealID();
         }
     }
 
@@ -62,5 +59,87 @@ public class MealDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meal_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize views
+        mealIngrediantRecycler = view.findViewById(R.id.ingrediant_detail_recycler);
+        detailedImage = view.findViewById(R.id.meal_image);
+        detailedFavIcon = view.findViewById(R.id.add_favorite_image_icon);
+        detailedPlanIcon = view.findViewById(R.id.addTo_plan_image_icon);
+        detailMealName = view.findViewById(R.id.meal_name);
+        detailMealCategory = view.findViewById(R.id.meal_category_name);
+        detailMealCountry = view.findViewById(R.id.meal_country_name);
+        mealVideo = view.findViewById(R.id.meal_videoView);
+        instructionSteps = view.findViewById(R.id.mealsStepsField);
+
+
+        // Initialize layout manager and set the adapter
+        ingrediantManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        ingrediantsAdapter = new IngrediantsAdapter(getContext(), new ArrayList<>());
+        mealIngrediantRecycler.setLayoutManager(ingrediantManager);
+        mealIngrediantRecycler.setHasFixedSize(true);
+        mealIngrediantRecycler.setAdapter(ingrediantsAdapter);
+
+
+        // Initialize presenter and fetch meal details
+        detailsPresenter = new DetailsPresenter(new MealParentReposiatory
+                (new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
+        detailsPresenter.getMealDetail(mealId);
+    }
+
+    @Override
+    public void onShowDetails(List<Meal> meals) {
+        // Ensure meal is not null and has at least one item
+        if (meals != null && !meals.isEmpty()) {
+            this.meal = meals;
+
+            // Update UI with the meal details
+            if (getView() != null) {
+                // Safely access the views and update their contents
+                Glide.with(getContext())
+                        .load(meal.get(0).getThumb())
+                        .apply(new RequestOptions().override(200, 200))
+                        .into(detailedImage);
+
+                if (detailMealName != null) {
+                    detailMealName.setText(meal.get(0).getName());
+                }
+                if (detailMealCategory != null) {
+                    detailMealCategory.setText(meal.get(0).getCategory());
+                }
+                if (detailMealCountry != null) {
+                    detailMealCountry.setText(meal.get(0).getCountry());
+                }
+            }
+
+            // handel ingrediants
+            List<Ingredient> mealIngrediants = Arrays.asList(
+                    new Ingredient(meal.get(0).getStrIngredient1()),
+                    new Ingredient(meal.get(0).getStrIngredient2()),
+                    new Ingredient(meal.get(0).getStrIngredient3()),
+                    new Ingredient(meal.get(0).getStrIngredient4()),
+                    new Ingredient(meal.get(0).getStrIngredient5()),
+                    new Ingredient(meal.get(0).getStrIngredient6()),
+                    new Ingredient(meal.get(0).getStrIngredient7()),
+                    new Ingredient(meal.get(0).getStrIngredient8()),
+                    new Ingredient(meal.get(0).getStrIngredient9()),
+                    new Ingredient(meal.get(0).getStrIngredient10()),
+                    new Ingredient(meal.get(0).getStrIngredient11()),
+                    new Ingredient(meal.get(0).getStrIngredient12()),
+                    new Ingredient(meal.get(0).getStrIngredient13()),
+                    new Ingredient(meal.get(0).getStrIngredient14()),
+                    new Ingredient(meal.get(0).getStrIngredient15()),
+                    new Ingredient(meal.get(0).getStrIngredient16()),
+                    new Ingredient(meal.get(0).getStrIngredient17()),
+                    new Ingredient(meal.get(0).getStrIngredient18()),
+                    new Ingredient(meal.get(0).getStrIngredient19()),
+                    new Ingredient(meal.get(0).getStrIngredient20())
+            );
+            ingrediantsAdapter.setIngredientsList(mealIngrediants);
+        }
     }
 }

@@ -14,7 +14,9 @@ import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +39,12 @@ public class MealsRemoteDataSource {
 
 
     // intialize retrofit
+    OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build();
+
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -243,25 +251,35 @@ public class MealsRemoteDataSource {
     }
 
     public void getMealsById(MealsCallBack callBack, String id) {
-
-
         MealApiService service = retrofit.create(MealApiService.class);
         Call<MealsResponse> call = service.getMealById(id);
         call.enqueue(new Callback<MealsResponse>() {
             @Override
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
-                List<Meal> meals = response.body().getMeals();
-                callBack.onMealsSuccess(meals);
-               /// allMeals.addAll(meals); // add here because will need it later
-
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Meal> meals = response.body().getMeals();
+                    if (meals != null && !meals.isEmpty()) {
+                        Log.i("koko", meals.get(0).getCountry()); // Consider removing this in production
+                        callBack.onMealsSuccess(meals);
+                        // Uncomment this if you need to keep track of all meals
+                        // allMeals.addAll(meals);
+                    } else {
+                        callBack.onMealsFailure("No meals found in the response.");
+                    }
+                } else {
+                    callBack.onMealsFailure("Response was unsuccessful or body is null.");
+                }
             }
 
             @Override
             public void onFailure(Call<MealsResponse> call, Throwable throwable) {
-                callBack.onMealsFailure(throwable.toString());
+                // Logging the error for debugging, but avoid exposing it to end users
+                Log.e("API_ERROR", "Error fetching meals", throwable);
+                callBack.onMealsFailure("Failed to fetch meals: " + throwable.getMessage());
             }
         });
     }
+
 
     //
     public void getMealsByFristLetter(MealsCallBack callBack, String fristLetter) {

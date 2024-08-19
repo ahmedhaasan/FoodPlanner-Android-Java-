@@ -27,4 +27,5 @@
     <string name="mealName">Meal Name</string>
     <string name="meal_id">Meal ID</string>
     <string name="instruction">Instruction</string>
+    <string name="mealSteps">Meal Steps</string>
 </resources>
