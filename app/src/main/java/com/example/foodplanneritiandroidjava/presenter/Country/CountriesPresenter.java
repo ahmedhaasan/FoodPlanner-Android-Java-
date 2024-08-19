@@ -2,24 +2,24 @@ package com.example.foodplanneritiandroidjava.presenter.Country;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
-import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
 
 import java.util.List;
 
 public class CountriesPresenter implements CountryPresenterService, CountriesCallBack {
 
-    MealsRemoteDataSource remoteDataSource ;
+    MealParentReposiatory reposiatory;
     HomeFragment homeFragment ;
 
-    public CountriesPresenter(MealsRemoteDataSource remoteDataSource, HomeFragment homeFragment) {
-        this.remoteDataSource = remoteDataSource;
+    public CountriesPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
+        this.reposiatory = reposiatory;
         this.homeFragment = homeFragment;
     }
 
     @Override
     public void getAllCountries() {
-        remoteDataSource.getAllCountries(this);
+        reposiatory.getAllCountries(this);
     }
 
     @Override

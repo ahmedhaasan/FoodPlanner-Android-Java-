@@ -20,6 +20,8 @@ public interface MealApiService {
     @GET("search.php")
     Call<MealsResponse> getMealsByName(@Query("s") String mealName);   // this method returns all meals by name
 
+    @GET("search.php")
+    Call<MealsResponse> getAllMealsByFristLetter(@Query("f") String firstLetter); // return a list of meals based on based on frist letter
     @GET("filter.php")
     Call<MealsResponse> getMealsByCountry(@Query("a") String country);  // return a list of meals based on Contry
 

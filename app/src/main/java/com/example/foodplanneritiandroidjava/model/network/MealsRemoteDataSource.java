@@ -12,6 +12,7 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.MealsResponse;
 import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,6 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MealsRemoteDataSource {
+    List<Meal> allMeals = new ArrayList<>();
     public static String BASE_URL = "https://themealdb.com/api/json/v1/1/";
 
     private static MealsRemoteDataSource remoteDataSource = null;
@@ -95,6 +97,7 @@ public class MealsRemoteDataSource {
 
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+                //allMeals.addAll(meals); // add here because will need it later
 
             }
 
@@ -116,6 +119,8 @@ public class MealsRemoteDataSource {
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+                //allMeals.addAll(meals); // add here because will need it later
+
             }
 
             @Override
@@ -135,6 +140,8 @@ public class MealsRemoteDataSource {
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+               // allMeals.addAll(meals); // add here because will need it later
+
             }
 
             @Override
@@ -155,6 +162,8 @@ public class MealsRemoteDataSource {
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+                //allMeals.addAll(meals); // add here because will need it later
+
             }
 
             @Override
@@ -175,6 +184,8 @@ public class MealsRemoteDataSource {
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+               // allMeals.addAll(meals); // add here because will need it later
+
             }
 
             @Override
@@ -241,6 +252,8 @@ public class MealsRemoteDataSource {
             public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
                 List<Meal> meals = response.body().getMeals();
                 callBack.onMealsSuccess(meals);
+               /// allMeals.addAll(meals); // add here because will need it later
+
             }
 
             @Override
@@ -249,4 +262,34 @@ public class MealsRemoteDataSource {
             }
         });
     }
+
+    //
+    public void getMealsByFristLetter(MealsCallBack callBack, String fristLetter) {
+
+        MealApiService service = retrofit.create(MealApiService.class);
+        Call<MealsResponse> call = service.getAllMealsByFristLetter(fristLetter);
+        call.enqueue(new Callback<MealsResponse>() {
+            @Override
+            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Meal> meals = response.body().getMeals();
+                    callBack.onMealsSuccess(meals);
+                   // allMeals.addAll(meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealsResponse> call, Throwable throwable) {
+                callBack.onMealsFailure(throwable.toString());
+                Log.i("API_SUCCESS", throwable.toString());
+
+            }
+        });
+    }
+
+
+ /*   // function to return all meals
+    public List<Meal> getAllMeals(){
+        return  allMeals;
+    }*/
 }

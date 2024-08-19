@@ -22,6 +22,8 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
+import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.Country.CountriesPresenter;
 import com.example.foodplanneritiandroidjava.presenter.Ingrediants.IngrediantsPresenter;
 import com.example.foodplanneritiandroidjava.presenter.category.CategoryPresenter;
@@ -123,16 +125,16 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
 
         // Initialize presenters
-        dailyPresenter = new DailyMealPresenter(new MealsRemoteDataSource(), this);
+        dailyPresenter = new DailyMealPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new  MealsLocalDataSource(getContext())), this);
         dailyPresenter.geDailyMeal();
 
-        categoryPresenter = new CategoryPresenter(new MealsRemoteDataSource(), this);
+        categoryPresenter = new CategoryPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())), this);
         categoryPresenter.getCategories();
 
-        ingrediantsPresenter = new IngrediantsPresenter(new MealsRemoteDataSource(),this);
+        ingrediantsPresenter = new IngrediantsPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
         ingrediantsPresenter.getIngrediants();
 
-        countriesPresenter = new CountriesPresenter(new MealsRemoteDataSource(),this);
+        countriesPresenter = new CountriesPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
         countriesPresenter.getAllCountries();
 
     }

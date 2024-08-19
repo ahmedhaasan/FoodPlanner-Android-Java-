@@ -2,24 +2,24 @@ package com.example.foodplanneritiandroidjava.presenter.Ingrediants;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.network.IngrediantsCallBack;
-import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
 
 import java.util.List;
 
 public class IngrediantsPresenter implements  IngrediantPresenterService , IngrediantsCallBack {
 
-    MealsRemoteDataSource remoteDataSource ;
+    MealParentReposiatory reposiatory;
     HomeFragment homeFragment ;
 
-    public IngrediantsPresenter(MealsRemoteDataSource remoteDataSource, HomeFragment homeFragment) {
-        this.remoteDataSource = remoteDataSource;
+    public IngrediantsPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
+        this.reposiatory = reposiatory;
         this.homeFragment = homeFragment;
     }
 
     @Override
     public void getIngrediants() {
-        remoteDataSource.getIngridiants(this);
+        reposiatory.getIngridiants(this);
     }
 
     @Override
