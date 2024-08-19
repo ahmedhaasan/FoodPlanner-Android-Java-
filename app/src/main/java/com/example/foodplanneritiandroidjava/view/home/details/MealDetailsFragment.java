@@ -1,5 +1,7 @@
 package com.example.foodplanneritiandroidjava.view.home.details;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +33,8 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MealDetailsFragment extends Fragment implements DetailsContract {
 
@@ -35,7 +42,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
     private ImageView detailedImage;
     private ImageView detailedFavIcon, detailedPlanIcon;
     private TextView detailMealName, detailMealCategory, detailMealCountry ,instructionSteps;
-    private VideoView mealVideo;
+    private WebView mealVideo;
 
     private LinearLayoutManager ingrediantManager;
     private IngrediantsAdapter ingrediantsAdapter;
@@ -90,7 +97,6 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
                 (new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
         detailsPresenter.getMealDetail(mealId);
     }
-
     @Override
     public void onShowDetails(List<Meal> meals) {
         // Ensure meal is not null and has at least one item
@@ -116,8 +122,8 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
                 }
             }
 
-            // handel ingrediants
-            List<Ingredient> mealIngrediants = Arrays.asList(
+            // Handle ingredients
+            List<Ingredient> mealIngredients = Arrays.asList(
                     new Ingredient(meal.get(0).getStrIngredient1()),
                     new Ingredient(meal.get(0).getStrIngredient2()),
                     new Ingredient(meal.get(0).getStrIngredient3()),
@@ -139,7 +145,52 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
                     new Ingredient(meal.get(0).getStrIngredient19()),
                     new Ingredient(meal.get(0).getStrIngredient20())
             );
-            ingrediantsAdapter.setIngredientsList(mealIngrediants);
+            ingrediantsAdapter.setIngredientsList(mealIngredients);
+
+            // Handle steps
+            String instructions = meal.get(0).getInstructions();
+            if (instructions != null && !instructions.isEmpty()) {
+                String[] steps = instructions.split("\r\n");
+                StringBuilder formattedInstructions = new StringBuilder();
+                for (int i = 0; i < steps.length; i++) {
+                    formattedInstructions.append(i + 1).append(". ").append(steps[i].trim()).append("\n\n");
+                }
+                instructionSteps.setText(formattedInstructions.toString().trim());
+            } else {
+                instructionSteps.setText(R.string.no_instructions_available);
+            }
+
+            //
+
+
+            // Handle video
+            String videoUrl = meal.get(0).getVideoUrl();
+            if (videoUrl != null && !videoUrl.isEmpty()) {
+                String videoId = extractVideoId(videoUrl);
+                if (videoId != null) {
+                    String videoHtml = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/" + videoId + "\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+                    mealVideo.getSettings().setJavaScriptEnabled(true);
+                    mealVideo.setWebChromeClient(new WebChromeClient());
+                    mealVideo.loadData(videoHtml, "text/html", "utf-8");
+                } else {
+                    Toast.makeText(requireContext(), "Invalid video URL", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(requireContext(), "No video available for this meal", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
+    private String extractVideoId(String youtubeUrl) {
+        String videoId = null;
+        if (youtubeUrl != null) {
+            Pattern pattern = Pattern.compile("v=([\\w-]+)");
+            Matcher matcher = pattern.matcher(youtubeUrl);
+            if (matcher.find()) {
+                videoId = matcher.group(1);
+            }
+        }
+        return videoId;
+    }
+
 }

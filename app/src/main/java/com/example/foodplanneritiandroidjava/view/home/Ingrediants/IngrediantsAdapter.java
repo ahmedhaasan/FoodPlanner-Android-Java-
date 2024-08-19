@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,7 @@ import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.home.details.MealDetailsFragment;
 
 import java.util.List;
 
@@ -62,11 +65,18 @@ public class IngrediantsAdapter extends RecyclerView.Adapter<IngrediantsAdapter.
         holder.IngrediantImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
-                        HomeFragmentDirections.actionHomeFragmentToMealFragment(ingredient.getName(), SomeContstants.INGREDIANT);
-                Navigation.findNavController(view).navigate(action);
+                FragmentActivity activity = (FragmentActivity) context;
+                Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+                // Check if the current fragment is not an instance of MealDetailsFragment
+                if (!(currentFragment instanceof MealDetailsFragment)) {
+                    HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+                            HomeFragmentDirections.actionHomeFragmentToMealFragment(ingredient.getName(), SomeContstants.INGREDIANT);
+                    Navigation.findNavController(view).navigate(action);
+                }
             }
         });
+
     }
 
     @Override
