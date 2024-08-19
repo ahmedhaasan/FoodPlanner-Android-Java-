@@ -18,10 +18,13 @@ import android.widget.Toast;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
+import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MealFragment extends Fragment implements MealsContract {
 
@@ -36,7 +39,7 @@ public class MealFragment extends Fragment implements MealsContract {
     List<Meal> mealList;
 
     // Meal Presenter and remote source and Adapter
-    MealsRemoteDataSource remoteDataSource;
+    MealParentReposiatory reposiatory;
     MealPresenter mealPresenter;
     MealAdapter mealAdapter;
 
@@ -67,10 +70,10 @@ public class MealFragment extends Fragment implements MealsContract {
         mealList = new ArrayList<>();
 
         // Initialize data source
-        remoteDataSource = MealsRemoteDataSource.getInstance();
+        reposiatory = MealParentReposiatory.getInstance(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext()));
 
         // Initialize meal presenter
-        mealPresenter = new MealPresenter(remoteDataSource, this, mealType,mealSourceType);
+        mealPresenter = new MealPresenter(reposiatory, this, mealType,mealSourceType);
         mealPresenter.getMeals();
 
         // Initialize meal adapter

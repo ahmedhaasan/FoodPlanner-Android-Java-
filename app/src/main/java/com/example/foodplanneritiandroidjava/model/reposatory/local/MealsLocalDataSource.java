@@ -15,7 +15,7 @@ public class MealsLocalDataSource implements MealsLocalService {
     private static MealsLocalDataSource instance = null;
     MealDao favoriteDao;
 
-    private MealsLocalDataSource(Context context) {
+    public MealsLocalDataSource(Context context) {
         MealDataBase db = MealDataBase.getInstance(context.getApplicationContext());
         favoriteDao = db.getMealDAO();
 
@@ -58,7 +58,7 @@ public class MealsLocalDataSource implements MealsLocalService {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                favoriteDao.addMeals(meals);
+                favoriteDao.insertMeals(meals);
             }
         }).start();
     }
@@ -73,7 +73,7 @@ public class MealsLocalDataSource implements MealsLocalService {
     new Thread(new Runnable() {
         @Override
         public void run() {
-            favoriteDao.deleteAllMeals(meals);
+            favoriteDao.deleteAllMeals();
         }
     }).start();
 

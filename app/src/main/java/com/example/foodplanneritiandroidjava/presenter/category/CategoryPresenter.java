@@ -2,27 +2,27 @@ package com.example.foodplanneritiandroidjava.presenter.category;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
-import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
 
 import java.util.List;
 
 public class CategoryPresenter implements CategoryPresenterService, CategoriesCallBack {
 
-    MealsRemoteDataSource remoteDataSource ;
+    MealParentReposiatory reposiatory;
     HomeFragment homeFragment ;
 
 
-    public CategoryPresenter(MealsRemoteDataSource remoteDataSource, HomeFragment homeFragment) {
+    public CategoryPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
         this.homeFragment = homeFragment;
-        this.remoteDataSource = remoteDataSource;
+        this.reposiatory = reposiatory;
 
     }
 
     @Override
     public void getCategories() {
 
-        remoteDataSource.makeCategoriesCall(this);
+        reposiatory.makeCategoryCallBack(this);
     }
 
     @Override

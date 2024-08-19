@@ -4,6 +4,7 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 
 public interface MealPresenterService {
     void getMeals();
+    void getMealsByFristLetter(String fristLetter);
     void onFavClicked(Meal meal);
     void onAddToPlanClicked(Meal meal);
 }

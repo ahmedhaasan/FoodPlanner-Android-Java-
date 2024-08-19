@@ -57,57 +57,51 @@
 
         <!-- Chip for Categories -->
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:id="@+id/category_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/categories"
-            app:chipBackgroundColor="?attr/colorPrimaryFixed"
-            app:chipStrokeColor="?android:attr/colorPressedHighlight"
-            app:chipStrokeWidth="1dp"
             app:closeIconVisible="false" />
 
         <!-- Chip for Countries -->
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             android:id="@+id/countries_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/countries"
-            app:chipBackgroundColor="?attr/colorPrimaryContainer"
-            app:chipStrokeColor="?attr/colorSecondaryContainer"
-            app:chipStrokeWidth="1dp"
             app:closeIconVisible="false" />
 
         <!-- Chip for Ingredients -->
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             android:id="@+id/ingrediants_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ingrediants"
-            app:chipBackgroundColor="?attr/colorPrimaryContainer"
-            app:chipStrokeColor="?attr/colorPrimaryContainer"
-            app:chipStrokeWidth="1dp"
             app:closeIconVisible="false" />
 
         <!-- Chip for Meal Name -->
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             android:id="@+id/meal_name_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mealName"
-            app:chipBackgroundColor="?attr/colorPrimaryContainer"
-            app:chipStrokeColor="?attr/colorPrimaryContainer"
-            app:chipStrokeWidth="1dp"
             app:closeIconVisible="false" />
 
         <!-- Chip for Meal ID -->
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             android:id="@+id/meal_id_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/meal_id"
-            app:chipBackgroundColor="?attr/colorPrimaryContainer"
-            app:chipStrokeColor="?attr/colorPrimaryContainer"
-            app:chipStrokeWidth="1dp"
             app:closeIconVisible="false" />
     </com.google.android.material.chip.ChipGroup>
 
@@ -121,5 +115,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chipGroupFilters"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
