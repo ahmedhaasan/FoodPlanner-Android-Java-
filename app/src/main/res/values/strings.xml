@@ -26,4 +26,5 @@
     <string name="ingrediants">Ingrediants</string>
     <string name="mealName">Meal Name</string>
     <string name="meal_id">Meal ID</string>
+    <string name="instruction">Instruction</string>
 </resources>
