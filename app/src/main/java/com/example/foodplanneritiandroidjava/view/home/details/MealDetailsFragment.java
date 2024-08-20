@@ -1,13 +1,9 @@
 package com.example.foodplanneritiandroidjava.view.home.details;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +14,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,8 +26,6 @@ import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDa
 import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
 import com.example.foodplanneritiandroidjava.presenter.mealDetails.DetailsPresenter;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
-import com.google.android.material.snackbar.Snackbar;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,12 +74,12 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
         // Initialize views
         mealIngrediantRecycler = view.findViewById(R.id.ingrediant_detail_recycler);
-        detailedImage = view.findViewById(R.id.meal_image);
+        detailedImage = view.findViewById(R.id.favorite_meal_image);
         detailedFavIcon = view.findViewById(R.id.add_favorite_image_icon);
         detailedPlanIcon = view.findViewById(R.id.addTo_plan_image_icon);
-        detailMealName = view.findViewById(R.id.meal_name);
-        detailMealCategory = view.findViewById(R.id.meal_category_name);
-        detailMealCountry = view.findViewById(R.id.meal_country_name);
+        detailMealName = view.findViewById(R.id.favorite_meal_name);
+        detailMealCategory = view.findViewById(R.id.favorite_meal_category);
+        detailMealCountry = view.findViewById(R.id.favorite_meal_country);
         mealVideo = view.findViewById(R.id.meal_videoView);
         instructionSteps = view.findViewById(R.id.mealsStepsField);
 

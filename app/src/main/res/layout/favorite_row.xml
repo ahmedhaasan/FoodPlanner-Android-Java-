@@ -9,6 +9,7 @@
     android:layout_margin="10dp"
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="8dp"
+    android:background="#33DFDFDF"
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
@@ -16,7 +17,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF">
 
         <ImageView
             android:id="@+id/favorite_meal_image"
@@ -74,6 +76,15 @@
             app:layout_constraintBottom_toBottomOf="@id/favorite_meal_category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/favorite_meal_category" />
+
+        <ImageButton
+            android:id="@+id/delete_favoriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="38dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/favorite_meal_image"
+            app:srcCompat="@drawable/deleteicon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

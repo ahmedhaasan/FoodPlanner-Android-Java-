@@ -1,9 +1,10 @@
-package com.example.foodplanneritiandroidjava.view.meal;
+package com.example.foodplanneritiandroidjava.view.favorite;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,38 +18,43 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
-import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragment;
-import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
+import com.example.foodplanneritiandroidjava.view.meal.MealFragment;
+import com.example.foodplanneritiandroidjava.view.meal.MealFragmentDirections;
 
 import java.util.List;
 
-public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     List<Meal> mealList ;
+  FavoriteFragment favoriteFragment ;
     Context context ;
-    Fragment fragment ;
 
-    public MealAdapter(Context context , List<Meal> mealList, Fragment fragment) {
+    public FavoriteAdapter(FavoriteFragment favoriteFragment, List<Meal> mealList,Context context ) {
         this.mealList = mealList;
+        this.favoriteFragment = favoriteFragment ;
         this.context = context ;
-        this.fragment = fragment ;
     }
+
+
 
     public void setMealList(List<Meal> mealList){
         this.mealList.clear();
         this.mealList.addAll(mealList);
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // Add this line
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.meal_row,parent,false);
-
-        return  new MealAdapter.ViewHolder(v);
+        View v = inflater.inflate(R.layout.favorite_row,parent,false);
+        return  new ViewHolder(v);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         Meal MealT = mealList.get(position);
         holder.mealName.setText(MealT.getName());
         holder.countryName.setText(MealT.getCountry());
@@ -59,25 +65,21 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.mealImage);
 
-        // on image press\
+        // action when image clicked
         holder.mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavController navController = Navigation.findNavController(view);
-
-                if (fragment instanceof MealFragment) {
-                    MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
-                            MealFragmentDirections.actionMealFragmentToMealDetailsFragment(MealT.getId());
-                    navController.navigate(action);
-                } else if (fragment instanceof FavoriteFragment) {
-                    FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
-                            FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(MealT.getId());
-                    navController.navigate(action);
-                }
+                favoriteFragment.onImageClicked(MealT.getId());
             }
         });
 
-
+        // manage when deleteFavorite Cliced
+        holder.deleteFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favoriteFragment.onFavoriteDeleted(MealT);
+            }
+        });
     }
 
     @Override
@@ -85,16 +87,16 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         return mealList.size();
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-      ImageView mealImage ,favoriteIcon,planIcon;
-      TextView categoryName , countryName,mealName;
+        ImageView mealImage ,deleteFavoriteButton ;
+        TextView categoryName , countryName,mealName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.favorite_meal_image);
-            favoriteIcon = itemView.findViewById(R.id.add_favorite_image_icon);
-            planIcon = itemView.findViewById(R.id.addTo_plan_image_icon);
+            deleteFavoriteButton = itemView.findViewById(R.id.delete_favoriteButton);
             categoryName = itemView.findViewById(R.id.favorite_meal_category);
             countryName = itemView.findViewById(R.id.favorite_meal_country);
             mealName = itemView.findViewById(R.id.favorite_meal_name);
@@ -102,3 +104,5 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         }
     }
 }
+
+

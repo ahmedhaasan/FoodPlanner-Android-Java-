@@ -8,4 +8,5 @@ public interface IngrediantsContract {
 
     void showsIngrediants(List<Ingredient> ingredients);
     void showsIngrediantsError(String message);
+    void onIngredianImagePressed(String ingrediantName , String SearchType);
 }
