@@ -30,4 +30,8 @@
     <string name="mealSteps">Meal Steps</string>
     <string name="no_instructions_available">No Instructions Avilable</string>
     <string name="FavoriteMeals">Favorite Meals</string>
+    <string name="upload">Upload Data</string>
+    <string name="download">Dawnload Data</string>
+    <string name="logOut">"Log Out "</string>
+    <string name="downloadd">Dawnload Data</string>
 </resources>
