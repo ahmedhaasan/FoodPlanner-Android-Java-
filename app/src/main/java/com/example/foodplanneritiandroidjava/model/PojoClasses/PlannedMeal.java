@@ -1,7 +1,15 @@
 package com.example.foodplanneritiandroidjava.model.PojoClasses;
 
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "meal_planned")
 public class PlannedMeal {
 
+    @PrimaryKey
+    @NonNull
 
     private String id;
     private String name;

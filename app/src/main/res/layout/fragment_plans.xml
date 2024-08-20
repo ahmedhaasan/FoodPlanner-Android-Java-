@@ -6,29 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".view.plans.PlansFragment" >
 
-    <TextView
-        android:id="@+id/tv_plan"
-        style="@style/TextAppearance.Compat.Notification.Media"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium"
-        android:fontFamily="@font/poppins_bold"
-        android:lineSpacingMultiplier="@dimen/medium"
-        android:text="@string/plannedmeals"
-        android:textColor="@color/design_default_color_primary_dark"
-        android:textColorHighlight="?android:attr/textColorLinkInverse"
-        android:textColorHint="?android:attr/windowBackgroundFallback"
-        android:textColorLink="?android:attr/colorPressedHighlight"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/planned_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_plan" />
+        app:layout_constraintTop_toBottomOf="@+id/week_planned_mealsText" />
+
+    <TextView
+        android:id="@+id/week_planned_mealsText"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/plannedmeals"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

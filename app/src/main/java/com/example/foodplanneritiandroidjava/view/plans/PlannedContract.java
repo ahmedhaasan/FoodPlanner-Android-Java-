@@ -9,6 +9,7 @@ import java.util.List;
 public interface PlannedContract {
 
     void showPlannedMeals(LiveData<List<PlannedMeal>> plannedMeals);
+    void showPlannedMealsWithData(LiveData<List<PlannedMeal>> plannedMeals);
     void showPlannedError(String error);
     void onPlannedCliced(PlannedMeal plannedMeal);
     void onPlannedDeleted(PlannedMeal plannedMeal);
