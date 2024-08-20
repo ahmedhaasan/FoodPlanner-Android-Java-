@@ -56,6 +56,10 @@ public class MealParentReposiatory implements MealParentReposiatoryService {
         localDataSource.deleteAllMeals(meals);
     }
 
+    public LiveData<Meal> getMealById(String mealId) {
+        return localDataSource.getMealById(mealId);
+    }
+
     // return all local meals
     @Override
     public LiveData<List<Meal>> getAllLocalMealsMeals() {

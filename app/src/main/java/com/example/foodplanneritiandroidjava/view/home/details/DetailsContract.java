@@ -10,4 +10,5 @@ public interface DetailsContract {
         void onShowDetails(List<Meal> meal);
 
 
+
 }

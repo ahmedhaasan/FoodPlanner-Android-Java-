@@ -29,4 +29,5 @@
     <string name="instruction">Instruction</string>
     <string name="mealSteps">Meal Steps</string>
     <string name="no_instructions_available">No Instructions Avilable</string>
+    <string name="FavoriteMeals">Favorite Meals</string>
 </resources>

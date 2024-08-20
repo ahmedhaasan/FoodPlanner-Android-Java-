@@ -70,19 +70,23 @@ public class MealsLocalDataSource implements MealsLocalService {
 
     @Override
     public void deleteAllMeals(List<Meal> meals) {
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-            favoriteDao.deleteAllMeals();
-        }
-    }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                favoriteDao.deleteAllMeals();
+            }
+        }).start();
 
     }
 
     @Override
     public LiveData<List<Meal>> getAllMeals() {
-       return favoriteDao.getAllMeals();
+        return favoriteDao.getAllMeals();
     }
 
+    public LiveData<Meal> getMealById(String mealId) {
+        return favoriteDao.getMealById(mealId);
+    }
 
-}
+    }
+

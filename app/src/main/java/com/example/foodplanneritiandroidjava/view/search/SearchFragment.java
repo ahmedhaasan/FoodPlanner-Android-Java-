@@ -52,7 +52,7 @@ public class SearchFragment extends Fragment implements SearchContract {
         // Initialization
         mealList = new ArrayList<>();
         allMeals = new ArrayList<>();
-        mealAdapter = new MealAdapter(getContext(), mealList);
+        mealAdapter = new MealAdapter(getContext(), mealList,this);
         reposiatory = MealParentReposiatory.getInstance(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext()));
 
     }

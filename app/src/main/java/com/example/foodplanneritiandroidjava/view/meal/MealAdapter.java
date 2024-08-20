@@ -1,6 +1,7 @@
 package com.example.foodplanneritiandroidjava.view.meal;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +10,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +27,14 @@ import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
+import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
+import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
+import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragment;
+import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragmentDirections;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -28,10 +42,12 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
     List<Meal> mealList ;
     Context context ;
+    Fragment fragment ;
 
-    public MealAdapter(Context context ,List<Meal> mealList) {
+    public MealAdapter(Context context , List<Meal> mealList, Fragment fragment) {
         this.mealList = mealList;
         this.context = context ;
+        this.fragment = fragment ;
     }
 
     public void setMealList(List<Meal> mealList){
@@ -49,13 +65,13 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Meal meal = mealList.get(position);
-        holder.mealName.setText(meal.getName());
-        holder.countryName.setText(meal.getCountry());
-        holder.categoryName.setText(meal.getCategory());
+        Meal MealT = mealList.get(position);
+        holder.mealName.setText(MealT.getName());
+        holder.countryName.setText(MealT.getCountry());
+        holder.categoryName.setText(MealT.getCategory());
 
         Glide.with(context)
-                .load(meal.getThumb())
+                .load(MealT.getThumb())
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.mealImage);
 
@@ -63,12 +79,21 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
-                        MealFragmentDirections.actionMealFragmentToMealDetailsFragment(meal.getId());
-                Navigation.findNavController(view).navigate(action);
+                NavController navController = Navigation.findNavController(view);
+
+                if (fragment instanceof MealFragment) {
+                    MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
+                            MealFragmentDirections.actionMealFragmentToMealDetailsFragment(MealT.getId());
+                    navController.navigate(action);
+                } else if (fragment instanceof FavoriteFragment) {
+                    FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
+                            FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(MealT.getId());
+                    navController.navigate(action);
+                }
             }
         });
-        // Handle favorite and calendar icons here
+
+
     }
 
     @Override

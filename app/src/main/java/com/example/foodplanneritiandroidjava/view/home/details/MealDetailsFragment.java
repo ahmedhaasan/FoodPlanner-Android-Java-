@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,8 +28,10 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
+import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
 import com.example.foodplanneritiandroidjava.presenter.mealDetails.DetailsPresenter;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
+import com.google.android.material.snackbar.Snackbar;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -41,7 +45,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
     private RecyclerView mealIngrediantRecycler;
     private ImageView detailedImage;
     private ImageView detailedFavIcon, detailedPlanIcon;
-    private TextView detailMealName, detailMealCategory, detailMealCountry ,instructionSteps;
+    private TextView detailMealName, detailMealCategory, detailMealCountry, instructionSteps;
     private WebView mealVideo;
 
     private LinearLayoutManager ingrediantManager;
@@ -49,7 +53,10 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
     private DetailsPresenter detailsPresenter;
     private String mealId;
     private List<Meal> meal;
-    List<Ingredient> mealIngrediants ;
+    List<Ingredient> mealIngrediants;
+
+    //
+    FavoritePresenter favoritePresenter ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +90,6 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         mealVideo = view.findViewById(R.id.meal_videoView);
         instructionSteps = view.findViewById(R.id.mealsStepsField);
 
-
         // Initialize layout manager and set the adapter
         ingrediantManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         ingrediantsAdapter = new IngrediantsAdapter(getContext(), new ArrayList<>());
@@ -91,35 +97,33 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         mealIngrediantRecycler.setHasFixedSize(true);
         mealIngrediantRecycler.setAdapter(ingrediantsAdapter);
 
-
         // Initialize presenter and fetch meal details
-        detailsPresenter = new DetailsPresenter(new MealParentReposiatory
-                (new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
+        detailsPresenter = new DetailsPresenter(
+                new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
         detailsPresenter.getMealDetail(mealId);
+
+        // favPresenter
+        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())));
+
+        // Initialize favorite button click listener
+        handleFavoritePress();
     }
+
     @Override
     public void onShowDetails(List<Meal> meals) {
-        // Ensure meal is not null and has at least one item
         if (meals != null && !meals.isEmpty()) {
             this.meal = meals;
 
             // Update UI with the meal details
             if (getView() != null) {
-                // Safely access the views and update their contents
                 Glide.with(getContext())
                         .load(meal.get(0).getThumb())
                         .apply(new RequestOptions().override(200, 200))
                         .into(detailedImage);
 
-                if (detailMealName != null) {
-                    detailMealName.setText(meal.get(0).getName());
-                }
-                if (detailMealCategory != null) {
-                    detailMealCategory.setText(meal.get(0).getCategory());
-                }
-                if (detailMealCountry != null) {
-                    detailMealCountry.setText(meal.get(0).getCountry());
-                }
+                detailMealName.setText(meal.get(0).getName());
+                detailMealCategory.setText(meal.get(0).getCategory());
+                detailMealCountry.setText(meal.get(0).getCountry());
             }
 
             // Handle ingredients
@@ -160,9 +164,6 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
                 instructionSteps.setText(R.string.no_instructions_available);
             }
 
-            //
-
-
             // Handle video
             String videoUrl = meal.get(0).getVideoUrl();
             if (videoUrl != null && !videoUrl.isEmpty()) {
@@ -191,6 +192,17 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
             }
         }
         return videoId;
+    }
+
+    private void handleFavoritePress() {
+
+        detailedFavIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favoritePresenter.insertMeal(meal.get(0));
+                Toast.makeText(getContext(), "Added To Favorite Successfully ", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
