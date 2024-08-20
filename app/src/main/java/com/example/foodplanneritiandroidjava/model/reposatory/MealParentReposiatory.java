@@ -3,6 +3,7 @@ package com.example.foodplanneritiandroidjava.model.reposatory;
 import androidx.lifecycle.LiveData;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.IngrediantsCallBack;
@@ -134,5 +135,33 @@ public class MealParentReposiatory implements MealParentReposiatoryService {
     @Override
     public void getMealsByFristLetter(MealsCallBack callBack, String fristLetter) {
         remoteDataSource.getMealsByFristLetter(callBack,fristLetter);
+    }
+
+    // for oplannned meals
+
+    @Override
+    public void insertPlannedMeal(PlannedMeal plannedMeal) {
+        localDataSource.insertPlannedMeal(plannedMeal);
+    }
+
+    @Override
+    public void deletePlannedMealById(String plannedMealID) {
+
+        localDataSource.deletePlannedMealById(plannedMealID);
+    }
+
+    @Override
+    public LiveData<List<PlannedMeal>> getAllPlannedMeals() {
+        return localDataSource.getAllPlannedMeals();
+    }
+
+    @Override
+    public LiveData<List<PlannedMeal>> getMealsPlannedByDate(String day) {
+        return localDataSource.getPlannedMealWithDate(day);
+    }
+
+    @Override
+    public void deleteAllPlannedMeals() {
+        localDataSource.deleteAllPlannedMeals();
     }
 }

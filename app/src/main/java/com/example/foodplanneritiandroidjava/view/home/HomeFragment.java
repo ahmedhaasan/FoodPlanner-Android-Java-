@@ -73,9 +73,6 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -208,6 +205,8 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
     @Override
     public void showsCountries(List<Country> countries) {
+
+        countriesAdapter.setCountries(countries);
 
     }
 

@@ -3,6 +3,7 @@ package com.example.foodplanneritiandroidjava.model.reposatory;
 import androidx.lifecycle.LiveData;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.IngrediantsCallBack;
@@ -33,5 +34,11 @@ public interface MealParentReposiatoryService {
     List<Meal>getAllMeals();
 */
     void getMealsByFristLetter(MealsCallBack callBack,String fristLetter);
+
+    void insertPlannedMeal(PlannedMeal plannedMeal);
+    void deletePlannedMealById(String plannedMealID);
+    LiveData<List<PlannedMeal>> getAllPlannedMeals();
+    LiveData<List<PlannedMeal>> getMealsPlannedByDate(String day);
+    void deleteAllPlannedMeals();
 
     }
