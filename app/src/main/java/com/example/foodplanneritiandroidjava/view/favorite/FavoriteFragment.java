@@ -1,5 +1,7 @@
 package com.example.foodplanneritiandroidjava.view.favorite;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,11 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
+import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
 import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
 
 import java.util.ArrayList;
@@ -30,7 +36,7 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
 
 
     RecyclerView favoriteRecyclerView ;
-    MealAdapter mealAdapter ;
+    FavoriteAdapter favoriteAdapter ;
     List<Meal> favMeals ;
     FavoritePresenter favoritePresenter ;
 
@@ -52,13 +58,13 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // intialization
-        mealAdapter = new MealAdapter(getContext(),favMeals,this);
+        favoriteAdapter = new FavoriteAdapter(this,favMeals,getContext());
         favoriteRecyclerView = view.findViewById(R.id.favorite_recycler);
         LinearLayoutManager favManager = new LinearLayoutManager(getContext());
         favManager.setOrientation(RecyclerView.VERTICAL);
         favoriteRecyclerView.setLayoutManager(favManager);
         favoriteRecyclerView.setHasFixedSize(true);
-        favoriteRecyclerView.setAdapter(mealAdapter);
+        favoriteRecyclerView.setAdapter(favoriteAdapter);
 
         // intialize the favorite presenter
         favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())));
@@ -66,7 +72,7 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
         favMeals.observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(List<Meal> meals) {
-                mealAdapter.setMealList(meals);
+                favoriteAdapter.setMealList(meals);
 
             }
         });
@@ -78,8 +84,37 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
 
     }
 
+
+    // when delete the the meal  ask in dialog Frist
     @Override
     public void onFavoriteDeleted(Meal meal) {
+        // Create an AlertDialog to confirm deletion
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete Meal")
+                .setMessage("Are you sure you want to delete this meal from your favorites?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked Yes, proceed with deletion
+                        favoritePresenter.deleteMeal(meal);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked No, do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(true)
+                .show();
+    }
 
+
+    @Override
+    public void onImageClicked(String imageId) {
+        FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
+                FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(imageId);
+        Navigation.findNavController(getActivity().getCurrentFocus()).navigate(action);
     }
 }

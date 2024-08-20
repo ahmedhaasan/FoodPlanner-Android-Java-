@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/meal_cardView"
+                android:id="@+id/favorite_meal_cardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/meal_image"
+                        android:id="@+id/favorite_meal_image"
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
                         android:adjustViewBounds="true"
@@ -51,7 +51,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/meal_name"
+                        android:id="@+id/favorite_meal_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="20dp"
@@ -64,11 +64,11 @@
                         android:textStyle="bold|italic"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/meal_image"
+                        app:layout_constraintTop_toBottomOf="@+id/favorite_meal_image"
                         tools:text="Meal Name" />
 
                     <TextView
-                        android:id="@+id/meal_category_name"
+                        android:id="@+id/favorite_meal_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -76,20 +76,20 @@
                         android:text="@string/mealCategoryName"
                         android:textColor="#EAE7E7"
                         android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="@id/meal_image"
+                        app:layout_constraintBottom_toBottomOf="@id/favorite_meal_image"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
-                        android:id="@+id/meal_country_name"
+                        android:id="@+id/favorite_meal_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:text="@string/mealCountryName"
                         android:textColor="#EAEAEA"
                         android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="@id/meal_category_name"
+                        app:layout_constraintBottom_toBottomOf="@id/favorite_meal_category"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/meal_category_name" />
+                        app:layout_constraintTop_toTopOf="@id/favorite_meal_category" />
 
                     <ImageView
                         android:id="@+id/add_favorite_image_icon"
@@ -130,7 +130,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/meal_cardView" />
+                app:layout_constraintTop_toBottomOf="@id/favorite_meal_cardView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingrediant_detail_recycler"
