@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,8 +19,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
-import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
-import com.example.foodplanneritiandroidjava.view.home.details.MealDetailsFragment;
+import com.example.foodplanneritiandroidjava.view.home.HomeActivity;
+import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
 
 import java.util.List;
 
@@ -28,8 +29,14 @@ public class IngrediantsAdapter extends RecyclerView.Adapter<IngrediantsAdapter.
 
     List<Ingredient> ingredients;
     Context context;
+    HomeFragment homeFragment ;
 
-    public IngrediantsAdapter(Context context, List<Ingredient> ingredients) {
+    public IngrediantsAdapter(Context context, List<Ingredient> ingredients , HomeFragment homeActivity) {
+        this.context = context;
+        this.ingredients = ingredients;
+        this.homeFragment = homeActivity ;
+    }
+    public IngrediantsAdapter(Context context, List<Ingredient> ingredients ) {
         this.context = context;
         this.ingredients = ingredients;
     }
@@ -65,14 +72,10 @@ public class IngrediantsAdapter extends RecyclerView.Adapter<IngrediantsAdapter.
         holder.IngrediantImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentActivity activity = (FragmentActivity) context;
-                Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-
-                // Check if the current fragment is not an instance of MealDetailsFragment
-                if (!(currentFragment instanceof MealDetailsFragment)) {
-                    HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
-                            HomeFragmentDirections.actionHomeFragmentToMealFragment(ingredient.getName(), SomeContstants.INGREDIANT);
-                    Navigation.findNavController(view).navigate(action);
+                if(homeFragment instanceof  HomeFragment) {
+                    homeFragment.onIngredianImagePressed(ingredient.getName(), SomeContstants.INGREDIANT);
+                }else {
+                    Toast.makeText(context, "Can't Enter Ingrediants", Toast.LENGTH_SHORT).show();
                 }
             }
         });
