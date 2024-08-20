@@ -37,4 +37,8 @@ public interface MealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMeals(List<Meal> meals);
 
-}
+    @Query("SELECT * FROM meals WHERE id = :mealId")
+    LiveData<Meal> getMealById(String mealId);
+    }
+
+

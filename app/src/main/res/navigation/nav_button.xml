@@ -23,7 +23,11 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/plansFragment"
         android:name="com.example.foodplanneritiandroidjava.view.plans.PlansFragment"
@@ -40,6 +44,18 @@
             app:nullable="true" />
         <argument
             android:name="mealSourceType"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_mealFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.foodplanneritiandroidjava.view.home.details.MealDetailsFragment"
+        android:label="MealDetailsFragment" >
+        <argument
+            android:name="mealID"
             app:argType="string"
             app:nullable="true" />
     </fragment>

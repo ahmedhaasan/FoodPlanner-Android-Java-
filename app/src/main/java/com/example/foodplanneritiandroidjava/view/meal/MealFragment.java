@@ -77,7 +77,7 @@ public class MealFragment extends Fragment implements MealsContract {
         mealPresenter.getMeals();
 
         // Initialize meal adapter
-        mealAdapter = new MealAdapter(getContext(), mealList);
+        mealAdapter = new MealAdapter(getContext(), mealList,this);
     }
 
     @Override

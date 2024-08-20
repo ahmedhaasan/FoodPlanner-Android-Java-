@@ -37,6 +37,7 @@ public class Meal {
     @SerializedName("strYoutube")
     private String videoUrl;
 
+
     private String strIngredient1;
     private String strIngredient2;
     private String strIngredient3;
