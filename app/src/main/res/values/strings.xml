@@ -34,4 +34,7 @@
     <string name="download">Dawnload Data</string>
     <string name="logOut">"Log Out "</string>
     <string name="downloadd">Dawnload Data</string>
+    <string name="category_Name">Category Name</string>
+    <string name="contry_name">Country Name</string>
+    <string name="plannedmeals">Week Planned Meals</string>
 </resources>
