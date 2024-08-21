@@ -45,6 +45,8 @@
     <string name="thrisDay">ThrisDay</string>
     <string name="friday">FraiDay</string>
     <string name="plannedMeals">Weak Planned Meals</string>
+    <string name="continue_as_guest">Continue AS Guest</string>
+    <string name="navigate_as_guest_action">Navigate AS Guest</string>
     <string-array name="days_of_week">
         <item>Monday</item>
         <item>Tuesday</item>

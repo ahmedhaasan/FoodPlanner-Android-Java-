@@ -27,6 +27,8 @@ import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDa
 import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
 import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
 import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +36,19 @@ import java.util.List;
 
 public class FavoriteFragment extends Fragment  implements FavoriteContract{
 
-
+    private FirebaseAuth auth ;
+    //
     RecyclerView favoriteRecyclerView ;
     FavoriteAdapter favoriteAdapter ;
     List<Meal> favMeals ;
     FavoritePresenter favoritePresenter ;
-
+    View navView ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         favMeals = new ArrayList<>();
+
+        auth = FirebaseAuth.getInstance() ;
     }
 
     @Override
@@ -57,6 +61,9 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        navView = view ;
+        ////////////////
         // intialization
         favoriteAdapter = new FavoriteAdapter(this,favMeals,getContext());
         favoriteRecyclerView = view.findViewById(R.id.favorite_recycler);
@@ -115,6 +122,6 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
     public void onImageClicked(String imageId) {
         FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
                 FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(imageId);
-        Navigation.findNavController(getActivity().getCurrentFocus()).navigate(action);
+        Navigation.findNavController(navView).navigate(action);
     }
 }

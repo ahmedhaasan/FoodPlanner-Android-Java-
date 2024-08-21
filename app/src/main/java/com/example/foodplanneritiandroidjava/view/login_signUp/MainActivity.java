@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodplanneritiandroidjava.R;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,14 +22,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-         navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+         navController = Navigation.findNavController(this,R.id.nav_host_fragmentMain);
        // NavigationUI.setupActionBarWithNavController(this,navController);
 
-        Intent intent = getIntent();
+     /*   Intent intent = getIntent();
         String navTo = intent.getStringExtra("Navigation");
         if("login".equals(navTo)){
             navController.navigate(R.id.login_fragment);
-        }
+            //finish();
+
+        }*/
 
     }
 
