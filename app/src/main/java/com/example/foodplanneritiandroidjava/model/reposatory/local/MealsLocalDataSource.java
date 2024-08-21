@@ -1,6 +1,7 @@
 package com.example.foodplanneritiandroidjava.model.reposatory.local;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -19,8 +20,9 @@ public class MealsLocalDataSource implements MealsLocalService {
     public MealsLocalDataSource(Context context) {
         MealDataBase db = MealDataBase.getInstance(context.getApplicationContext());
         favoriteDao = db.getMealDAO();
-
         plannedDao = db.mealPlannedDao();
+        Log.d("DB_INIT", "FavoriteDao and PlannedDao initialized");
+
 
     }
 
@@ -88,15 +90,34 @@ public class MealsLocalDataSource implements MealsLocalService {
     }
 
 
+    /****************************************/
+    /****************************************/
+    /****************************************/
+
     // implemented from LocalDataService but for planned
     @Override
     public void insertPlannedMeal(PlannedMeal plannedMeal) {
-        plannedDao.insertMealPlanned(plannedMeal);
+        try {
+            new Thread(() -> {
+                plannedDao.insertMealPlanned(plannedMeal);
+                Log.d("DB_INSERT", "Insertion complete");
+            }).start();
+        } catch (Exception e) {
+            Log.e("DB_INSERT_ERROR", "Error inserting planned meal: " + e.getMessage());
+        }
     }
+
+
 
     @Override
     public void deletePlannedMealById(String plannedMealId) {
-        plannedDao.deleteMealPlannedById(plannedMealId);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                plannedDao.deleteMealPlannedById(plannedMealId);
+
+            }
+        }).start();
     }
 
 
@@ -112,7 +133,13 @@ public class MealsLocalDataSource implements MealsLocalService {
 
     @Override
     public void deleteAllPlannedMeals() {
-        plannedDao.deleteAllMealsPlanned();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                plannedDao.deleteAllMealsPlanned();
+
+            }
+        }).start();
     }
 
 

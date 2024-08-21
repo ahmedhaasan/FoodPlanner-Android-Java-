@@ -69,7 +69,7 @@ public class SearchFragment extends Fragment implements SearchContract {
         // Initialize UI components
         searchMealButton = view.findViewById(R.id.searchForMeal_button);
         searchMealField = view.findViewById(R.id.searchForMeal_field);
-        chipMealGroup = view.findViewById(R.id.chipGroupFilters);
+        chipMealGroup = view.findViewById(R.id.chip_group);
         categoriesChip = view.findViewById(R.id.category_chip);
         countriesChip = view.findViewById(R.id.countries_chip);
         ingrediantsChip = view.findViewById(R.id.ingrediants_chip);

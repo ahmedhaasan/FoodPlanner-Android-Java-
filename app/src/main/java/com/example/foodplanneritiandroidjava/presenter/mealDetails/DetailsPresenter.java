@@ -1,6 +1,7 @@
 package com.example.foodplanneritiandroidjava.presenter.mealDetails;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.view.home.details.MealDetailsFragment;
@@ -34,5 +35,10 @@ public class DetailsPresenter implements MealDetailsServfice  , MealsCallBack {
 
     }
 
+    // handel when user press on method to add to db;
+    @Override
+    public void insertMealIntoPlanned(PlannedMeal plannedMeal) {
 
+        reposiatory.insertPlannedMeal(plannedMeal);
+    }
 }

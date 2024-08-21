@@ -2,6 +2,7 @@ package com.example.foodplanneritiandroidjava.presenter.plans;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.view.plans.PlansFragment;
@@ -18,6 +19,9 @@ public class PlannedPresenter implements plansPresenterService {
         this.reposiatory = reposiatory;
         this.plansFragment = plansFragment;
     }
+    public PlannedPresenter(MealParentReposiatory reposiatory) {
+        this.reposiatory = reposiatory;
+    }
 
     @Override
 
@@ -33,9 +37,9 @@ public class PlannedPresenter implements plansPresenterService {
 
 
     @Override
-    public void getAllPlanned(LiveData<List<PlannedMeal>> plannedMeals) {
+    public LiveData<List<PlannedMeal>> getAllPlanned() {
 
-        plansFragment.showPlannedMeals(plannedMeals);
+        return  reposiatory.getAllPlannedMeals();
     }
 
     @Override
@@ -48,4 +52,6 @@ public class PlannedPresenter implements plansPresenterService {
     public void getAllPlannedMealsWithDate(String day) {
         reposiatory.getMealsPlannedByDate(day);
     }
+
+
 }

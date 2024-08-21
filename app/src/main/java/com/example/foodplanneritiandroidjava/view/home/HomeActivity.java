@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Fragment homeFragment;
     FragmentManager manager;
-    BottomNavigationView navigationView;  // this is for navigating between items
+    BottomNavigationView navigationView,menuView;  // this is for navigating between items
     DrawerLayout drawerLayout;
     NavController navController ;
 
@@ -69,10 +69,14 @@ public class HomeActivity extends AppCompatActivity {
         trans.add(R.id.homeFragmentContainer, homeFragment, "Dynamic Fragment");
         trans.commit();*/
 
+        /******************************************************/
+
 
     }
 
     // this for open and close the drawer
+
+    ///
 
 
     ///
@@ -86,57 +90,22 @@ public class HomeActivity extends AppCompatActivity {
 
     // to handel menu items
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // Handle drawer opening/closing
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START);
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START);
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == android.R.id.home) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+                return true;
             }
-            return true;
-        } else if (item.getItemId() == R.id.upload_data) {
-            // Handle upload data action
-            Toast.makeText(this, "Upload Data clicked", Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (item.getItemId() == R.id.download_data) {
-            // Handle download data action
-            Toast.makeText(this, "Download Data clicked", Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (item.getItemId() == R.id.log_out) {
-            // Handle log out action
-            Toast.makeText(this, "Log Out clicked", Toast.LENGTH_SHORT).show();
-            // Sign out from Firebase
-            firebaseAuth.signOut();
-
-            // Get NavController
-
-       /*     Intent intent = new Intent(this, login_fragment.class);
-            intent.putExtra("Navigation","login");
-            startActivity(intent);*/
-            //
-            NavOptions navOptions = new NavOptions.Builder()
-                    .setPopUpTo(R.id.login_fragment, true) // Clear back stack up to login_fragment
-                    .build();
-
-            // Navigate to login fragment
-            navController.navigate(R.id.login_fragment, null, navOptions);
-           /* NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
-            // Create NavOptions to clear back stack
-            NavOptions navOptions = new NavOptions.Builder()
-                    .setPopUpTo(R.id.login_fragment, true) // Clear back stack up to login_fragment
-                    .build();
-
-            // Navigate to login fragment
-            navController.navigate(R.id.login_fragment, null, navOptions);*/
-
-            return true;
-        } else {
             return super.onOptionsItemSelected(item);
+
         }
-    }
+    //NavigationUI.setupWithNavController(navigationView, navController);
+// Set up navigation item selected listener
+
+
 
 
 }

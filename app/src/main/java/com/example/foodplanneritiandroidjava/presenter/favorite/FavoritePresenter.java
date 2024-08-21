@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 
 import java.util.List;
@@ -56,4 +57,11 @@ public class FavoritePresenter implements  favoritePresenterService{
     public LiveData<Meal> checkIfMealIsFavorite(String mealId) {
         return reposiatory.getMealById(mealId);
     }
+
+    // temp function
+   public LiveData<List<PlannedMeal>> getPlanned( ){
+        return reposiatory.getAllPlannedMeals();
+
+    }
+
 }

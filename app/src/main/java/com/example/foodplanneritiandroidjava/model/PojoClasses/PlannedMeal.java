@@ -10,7 +10,6 @@ public class PlannedMeal {
 
     @PrimaryKey
     @NonNull
-
     private String id;
     private String name;
     private String category;

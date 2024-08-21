@@ -4,6 +4,7 @@ package com.example.foodplanneritiandroidjava.model.reposatory.local;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
@@ -13,9 +14,7 @@ import java.util.List;
 @Dao
 public interface MealPlannedDao {
 
-
-
-        @Insert
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
         void insertMealPlanned(PlannedMeal mealPlanned);
 
         @Query("SELECT * FROM meal_planned")

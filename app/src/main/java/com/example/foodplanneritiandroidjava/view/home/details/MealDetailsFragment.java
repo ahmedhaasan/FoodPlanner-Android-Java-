@@ -1,17 +1,24 @@
 package com.example.foodplanneritiandroidjava.view.home.details;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +27,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
+import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
 import com.example.foodplanneritiandroidjava.presenter.mealDetails.DetailsPresenter;
+import com.example.foodplanneritiandroidjava.presenter.plans.PlannedPresenter;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,12 +55,13 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
     private LinearLayoutManager ingrediantManager;
     private IngrediantsAdapter ingrediantsAdapter;
     private DetailsPresenter detailsPresenter;
+    private PlannedPresenter plannedPresenter ;
     private String mealId;
     private List<Meal> meal;
     List<Ingredient> mealIngrediants;
 
     //
-    FavoritePresenter favoritePresenter ;
+    FavoritePresenter favoritePresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,10 +108,23 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         detailsPresenter.getMealDetail(mealId);
 
         // favPresenter
-        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())));
+        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
+        plannedPresenter = new PlannedPresenter( new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
+        detailsPresenter.getMealDetail(mealId);
+       // detailsPresenter.getMealDetail(mealId);
 
         // Initialize favorite button click listener
         handleFavoritePress();
+
+        // intialize planned button clicked
+        detailedPlanIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showDaySelectionDialog();
+                Toast.makeText(getContext(), "added sucssesfully", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -162,7 +187,9 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
             if (videoUrl != null && !videoUrl.isEmpty()) {
                 String videoId = extractVideoId(videoUrl);
                 if (videoId != null) {
-                    String videoHtml = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/" + videoId + "\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+                    String videoHtml = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/"
+                            + videoId + "\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay;" +
+                            " clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
                     mealVideo.getSettings().setJavaScriptEnabled(true);
                     mealVideo.setWebChromeClient(new WebChromeClient());
                     mealVideo.loadData(videoHtml, "text/html", "utf-8");
@@ -187,15 +214,67 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         return videoId;
     }
 
+
+    // /on favorite clicked
+
     private void handleFavoritePress() {
 
         detailedFavIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 favoritePresenter.insertMeal(meal.get(0));
+                Log.i("koko",favoritePresenter.getPlanned().toString());
                 Toast.makeText(getContext(), "Added To Favorite Successfully ", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    /// method to handel plan icon
+
+    public void showDaySelectionDialog() {
+        // Inflate the custom layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_spinner, null);
+
+        // Find the Spinner and OK button
+        Spinner spinnerDays = dialogView.findViewById(R.id.spinner_days);
+        Button btnOk = dialogView.findViewById(R.id.ok_button);
+
+        // Setup Spinner with days of the week
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.days_of_week, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDays.setAdapter(adapter);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        // Set the OK button click listener
+        btnOk.setOnClickListener(v -> {
+            // Get the selected day from Spinner
+            String selectedDay = spinnerDays.getSelectedItem().toString();
+            if (meal != null && !meal.isEmpty()) { // Check if meal is initialized
+                handleSelectedDay(selectedDay);
+                Toast.makeText(getContext(), "Added to planned day successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Meal is not available", Toast.LENGTH_SHORT).show();
+            }
+            dialog.dismiss(); // Close the dialog
+        });
+
+        dialog.show(); // Show the dialog
+    }
+
+
+
+    private void handleSelectedDay(String selectedDay) {
+        // Logic to handle the selected day
+        // For example, adding the selected day to the plan
+        PlannedMeal plannedMeal = new PlannedMeal(meal.get(0).getId(), meal.get(0).getName(),
+                meal.get(0).getCategory(), meal.get(0).getCountry(), meal.get(0).getThumb(), selectedDay);
+        plannedPresenter.insertPlannedMeal(plannedMeal);
+    }
+
 
 }
