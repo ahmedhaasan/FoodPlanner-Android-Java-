@@ -173,7 +173,17 @@ public class login_fragment extends Fragment implements LoginView {
         Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
         // store user to check with firebase and shared
         requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE).edit().putString("newUser","new").apply();
-        navigateToHome();    }
+        navigateToHome();
+
+        // change that the user is not a gurst user
+
+        SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = guestUser.edit();
+        editor.putBoolean(SomeContstants.ISGUEST, false);
+        editor.apply();
+    }
+
+
 
     @Override
     public void onLoginFailure(String errorMessage) {

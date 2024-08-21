@@ -30,6 +30,8 @@ import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.view.login_signUp.MainActivity;
 import com.example.foodplanneritiandroidjava.view.login_signUp.login.view.login_fragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,28 +59,22 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //EdgeToEdge.enable(this);
-        firebaseAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
-
         setContentView(R.layout.home_activity);
-        // drawer
+
+        // drawer this for drawer
         drawerLayout = findViewById(R.id.mainDrawer);
         drawerNav=findViewById(R.id.navigation);
-        navigationView = findViewById(R.id.nav_button);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
         NavigationUI.setupWithNavController(drawerNav,navController);
+
+        // this for // button navigation
+        navigationView = findViewById(R.id.nav_button);
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.home_itm);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-/*        manager = getSupportFragmentManager(); // get instanse of manager
-        homeFragment = new HomeFragment();
-        FragmentTransaction trans = manager.beginTransaction();
-        trans.add(R.id.homeFragmentContainer, homeFragment, "Dynamic Fragment");
-        trans.commit();*/
 
         /******************************************************/
 
@@ -94,40 +90,47 @@ public class HomeActivity extends AppCompatActivity {
                     // Handle download data action
                     // Toast.makeText(HomeActivity.this, "Download Data clicked", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.log_out) {
-                    firebaseAuth.signOut();
-
-                    // Use HomeActivity.this to refer to the Activity context
-                    Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-                    intent.putExtra("Navigation", "login");
-                    startActivity(intent);
-                    finish();
-
-                /*    NavOptions navOptions = new NavOptions.Builder()
-                            .setPopUpTo(R.id.login_fragment, true) // Clear the back stack up to splash fragment
-                            .build();
-                    navController.navigate(R.id.login_fragment, null, navOptions);
-                    finish();*/
+                    signOut();
 
                     Toast.makeText(HomeActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                 }
 
-
-                if (id == R.id.favoriteFragment) {
-                    if (isUserGeust()) {
-                        showLoginDialog();
-                        return true; // Return true to indicate that the click was handled
-                    }
-                } else if (id == R.id.plansFragment) {
-                    if (isUserGeust()) {
-                        showLoginDialog();
-                        return true; // Return true to indicate that the click was handled
-                    }
-                }
-
-
                 return false;
             }
         });
+
+        // this for  button navigation items work on it
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                NavController navController = Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment);
+
+                // Check if the user is a guest and handle navigation accordingly
+                if (isUserGeust()) {
+                    if (id == R.id.favoriteFragment || id == R.id.plansFragment) {
+                        showLoginDialog();
+                        return true; // Prevent further processing
+                    }
+                }
+
+                // Handle navigation based on item ID
+                if (id == R.id.favoriteFragment) {
+                    navController.navigate(R.id.favoriteFragment);
+                } else if (id == R.id.homeFragment2) {
+                    navController.navigate(R.id.homeFragment2);
+                } else if (id == R.id.searchFragment) {
+                    navController.navigate(R.id.searchFragment);
+                } else if (id == R.id.plansFragment) {
+                    navController.navigate(R.id.plansFragment);
+                }
+
+                return true;
+            }
+        });
+
+
 
 
 
@@ -177,14 +180,43 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Handle login action
-                        // You might want to navigate to the login fragment or activity
-                        NavController navController = Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment);
-                        navController.navigate(R.id.login_fragment);
+                        // navigate to login to as guest
+                        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                        intent.putExtra("Navigation", "login");
+                        startActivity(intent);
+                        finish();
+
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
+
+
+    // signOut from FireBase and Google authentication
+    public void signOut() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        // Sign out from Firebase
+        auth.signOut();
+
+        // Clear any additional session-related data (e.g., SharedPreferences)
+        SharedPreferences prefs = getSharedPreferences(SomeContstants.GUESTUSER, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(SomeContstants.ISGUEST, true); // Reset to guest status or any other value
+        editor.apply();
+
+        // If using Google Sign-In, also sign out from Google
+        GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
+
+        // Redirect to login screen
+        // Use HomeActivity.this to refer to the Activity context
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("Navigation", "login");
+        startActivity(intent);
+        finish();
+    }
+
 
 
 
