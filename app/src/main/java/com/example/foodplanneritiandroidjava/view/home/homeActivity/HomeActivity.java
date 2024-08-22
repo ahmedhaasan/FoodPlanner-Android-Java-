@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanneritiandroidjava.R;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -55,6 +57,11 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
     DrawerLayout drawerLayout;
     NavController navController;
 
+
+    //
+
+    LottieAnimationView  noInterNet ;
+
     // instance form fire base to logOut :
     private FirebaseAuth firebaseAuth;
 
@@ -83,6 +90,9 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
                 }
             }
         }
+
+        // no internet
+        noInterNet = findViewById(R.id.no_interNet_animation);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(drawerNav, navController);
 

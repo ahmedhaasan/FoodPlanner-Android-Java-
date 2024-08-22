@@ -1,11 +1,15 @@
 package com.example.foodplanneritiandroidjava.view.home.homeActivity;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +19,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeListener;
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeReceiver;
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
@@ -37,12 +47,13 @@ import com.example.foodplanneritiandroidjava.view.home.category.CategoryContract
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesAdapter;
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesContract;
 import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealContract;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract , IngrediantsContract
-, CountriesContract {
+, CountriesContract , NetworkChangeListener {
 
 
     CardView dailyMealCardView ;
@@ -65,6 +76,13 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     CategoryAdapter categoryAdapter ;
     IngrediantsAdapter ingrediantsAdapter ;
     CountriesAdapter countriesAdapter ;
+
+    LottieAnimationView noInternet_animation ;
+    ScrollView home_scrollView ;
+    /**************************************/
+    private NetworkChangeReceiver networkChangeReceiver;
+
+    /**************************************/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +126,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         countriesRecycler.setLayoutManager(layoutManager);
 
 
+
         // Initialize data lists
         randomMeal = new ArrayList<>();
         categories = new ArrayList<>();
@@ -135,6 +154,25 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
         countriesPresenter = new CountriesPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
         countriesPresenter.getAllCountries();
+
+        /**************************/
+        noInternet_animation = view.findViewById(R.id.no_internet_animation);
+        home_scrollView = view.findViewById(R.id.home_scrollView);
+        // check for network
+        // Check initial connectivity status
+        if (!NetworkUtils.isConnectedToInternet(requireContext())) {
+            disableFragment();
+            //showNoInternetMessage();
+        }
+
+        // Register the receiver to listen for connectivity changes
+        networkChangeReceiver = new NetworkChangeReceiver(this);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        requireContext().registerReceiver(networkChangeReceiver, filter);
+
+
+        /**************************/
+
 
     }
 
@@ -210,7 +248,68 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     public void showCountriesError(String message) {
 
     }
+
+    // this method from Network Change Listener to check the Connectivity of the network
+
+    @Override
+    public void onNetworkChanged(boolean isConnected) {
+        if (isConnected) {
+            // Internet connection restored
+            Toast.makeText(requireContext(), "Internet Connected", Toast.LENGTH_SHORT).show();
+            enableFragment();
+        } else {
+            // Internet connection lost
+            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            disableFragment();
+        }
+
+    }
+
+    // needed for network connection
+
+    private void disableFragment() {
+        // Logic to disable specific functionality within the fragment
+        Toast.makeText(requireContext(), "Fragment Disabled Due to No Internet", Toast.LENGTH_SHORT).show();
+        home_scrollView.setVisibility(View.GONE);
+        if (noInternet_animation != null) {
+            noInternet_animation.setVisibility(View.VISIBLE);
+            noInternet_animation.playAnimation();  // Ensure the animation plays
+        }
+
+    }
+
+    private void enableFragment() {
+        // Logic to enable the fragment when the internet connection is restored
+        refreshFragment();
+        home_scrollView.setVisibility(View.VISIBLE);
+        if (noInternet_animation != null) {
+            noInternet_animation.setVisibility(View.GONE);
+            noInternet_animation.cancelAnimation();  // Stop the animation
+        }
+        Toast.makeText(requireContext(), "Fragment Enabled", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void refreshFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.homeFragment);
+
+        if (fragment != null) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.detach(fragment);
+            transaction.attach(fragment);
+            transaction.commit();
+        }
+    }
+    // to unregister the connection
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Unregister the receiver when the fragment view is destroyed
+        requireContext().unregisterReceiver(networkChangeReceiver);
+    }
 }
+
 
 
     // from Countries Contract

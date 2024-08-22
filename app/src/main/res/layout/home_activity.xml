@@ -7,6 +7,7 @@
     tools:context=".view.home.homeActivity.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -21,8 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/nav_button"
-            />
+            app:navGraph="@navigation/nav_button" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_button"
@@ -52,5 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/> <!-- Initially set to gone -->
+        android:visibility="gone"/>
+
+    <!-- Initially set to gone -->
 </androidx.drawerlayout.widget.DrawerLayout>
