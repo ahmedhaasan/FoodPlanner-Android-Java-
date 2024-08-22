@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class login_fragment extends Fragment implements LoginView {
 
@@ -38,7 +40,7 @@ public class login_fragment extends Fragment implements LoginView {
     TextView registerText ;
     View v1;
     MaterialButton sign_in_button;
-    SignInButton signWithGoogleButton;
+    CircleImageView signWithGoogleButton;
     MaterialButton go_as_Guest ;
 /*
     TextInputLayout email_layout, password_layout;

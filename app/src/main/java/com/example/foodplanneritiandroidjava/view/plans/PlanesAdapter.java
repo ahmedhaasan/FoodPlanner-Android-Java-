@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
-import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,18 +89,19 @@ public class PlanesAdapter extends  RecyclerView.Adapter<PlanesAdapter.ViewHolde
 
 
         ImageView plannedMealImage;
-        ImageView plannedAddToFav_icon, deletePlanned_icon;
+        //ImageView plannedAddToFav_icon,
+        FloatingActionButton deletePlanned_icon;
         TextView plannedMealDay, plannedCountryName, plannedCategoryName;
         TextView plannedMealName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.plannedMealImage = itemView.findViewById(R.id.plan_image_meal);
-            this.plannedAddToFav_icon = itemView.findViewById(R.id.plan_favorite_icon);
+            this.plannedMealImage = itemView.findViewById(R.id.favorite_meal_image);
+            //this.plannedAddToFav_icon = itemView.findViewById(R.id.plan_favorite_icon);
             this.deletePlanned_icon = itemView.findViewById(R.id.delete_plan_icon);
             this.plannedMealDay = itemView.findViewById(R.id.plan_day_Name);
             this.plannedCountryName = itemView.findViewById(R.id.plan_country_name);
-            this.plannedCategoryName = itemView.findViewById(R.id.plan_category_Name);
+            this.plannedCategoryName = itemView.findViewById(R.id.favorite_meal_category);
             this.plannedMealName = itemView.findViewById(R.id.plan_meal_name);
         }
     }

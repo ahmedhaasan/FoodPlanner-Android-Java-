@@ -39,7 +39,7 @@ import java.util.List;
 public class SearchFragment extends Fragment implements SearchContract, NetworkChangeListener {
 
     private EditText searchMealField;
-    private Button searchMealButton;
+   // private Button searchMealButton;
     private ChipGroup chipMealGroup;
     private Chip categoriesChip, countriesChip, ingrediantsChip, mealNameChip, mealIdChip;
     private RecyclerView searchRecycler;
@@ -83,7 +83,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Initialize UI components
-        searchMealButton = view.findViewById(R.id.searchForMeal_button);
+        //searchMealButton = view.findViewById(R.id.searchForMeal_button);
         searchMealField = view.findViewById(R.id.searchForMeal_field);
         chipMealGroup = view.findViewById(R.id.chip_group);
         categoriesChip = view.findViewById(R.id.category_chip);
@@ -126,7 +126,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         }
 
         // Set up the search button action
-        searchMealButton.setOnClickListener(new View.OnClickListener() {
+    /*    searchMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Update the adapter with all the fetched meals
@@ -136,7 +136,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
                     mealAdapter.setMealList(allMeals);
                 }
             }
-        });
+        });*/
 
         searchMealField.setOnKeyListener(new View.OnKeyListener() {
             @Override

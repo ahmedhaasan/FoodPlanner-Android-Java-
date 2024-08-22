@@ -35,8 +35,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
     <!-- Drawer contents -->
+
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation"
         android:layout_width="wrap_content"
@@ -46,13 +47,12 @@
         app:headerLayout="@layout/header_layout"
         app:menu="@menu/menu" />
 
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!-- Initially set to gone -->
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -101,7 +101,7 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.favorite_meal_image);
-            favoriteIcon = itemView.findViewById(R.id.add_favorite_image_icon);
+            favoriteIcon = itemView.findViewById(R.id.add_to_favorite_button);
             planIcon = itemView.findViewById(R.id.addTo_plan_image_icon);
             categoryName = itemView.findViewById(R.id.favorite_meal_category);
             countryName = itemView.findViewById(R.id.favorite_meal_country);

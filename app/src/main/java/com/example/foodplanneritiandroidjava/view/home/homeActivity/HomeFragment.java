@@ -47,7 +47,6 @@ import com.example.foodplanneritiandroidjava.view.home.category.CategoryContract
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesAdapter;
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesContract;
 import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealContract;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +101,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         // Initialize views
         dailyMealCardView = view.findViewById(R.id.dailyMealCardView);
         dailyMealImage = view.findViewById(R.id.dailyMealImage);
-        dailyMealName = view.findViewById(R.id.dailyMealName);
+        dailyMealName = view.findViewById(R.id.categoryName);
 
         // Initialize RecyclerView and set layout manager
         categoryRecycler = view.findViewById(R.id.categoryRecycler1);

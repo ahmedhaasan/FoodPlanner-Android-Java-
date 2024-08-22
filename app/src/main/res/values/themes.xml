@@ -7,14 +7,6 @@
 
     </style>
 
-    <style name="LottieAnimation">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">350dp</item>
-        <item name="android:visibility">gone</item>
-        <item name="lottie_autoPlay">true</item>
-        <item name="lottie_loop">true</item>
-        <item name="backgroundTint">@android:color/transparent</item>
-    </style>
 
     <style name="Theme.FoodPlanneritiAndroidJava" parent="Base.Theme.FoodPlanneritiAndroidJava" />
 </resources>

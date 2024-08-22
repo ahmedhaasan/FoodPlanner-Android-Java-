@@ -41,7 +41,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/favorite_meal_name"
+                    android:id="@+id/plan_meal_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="20dp"
@@ -53,6 +53,7 @@
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="@color/black"
                     android:textSize="24sp"
+                    app:drawableStartCompat="@drawable/ic_name_black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +61,7 @@
                     tools:text="Meal Name" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/delete_favoriteButton"
+                    android:id="@+id/delete_plan_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
@@ -84,7 +85,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/favorite_meal_country"
+                    android:id="@+id/plan_country_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"

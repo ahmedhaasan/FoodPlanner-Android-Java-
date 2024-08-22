@@ -6,21 +6,20 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="1dp"
     android:layout_marginTop="1dp"
-    app:cardElevation="7sp"
-    app:cardMaxElevation="7dp"
+    app:cardCornerRadius="15dp"
     app:cardUseCompatPadding="true"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10sp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/countryImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

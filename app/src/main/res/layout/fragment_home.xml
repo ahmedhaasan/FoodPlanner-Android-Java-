@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBFB"
     tools:context=".view.home.homeActivity.HomeFragment">
 
     <ScrollView
         android:id="@+id/home_scrollView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="10dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/dailyMealText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/roboto_slab_extra_bold"
+                android:padding="15dp"
+                android:text="@string/dailyMealText"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/dailyMealCardView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="8dp"
                 app:cardUseCompatPadding="true"
+                app:layout_constraintBottom_toTopOf="@+id/categoryRecycler1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dailyMealText"
-                app:layout_constraintBottom_toTopOf="@+id/categoryRecycler1">
+                app:layout_constraintTop_toBottomOf="@+id/dailyMealText">
 
                 <ImageView
                     android:id="@+id/dailyMealImage"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:src="@drawable/ic_launcher_background" />
 
                 <View
@@ -50,12 +59,12 @@
                     android:background="#4D070505" />
 
                 <TextView
-                    android:id="@+id/dailyMealName"
+                    android:id="@+id/categoryName"
+                    android:text="@string/dailyMeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:padding="10sp"
-                    android:text="@string/dailyMeal"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
@@ -71,37 +80,26 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/dailyMealText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="15dp"
-                android:text="@string/dailyMealText"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecycler1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:background="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dailyMealCardView" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/avilableCategoriyText" />
 
             <TextView
                 android:id="@+id/avilableIngredians"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_slab_extra_bold"
+                android:padding="15dp"
                 android:text="@string/avilable_ingredient"
-                android:textSize="20dp"
-                android:textStyle="bold|italic"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoryRecycler1" />
 
@@ -110,20 +108,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/avilableIngredians" />
 
             <TextView
                 android:id="@+id/avilableCountriesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_slab_extra_bold"
+                android:padding="15dp"
                 android:text="@string/avilable_Countries"
-                android:textSize="20dp"
-                android:textStyle="bold|italic"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ingredientsRecycler" />
 
@@ -132,20 +131,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/avilableCountriesText" />
 
             <TextView
                 android:id="@+id/avilableCategoriyText"
+                android:text="@string/avilableCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/avilableCategory"
-                android:textSize="20dp"
-                android:textStyle="bold|italic"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_slab_extra_bold"
+                android:padding="15dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dailyMealCardView" />
 
@@ -160,8 +160,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_rawRes="@raw/no_internet" />
+        app:lottie_rawRes="@raw/no_internet"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
