@@ -1,7 +1,9 @@
 package com.example.foodplanneritiandroidjava.view.login_signUp.login.view;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,34 +19,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanneritiandroidjava.R;
-import com.example.foodplanneritiandroidjava.view.login_signUp.login.presenter.LoginPresenter;
+import com.example.foodplanneritiandroidjava.SomeContstants;
+import com.example.foodplanneritiandroidjava.firebase.FireBasePresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 
 public class login_fragment extends Fragment implements LoginView {
+
+
     TextView registerText ;
     View v1;
     MaterialButton sign_in_button;
     SignInButton signWithGoogleButton;
+    MaterialButton go_as_Guest ;
 /*
     TextInputLayout email_layout, password_layout;
 */
@@ -53,7 +48,7 @@ public class login_fragment extends Fragment implements LoginView {
 
     private GoogleSignInClient googleSignInClient;
     private static final int RC_SIGN_IN = 30;
-    private LoginPresenter loginPresenter;
+    private FireBasePresenter fireBasePresenter;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -70,7 +65,7 @@ public class login_fragment extends Fragment implements LoginView {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(getContext(), gso);
 
-        loginPresenter = new LoginPresenter(this);
+        fireBasePresenter = new FireBasePresenter(this);
 
     }
 
@@ -88,6 +83,7 @@ public class login_fragment extends Fragment implements LoginView {
         registerText = view.findViewById(R.id.notHaveAcountText);
         sign_in_button = view.findViewById(R.id.signInButton);
         signWithGoogleButton = view.findViewById(R.id.signInWithGoogleButton);
+        go_as_Guest = view.findViewById(R.id.go_as_Guest);
    /*     email_layout = view.findViewById(R.id.emailInputLayout);
         password_layout = view.findViewById(R.id.passwordInputLayout);*/
         email_edit_text = view.findViewById(R.id.emailField);
@@ -106,7 +102,7 @@ public class login_fragment extends Fragment implements LoginView {
             String email = email_edit_text.getText().toString();
             String password = password_editText.getText().toString();
             loadingDialog.show(); // Show loading dialog when login starts
-            loginPresenter.handleEmailPasswordLogin(email, password);
+            fireBasePresenter.handleEmailPasswordLogin(email, password);
         });
 
         // action on sign in with google
@@ -115,9 +111,28 @@ public class login_fragment extends Fragment implements LoginView {
             signIn();
         });
 
+
         registerText.setOnClickListener(v ->
                 Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment)
         );
+
+        // action on go as Guest
+        go_as_Guest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // indicate and store in shared prefrence that the user is guest
+                SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = guestUser.edit();
+                editor.putBoolean(SomeContstants.ISGUEST, true); // or false if not a guest
+                editor.apply();
+                navigateToHome();
+
+
+
+            }
+        });
+
     }
 
     private void signIn() {
@@ -132,7 +147,7 @@ public class login_fragment extends Fragment implements LoginView {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                loginPresenter.handleGoogleLogin(account.getIdToken());
+                fireBasePresenter.handleGoogleLogin(account.getIdToken());
             } catch (ApiException e) {
                 loadingDialog.dismiss(); // Dismiss the loading dialog on failure
 
@@ -145,7 +160,19 @@ public class login_fragment extends Fragment implements LoginView {
     public void onLoginSuccess() {
         loadingDialog.dismiss(); // Dismiss the loading dialog on success
         Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-        navigateToHome();    }
+        // store user to check with firebase and shared
+        requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE).edit().putString("newUser","new").apply();
+        navigateToHome();
+
+        // change that the user is not a gurst user
+
+        SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = guestUser.edit();
+        editor.putBoolean(SomeContstants.ISGUEST, false);
+        editor.apply();
+    }
+
+
 
     @Override
     public void onLoginFailure(String errorMessage) {

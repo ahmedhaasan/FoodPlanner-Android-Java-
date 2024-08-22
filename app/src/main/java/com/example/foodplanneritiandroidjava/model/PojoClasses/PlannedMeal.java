@@ -1,16 +1,17 @@
 package com.example.foodplanneritiandroidjava.model.PojoClasses;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "meal_planned")
-public class PlannedMeal {
+public class PlannedMeal implements Parcelable {
 
     @PrimaryKey
     @NonNull
-
     private String id;
     private String name;
     private String category;
@@ -18,6 +19,9 @@ public class PlannedMeal {
     private String thumb;
     private String day;
 
+    public PlannedMeal() {
+    }
+    // Constructor
     public PlannedMeal(String id, String name, String category, String country, String thumb, String day) {
         this.id = id;
         this.name = name;
@@ -27,6 +31,17 @@ public class PlannedMeal {
         this.day = day;
     }
 
+    // Parcelable constructor
+    protected PlannedMeal(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        category = in.readString();
+        country = in.readString();
+        thumb = in.readString();
+        day = in.readString();
+    }
+
+    // Getters and setters
     public String getId() {
         return id;
     }
@@ -74,4 +89,31 @@ public class PlannedMeal {
     public void setDay(String day) {
         this.day = day;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(category);
+        parcel.writeString(country);
+        parcel.writeString(thumb);
+        parcel.writeString(day);
+    }
+
+    public static final Creator<PlannedMeal> CREATOR = new Creator<PlannedMeal>() {
+        @Override
+        public PlannedMeal createFromParcel(Parcel in) {
+            return new PlannedMeal(in);
+        }
+
+        @Override
+        public PlannedMeal[] newArray(int size) {
+            return new PlannedMeal[size];
+        }
+    };
 }

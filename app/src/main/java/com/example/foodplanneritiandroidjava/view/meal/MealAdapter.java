@@ -19,6 +19,8 @@ import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragment;
 import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.search.SearchFragment;
+import com.example.foodplanneritiandroidjava.view.search.SearchFragmentDirections;
 
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.countryName.setText(MealT.getCountry());
         holder.categoryName.setText(MealT.getCategory());
 
+
         Glide.with(context)
                 .load(MealT.getThumb())
                 .apply(new RequestOptions().override(200, 200))
@@ -73,9 +76,14 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
                     FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
                             FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(MealT.getId());
                     navController.navigate(action);
+                }else if(fragment instanceof SearchFragment){
+                    SearchFragmentDirections.ActionSearchFragmentToMealDetailsFragment action =
+                            SearchFragmentDirections.actionSearchFragmentToMealDetailsFragment(MealT.getId());
+                    navController.navigate(action);
                 }
             }
         });
+
 
 
     }

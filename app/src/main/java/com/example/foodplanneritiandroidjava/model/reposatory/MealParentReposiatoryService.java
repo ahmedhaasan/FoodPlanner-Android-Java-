@@ -40,5 +40,7 @@ public interface MealParentReposiatoryService {
     LiveData<List<PlannedMeal>> getAllPlannedMeals();
     LiveData<List<PlannedMeal>> getMealsPlannedByDate(String day);
     void deleteAllPlannedMeals();
+    void insertAllPlannedMeals(List<PlannedMeal> meals);  // New method to insert all planned meals
 
-    }
+
+}

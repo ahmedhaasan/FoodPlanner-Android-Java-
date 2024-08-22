@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
     <item
+
         android:id="@+id/upload_data"
         android:icon="@drawable/uploaddata"
         android:title="@string/upload" />
@@ -9,7 +11,11 @@
         android:icon="@drawable/downloaddata"
         android:title="@string/downloadd" />
     <item
+
         android:id="@+id/log_out"
         android:icon="@drawable/logout"
         android:title="@string/logOut" />
+    </group>
+
 </menu>
+

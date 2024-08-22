@@ -37,4 +37,23 @@
     <string name="category_Name">Category Name</string>
     <string name="contry_name">Country Name</string>
     <string name="plannedmeals">Week Planned Meals</string>
+    <string name="saturday">SaturDay</string>
+    <string name="sunday">SunDay</string>
+    <string name="monday">MonDay</string>
+    <string name="tuesDay">TuseDay</string>
+    <string name="wendsDay">WendsDay</string>
+    <string name="thrisDay">ThrisDay</string>
+    <string name="friday">FraiDay</string>
+    <string name="plannedMeals">Weak Planned Meals</string>
+    <string name="continue_as_guest">Continue AS Guest</string>
+    <string name="navigate_as_guest_action">Navigate AS Guest</string>
+    <string-array name="days_of_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 </resources>

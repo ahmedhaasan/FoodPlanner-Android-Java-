@@ -9,9 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
-import com.example.foodplanneritiandroidjava.view.home.HomeActivity;
-import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
 
 import java.util.List;
 

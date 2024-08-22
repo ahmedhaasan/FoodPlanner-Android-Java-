@@ -1,7 +1,6 @@
 package com.example.foodplanneritiandroidjava.view.home.category;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
-import com.example.foodplanneritiandroidjava.view.home.HomeActivity;
-import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
-import com.example.foodplanneritiandroidjava.view.meal.MealFragment;
+import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragmentDirections;
 
 import java.util.List;
 

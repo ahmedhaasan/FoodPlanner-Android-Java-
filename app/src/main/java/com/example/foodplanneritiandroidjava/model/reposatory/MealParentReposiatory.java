@@ -164,4 +164,9 @@ public class MealParentReposiatory implements MealParentReposiatoryService {
     public void deleteAllPlannedMeals() {
         localDataSource.deleteAllPlannedMeals();
     }
+
+    @Override
+    public void insertAllPlannedMeals(List<PlannedMeal> meals) {
+        localDataSource.insertAllPlannedMeals(meals);
+    }
 }

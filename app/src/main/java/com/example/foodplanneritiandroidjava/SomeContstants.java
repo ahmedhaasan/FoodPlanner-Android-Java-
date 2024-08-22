@@ -8,4 +8,7 @@ public class SomeContstants {
     public static String MEAL_ID = "MEAL_ID";
     public static String DEFAULT = "BEEF";
     public static String NONE = "NONE";
+
+    public   static String GUESTUSER= "GUESTUSER";
+    public  static String ISGUEST = "ISGUEST";
 }

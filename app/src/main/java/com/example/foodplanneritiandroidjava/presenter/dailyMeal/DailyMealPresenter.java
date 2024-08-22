@@ -3,7 +3,7 @@ package com.example.foodplanneritiandroidjava.presenter.dailyMeal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
-import com.example.foodplanneritiandroidjava.view.home.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
 
 import java.util.List;
 

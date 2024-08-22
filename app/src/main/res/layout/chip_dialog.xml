@@ -1,0 +1,86 @@
+<!-- res/layout/dialog_select_day.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Chip for Categories -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/saturday_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saturday" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/sunday_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sunday"
+            app:closeIconVisible="false" />
+
+        <!-- Chip for Countries -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/monday_chip"
+
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monday"
+            app:closeIconVisible="false" />
+
+        <!-- Chip for Ingredients -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tuesday_chip"
+
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tuesDay"
+            app:closeIconVisible="false" />
+
+        <!-- Chip for Meal Name -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/wendsday_chip"
+
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wendsDay"
+            app:closeIconVisible="false" />
+
+        <!-- Chip for Meal ID -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/thirsday_chip"
+
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/thrisDay"
+            app:closeIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/friyday_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/friday" />
+
+        <Button
+            android:id="@+id/ok_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK" />
+    </com.google.android.material.chip.ChipGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>

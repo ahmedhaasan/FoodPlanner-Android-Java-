@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home;
+package com.example.foodplanneritiandroidjava.view.home.homeActivity;
 
 import android.os.Bundle;
 
@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanneritiandroidjava.R;
-import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
@@ -32,7 +30,6 @@ import com.example.foodplanneritiandroidjava.presenter.Country.CountriesPresente
 import com.example.foodplanneritiandroidjava.presenter.Ingrediants.IngrediantsPresenter;
 import com.example.foodplanneritiandroidjava.presenter.category.CategoryPresenter;
 import com.example.foodplanneritiandroidjava.presenter.dailyMeal.DailyMealPresenter;
-import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragmentDirections;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsContract;
 import com.example.foodplanneritiandroidjava.view.home.category.CategoryAdapter;
@@ -40,7 +37,6 @@ import com.example.foodplanneritiandroidjava.view.home.category.CategoryContract
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesAdapter;
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesContract;
 import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealContract;
-import com.example.foodplanneritiandroidjava.view.home.details.MealDetailsFragment;
 
 import java.util.ArrayList;
 import java.util.List;

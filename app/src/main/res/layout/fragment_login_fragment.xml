@@ -89,4 +89,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInWithGoogleButton" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/go_as_Guest"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/continue_as_guest"
+        app:icon="@drawable/incognito_circle"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notHaveAcountText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
