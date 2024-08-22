@@ -44,7 +44,7 @@
     </fragment>
     <activity
         android:id="@+id/homeActivity"
-        android:name="com.example.foodplanneritiandroidjava.view.home.HomeActivity"
+        android:name="com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeActivity"
         android:label="home_activity"
         app:action="@string/navigate_as_guest_action"
         tools:layout="@layout/home_activity" />

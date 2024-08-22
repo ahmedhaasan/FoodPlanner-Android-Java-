@@ -1,6 +1,7 @@
-package com.example.foodplanneritiandroidjava.view.home;
+package com.example.foodplanneritiandroidjava.view.home.homeActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,11 +9,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.foodplanneritiandroidjava.R;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,15 +24,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
+import com.example.foodplanneritiandroidjava.firebase.FireBasePresenter;
+import com.example.foodplanneritiandroidjava.firebase.FireBaseReposiatory;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.view.login_signUp.MainActivity;
-import com.example.foodplanneritiandroidjava.view.login_signUp.login.view.login_fragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,8 +41,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements HomeContract {
 
+    Dialog loadingDialog;
     Fragment homeFragment;
     FragmentManager manager;
     BottomNavigationView navigationView;
@@ -58,9 +61,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebaseAuth = FirebaseAuth.getInstance();
+
         //EdgeToEdge.enable(this);
         setContentView(R.layout.home_activity);
-
         // drawer this for drawer
         drawerLayout = findViewById(R.id.mainDrawer);
         drawerNav=findViewById(R.id.navigation);
@@ -77,7 +81,13 @@ public class HomeActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         /******************************************************/
+        loadingDialog = new Dialog(this);
+        loadingDialog.setContentView(R.layout.loading_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        /************************************************/
 
+        FireBasePresenter presenter = new FireBasePresenter(this,new FireBaseReposiatory(),this);
         drawerNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -86,7 +96,12 @@ public class HomeActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.upload_data) {
                     // Handle upload data action
                     // Toast.makeText(HomeActivity.this, "Upload Data clicked", Toast.LENGTH_SHORT).show();
+
+                    presenter.uploadData(firebaseAuth.getUid());
                 } else if (item.getItemId() == R.id.download_data) {
+
+                   presenter.downloadData(firebaseAuth.getUid());
+
                     // Handle download data action
                     // Toast.makeText(HomeActivity.this, "Download Data clicked", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.log_out) {
@@ -118,8 +133,8 @@ public class HomeActivity extends AppCompatActivity {
                 // Handle navigation based on item ID
                 if (id == R.id.favoriteFragment) {
                     navController.navigate(R.id.favoriteFragment);
-                } else if (id == R.id.homeFragment2) {
-                    navController.navigate(R.id.homeFragment2);
+                } else if (id == R.id.homeFragment) {
+                    navController.navigate(R.id.homeFragment);
                 } else if (id == R.id.searchFragment) {
                     navController.navigate(R.id.searchFragment);
                 } else if (id == R.id.plansFragment) {
@@ -219,5 +234,37 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+    // methods from  Home contract ;
+    @Override
+    public void showLoading() {
 
+        // Show a loading spinner or progress bar
+        loadingDialog.show(); // Show loading dialog when login starts
+     /*   // Disable user interaction if necessary
+        setUp(false);*/
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingDialog.dismiss(); // Show loading dialog when login starts
+
+    }
+
+    @Override
+    public void showUploadSuccessMessage() {
+        Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showDownloadSuccessMessage() {
+        Toast.makeText(this, "Data downloaded successfully!", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(this, "Error: " + message, Toast.LENGTH_LONG).show();
+
+    }
 }

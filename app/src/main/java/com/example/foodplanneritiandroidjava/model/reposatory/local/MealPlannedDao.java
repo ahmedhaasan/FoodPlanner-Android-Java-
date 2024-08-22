@@ -30,6 +30,9 @@ public interface MealPlannedDao {
         @Query("DELETE FROM meal_planned")
         void deleteAllMealsPlanned();
 
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        void insertAllPlannedMeals(List<PlannedMeal> meals);  // New method to insert all planned meals
+
     }
 
 

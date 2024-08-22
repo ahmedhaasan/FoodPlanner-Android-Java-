@@ -142,6 +142,16 @@ public class MealsLocalDataSource implements MealsLocalService {
         }).start();
     }
 
+    @Override
+    public void insertAllPlannedMeals(List<PlannedMeal> meals) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                plannedDao.insertAllPlannedMeals(meals);
+            }
+        }).start();
+    }
+
 
     public LiveData<Meal> getMealById(String mealId) {
         return favoriteDao.getMealById(mealId);

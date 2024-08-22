@@ -27,7 +27,7 @@
 
         <!-- HomeActivity (without intent filters) -->
         <activity
-            android:name=".view.home.HomeActivity"
+            android:name=".view.home.homeActivity.HomeActivity"
             android:exported="true">
         </activity>
 

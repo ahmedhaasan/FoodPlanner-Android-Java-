@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
-import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragmentDirections;
 
 import java.util.List;
 
@@ -70,8 +70,11 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
         holder.countryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+          /*      HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
                         HomeFragmentDirections.actionHomeFragmentToMealFragment(country.getName(), SomeContstants.COUNTRY);
+                Navigation.findNavController(view).navigate(action);*/
+
+                HomeFragmentDirections.ActionHomeFragmentToMealFragment action = HomeFragmentDirections.actionHomeFragmentToMealFragment(country.getName(),SomeContstants.COUNTRY);
                 Navigation.findNavController(view).navigate(action);
             }
         });

@@ -20,27 +20,16 @@ import android.widget.Toast;
 
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
-import com.example.foodplanneritiandroidjava.view.login_signUp.login.presenter.LoginPresenter;
+import com.example.foodplanneritiandroidjava.firebase.FireBasePresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 
 public class login_fragment extends Fragment implements LoginView {
@@ -59,7 +48,7 @@ public class login_fragment extends Fragment implements LoginView {
 
     private GoogleSignInClient googleSignInClient;
     private static final int RC_SIGN_IN = 30;
-    private LoginPresenter loginPresenter;
+    private FireBasePresenter fireBasePresenter;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -76,7 +65,7 @@ public class login_fragment extends Fragment implements LoginView {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(getContext(), gso);
 
-        loginPresenter = new LoginPresenter(this);
+        fireBasePresenter = new FireBasePresenter(this);
 
     }
 
@@ -113,7 +102,7 @@ public class login_fragment extends Fragment implements LoginView {
             String email = email_edit_text.getText().toString();
             String password = password_editText.getText().toString();
             loadingDialog.show(); // Show loading dialog when login starts
-            loginPresenter.handleEmailPasswordLogin(email, password);
+            fireBasePresenter.handleEmailPasswordLogin(email, password);
         });
 
         // action on sign in with google
@@ -158,7 +147,7 @@ public class login_fragment extends Fragment implements LoginView {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                loginPresenter.handleGoogleLogin(account.getIdToken());
+                fireBasePresenter.handleGoogleLogin(account.getIdToken());
             } catch (ApiException e) {
                 loadingDialog.dismiss(); // Dismiss the loading dialog on failure
 

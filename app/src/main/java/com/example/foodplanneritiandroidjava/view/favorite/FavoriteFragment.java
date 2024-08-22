@@ -25,7 +25,6 @@ import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
-import com.example.foodplanneritiandroidjava.view.home.HomeFragmentDirections;
 import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;

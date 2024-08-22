@@ -4,7 +4,7 @@
     android:id="@+id/mainDrawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.home.HomeActivity">
+    tools:context=".view.home.homeActivity.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -45,4 +45,12 @@
         android:backgroundTint="#FFE8E8"
         app:headerLayout="@layout/header_layout"
         app:menu="@menu/menu" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/> <!-- Initially set to gone -->
 </androidx.drawerlayout.widget.DrawerLayout>
