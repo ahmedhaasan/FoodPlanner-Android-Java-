@@ -16,7 +16,7 @@ public interface MealParentReposiatoryService {
     public void insertmeal(Meal meal);
     void deleteMeal(Meal meal);
     void addAllLocalMeals(List<Meal> meals);
-    void deleteAllLocalMeals(List<Meal> meals);
+    void deleteAllLocalMeals();
     LiveData<List<Meal>> getAllLocalMealsMeals();
 
     // remote

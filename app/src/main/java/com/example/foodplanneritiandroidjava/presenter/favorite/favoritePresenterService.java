@@ -11,6 +11,6 @@ public interface favoritePresenterService {
     void  insertMeal(Meal meal);
     void deleteMeal(Meal meal);
     void addAllMeals(List<Meal> meals);
-    void deleteAllMeals(List<Meal>meals);
+    void deleteAllMeals();
     LiveData<List<Meal>> getAllMeals();
 }

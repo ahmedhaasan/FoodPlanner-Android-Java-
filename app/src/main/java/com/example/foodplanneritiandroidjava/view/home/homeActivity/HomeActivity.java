@@ -31,6 +31,9 @@ import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.firebase.FireBasePresenter;
 import com.example.foodplanneritiandroidjava.firebase.FireBaseReposiatory;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
+import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
+import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
+import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.view.login_signUp.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -50,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
     // this is for navigating between items
     NavigationView drawerNav;
     DrawerLayout drawerLayout;
-    NavController navController ;
+    NavController navController;
 
     // instance form fire base to logOut :
     private FirebaseAuth firebaseAuth;
@@ -63,13 +66,25 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
 
+
         //EdgeToEdge.enable(this);
         setContentView(R.layout.home_activity);
         // drawer this for drawer
         drawerLayout = findViewById(R.id.mainDrawer);
-        drawerNav=findViewById(R.id.navigation);
+        drawerNav = findViewById(R.id.navigation);
+
+        // check if user is guest to chagnge the icon name to login
+        if (drawerNav != null) {
+            Menu menu = drawerNav.getMenu();
+            if (menu != null) {
+                MenuItem logOutItem = menu.findItem(R.id.log_out);
+                if (logOutItem != null && isUserGeust()) {
+                    logOutItem.setTitle("Log In");
+                }
+            }
+        }
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(drawerNav,navController);
+        NavigationUI.setupWithNavController(drawerNav, navController);
 
         // this for // button navigation
         navigationView = findViewById(R.id.nav_button);
@@ -84,10 +99,10 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
         loadingDialog = new Dialog(this);
         loadingDialog.setContentView(R.layout.loading_dialog);
         loadingDialog.setCancelable(false);
-        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         /************************************************/
 
-        FireBasePresenter presenter = new FireBasePresenter(this,new FireBaseReposiatory(),this);
+        FireBasePresenter presenter = new FireBasePresenter(this, new FireBaseReposiatory(), this);
         drawerNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -96,18 +111,33 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
                 if (item.getItemId() == R.id.upload_data) {
                     // Handle upload data action
                     // Toast.makeText(HomeActivity.this, "Upload Data clicked", Toast.LENGTH_SHORT).show();
+                    if (isUserGeust()) {
+                        showLoginDialog();
 
-                    presenter.uploadData(firebaseAuth.getUid());
+                    } else {
+
+                        presenter.uploadData(firebaseAuth.getUid());
+                    }
                 } else if (item.getItemId() == R.id.download_data) {
+                    if (isUserGeust()) {
+                        showLoginDialog();
 
-                   presenter.downloadData(firebaseAuth.getUid());
+                    } else {
+
+                        presenter.downloadData(firebaseAuth.getUid());
+                    }
 
                     // Handle download data action
                     // Toast.makeText(HomeActivity.this, "Download Data clicked", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.log_out) {
-                    signOut();
+                    if (isUserGeust()) {
+                        Toast.makeText(HomeActivity.this, "Here we Go ", Toast.LENGTH_SHORT).show();
+                        signOut();
+                    } else {
+                        Toast.makeText(HomeActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
+                        signOut();
+                    }
 
-                    Toast.makeText(HomeActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                 }
 
                 return false;
@@ -146,9 +176,6 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
         });
 
 
-
-
-
     }
 
     @Override
@@ -168,8 +195,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
             return super.onOptionsItemSelected(item);
-        }
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -177,10 +203,10 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
 
     // check if the user is guest
 
-    boolean isUserGeust(){
-                  SharedPreferences prefs;
-                prefs = getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
-                boolean isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
+    boolean isUserGeust() {
+        SharedPreferences prefs;
+        prefs = getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
+        boolean isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
         return isGuest;
     }
 
@@ -229,9 +255,13 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("Navigation", "login");
         startActivity(intent);
+
+        // delete the local db when user log out
+        MealParentReposiatory reposiatory = new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(this));
+        reposiatory.deleteAllPlannedMeals();
+        reposiatory.deleteAllLocalMeals();
         finish();
     }
-
 
 
     // methods from  Home contract ;

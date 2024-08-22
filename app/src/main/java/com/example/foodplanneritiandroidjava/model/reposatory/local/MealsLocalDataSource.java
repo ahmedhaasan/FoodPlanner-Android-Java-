@@ -74,7 +74,7 @@ public class MealsLocalDataSource implements MealsLocalService {
     }
 
     @Override
-    public void deleteAllMeals(List<Meal> meals) {
+    public void deleteAllMeals() {
         new Thread(new Runnable() {
             @Override
             public void run() {

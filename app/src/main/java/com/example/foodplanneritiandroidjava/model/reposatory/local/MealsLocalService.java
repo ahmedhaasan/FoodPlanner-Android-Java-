@@ -12,7 +12,7 @@ public interface MealsLocalService {
     void insertMeal(Meal meal);
     void deleteMeal(Meal meal);
     void addAllMeals(List<Meal> meals);
-    void deleteAllMeals(List<Meal> meals);
+    void deleteAllMeals();
     LiveData<List<Meal>> getAllMeals();
 
     void insertPlannedMeal(PlannedMeal plannedMeal);
