@@ -4,124 +4,137 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <!-- EditText for Search Input -->
-
-    <EditText
-        android:id="@+id/searchForMeal_field"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:hint="@string/search"
-        android:inputType="text"
-        android:padding="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/searchForMeal_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.75" />
-
-    <!-- Search Button -->
-    <Button
-        android:id="@+id/searchForMeal_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/searchForMeal_field"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.25" />
-
-    <!-- TextView for Filter By -->
-    <TextView
-        android:id="@+id/filterBy_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingTop="16dp"
-        android:text="@string/filterBy"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchForMeal_button" />
-
-    <!-- Chip Group for Filters -->
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chip_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterBy_text">
-
-        <!-- Chip for Categories -->
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:id="@+id/category_chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/categories"
-            app:closeIconVisible="false" />
-
-        <!-- Chip for Countries -->
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-
-            android:id="@+id/countries_chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/countries"
-            app:closeIconVisible="false" />
-
-        <!-- Chip for Ingredients -->
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-
-            android:id="@+id/ingrediants_chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ingrediants"
-            app:closeIconVisible="false" />
-
-        <!-- Chip for Meal Name -->
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-
-            android:id="@+id/meal_name_chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mealName"
-            app:closeIconVisible="false" />
-
-        <!-- Chip for Meal ID -->
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-
-            android:id="@+id/meal_id_chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/meal_id"
-            app:closeIconVisible="false" />
-    </com.google.android.material.chip.ChipGroup>
-
-    <!-- RecyclerView for Search Results -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mealSearchRecycler"
+    <ScrollView
+        android:id="@+id/searc_scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_group"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <!-- EditText for Search Input -->
+            <EditText
+                android:id="@+id/searchForMeal_field"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:hint="@string/search"
+                android:inputType="text"
+                android:padding="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/searchForMeal_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.75" />
+
+            <!-- Search Button -->
+            <Button
+                android:id="@+id/searchForMeal_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/searchForMeal_field"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.25" />
+
+            <!-- TextView for Filter By -->
+            <TextView
+                android:id="@+id/filterBy_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingTop="16dp"
+                android:text="@string/filterBy"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/searchForMeal_button" />
+
+            <!-- Chip Group for Filters -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterBy_text">
+
+                <!-- Chip for Categories -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/category_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/categories"
+                    app:closeIconVisible="false" />
+
+                <!-- Chip for Countries -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/countries_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/countries"
+                    app:closeIconVisible="false" />
+
+                <!-- Chip for Ingredients -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/ingrediants_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ingrediants"
+                    app:closeIconVisible="false" />
+
+                <!-- Chip for Meal Name -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/meal_name_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mealName"
+                    app:closeIconVisible="false" />
+
+                <!-- Chip for Meal ID -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/meal_id_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/meal_id"
+                    app:closeIconVisible="false" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- RecyclerView for Search Results -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mealSearchRecycler"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chip_group" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/no_interNet_animation"
+        android:id="@+id/no_internet"
         style="@style/LottieAnimation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -129,4 +142,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_rawRes="@raw/no_internet" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

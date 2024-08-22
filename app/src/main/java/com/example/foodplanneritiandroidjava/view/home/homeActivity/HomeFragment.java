@@ -77,10 +77,10 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     IngrediantsAdapter ingrediantsAdapter ;
     CountriesAdapter countriesAdapter ;
 
-    LottieAnimationView noInternet_animation ;
     ScrollView home_scrollView ;
     /**************************************/
     private NetworkChangeReceiver networkChangeReceiver;
+    LottieAnimationView noInternet_animation ;
 
     /**************************************/
 
