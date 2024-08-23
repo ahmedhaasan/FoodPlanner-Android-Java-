@@ -9,7 +9,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -39,9 +41,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity implements HomeContract {
 
@@ -57,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
 
     //
 
-    LottieAnimationView  noInterNet ;
+    LottieAnimationView noInterNet;
 
     // instance form fire base to logOut :
     private FirebaseAuth firebaseAuth;
@@ -143,6 +148,10 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
                     } else {
                         Toast.makeText(HomeActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                         signOut();
+                        SharedPreferences guestUser = getSharedPreferences(SomeContstants.USERSTATE, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = guestUser.edit();
+                        editor.putBoolean(SomeContstants.ISGUEST, false);
+                        editor.apply();
                     }
 
                 }
@@ -182,7 +191,33 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
             }
         });
 
+// Retrieve SharedPreferences
+        SharedPreferences prefs = getSharedPreferences(SomeContstants.USERSTATE, MODE_PRIVATE);
 
+// Retrieve the guest status
+        boolean isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
+
+        View headerView = drawerNav.getHeaderView(0);
+        CircleImageView profileImage = headerView.findViewById(R.id.profile_image);
+        TextView textView = headerView.findViewById(R.id.userName);
+
+// Example: Set a new image resource to the profile image
+        profileImage.setImageResource(R.drawable.category__2_);
+
+// Check if the app is running in guest mode
+        if (isGuest) {
+            String userEmail = prefs.getString("name", SomeContstants.GUESTUSER);  // Provide a default value in case the key does not exist
+            textView.setText(userEmail);
+        } else {
+            // Retrieve the current Firebase user
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            if (currentUser != null) {
+                String userName = currentUser.getDisplayName();  // You can use getDisplayName() or getEmail() based on what you need
+                textView.setText(userName != null ? userName : "No name available");  // Provide a default value if name is null
+            } else {
+                textView.setText("User not logged in");  // Handle the case where there is no logged-in user
+            }
+        }
     }
 
     @Override
@@ -208,8 +243,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
     }
 
 
-    // check if the user is guest
-
+    // check if the user is guest  to prvent him from some features
     boolean isUserGeust() {
         SharedPreferences prefs;
         prefs = getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);

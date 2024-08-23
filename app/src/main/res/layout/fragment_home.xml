@@ -72,13 +72,17 @@
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
-                <ImageView
-                    android:id="@+id/addTo_plan_image_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="37dp"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/daily_add_to_fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:paddingRight="10sp"
-                    android:src="@drawable/favoriteicon"
+                    android:layout_marginTop="44dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/favoriteicon__2_"
+                    app:fabSize="mini"
+
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:tint="@color/design_default_color_secondary_variant" />
 
             </com.google.android.material.card.MaterialCardView>

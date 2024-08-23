@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,29 +90,36 @@ public class login_fragment extends Fragment implements LoginView {
         sign_in_button = view.findViewById(R.id.signInButton);
         signWithGoogleButton = view.findViewById(R.id.signInWithGoogleButton);
         go_as_Guest = view.findViewById(R.id.go_as_Guest);
-   /*     email_layout = view.findViewById(R.id.emailInputLayout);
-        password_layout = view.findViewById(R.id.passwordInputLayout);*/
-        email_edit_text = view.findViewById(R.id.emailField);
-        password_editText = view.findViewById(R.id.passwordField);
+
+        // Initialize TextInputLayout and TextInputEditText
+        TextInputLayout emailInputLayout = view.findViewById(R.id.emailInputLayout);
+        TextInputLayout passwordInputLayout = view.findViewById(R.id.passwordInputLayout);
+        TextInputEditText email_edit_text = view.findViewById(R.id.emailField);
+        TextInputEditText password_editText = view.findViewById(R.id.passwordField);
+
+        // Setup loading dialog
         loadingDialog = new Dialog(getContext());
         loadingDialog.setContentView(R.layout.loading_dialog);
         loadingDialog.setCancelable(false);
         loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Check if user is already signed in
-       /* if (firebaseAuth.getCurrentUser() != null) {
-            navigateToHome(); // take care view here may be null
-        }*/
-        // action on button sign in
+        // Handle button clicks for sign in, Google sign in, etc.
         sign_in_button.setOnClickListener(v -> {
-            String email = email_edit_text.getText().toString();
-            String password = password_editText.getText().toString();
+            String email = email_edit_text.getText().toString().trim();
+            String password = password_editText.getText().toString().trim();
 
-            // check if network is connected frist
             if (NetworkUtils.isConnectedToInternet(getContext())) {
-                if (!email.isEmpty() && password.isEmpty()) {
-
-                    loadingDialog.show(); // Show loading dialog when login starts
+                if (email.isEmpty()) {
+                    emailInputLayout.setError("Email cannot be empty");
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {  // this line to check the email pattern
+                    emailInputLayout.setError("Invalid email address");
+                } else if (password.isEmpty()) {
+                    passwordInputLayout.setError("Password cannot be empty");  // set the password error with red to the ser
+                } else {
+                    emailInputLayout.setError(null);
+                    passwordInputLayout.setError(null);
+                    loadingDialog.show();               // then make the load dialog untill response in on succsses
                     fireBasePresenter.handleEmailPasswordLogin(email, password);
                 }
             } else {
@@ -119,58 +129,52 @@ public class login_fragment extends Fragment implements LoginView {
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
             }
+            addUserSharedState(false);
+
         });
 
-
-        // action on sign in with google
+        // Handle Google Sign-In
         signWithGoogleButton.setOnClickListener(v -> {
+            if (NetworkUtils.isConnectedToInternet(getContext())) {
+                loadingDialog.show();
+                signIn();
+                addUserSharedState(false);
+            } else {
+                Toast.makeText(getContext(), "Please Check the Network First", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-
-            // check if network is connected frist
+        // Handle navigation to sign up
+        registerText.setOnClickListener(view1 -> {
             if (NetworkUtils.isConnectedToInternet(getContext())) {
 
-                loadingDialog.show(); // Show loading dialog when Google Sign-In starts
-                signIn();
+
+                Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment);
             } else {
-                Toast.makeText(getContext(), "Please Check the Network Frist ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please Check the Network First", Toast.LENGTH_SHORT).show();
             }
         });
 
-
-        registerText.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-
-                                                if (NetworkUtils.isConnectedToInternet(getContext())) {
-
-                                                    Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment);
-
-                                                } else {
-                                                    Toast.makeText(getContext(), "Please Check the Network Frist ", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        }
-
-
-        );
-
-        // action on go as Guest
-        go_as_Guest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // indicate and store in shared prefrence that the user is guest
-                SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = guestUser.edit();
-                editor.putBoolean(SomeContstants.ISGUEST, true); // or false if not a guest
-                editor.apply();
-                navigateToHome();
-
-
-            }
+        // Handle guest login
+        go_as_Guest.setOnClickListener(view1 -> {
+            SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.USERSTATE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = guestUser.edit();
+            editor.putBoolean(SomeContstants.ISGUEST, true);
+            editor.putString("name", SomeContstants.GUESTUSER);
+            editor.apply();
+            navigateToHome();
         });
 
+    }
+
+
+
+
+    void addUserSharedState(boolean state){
+        SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.USERSTATE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = guestUser.edit();
+        editor.putBoolean(SomeContstants.ISGUEST, state);
+        editor.apply();
     }
 
     private void signIn() {

@@ -230,7 +230,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
             String query = searchMealField.getText().toString().toLowerCase();
             for (Ingredient ingredient : ingredients) {
                 if (ingredient.getName().toLowerCase().contains(query)) {
-                    searchPresenter.getMealsByCountry(SearchFragment.this, ingredient.getName());
+                    searchPresenter.getMealsByIngrediant(SearchFragment.this, ingredient.getName());
                     mealAdapter.setMealList(mealList);
                 }
 

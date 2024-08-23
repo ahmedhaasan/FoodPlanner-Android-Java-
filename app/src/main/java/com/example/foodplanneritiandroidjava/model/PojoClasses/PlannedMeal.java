@@ -18,17 +18,27 @@ public class PlannedMeal implements Parcelable {
     private String country;
     private String thumb;
     private String day;
+    private String date ;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public PlannedMeal() {
     }
     // Constructor
-    public PlannedMeal(String id, String name, String category, String country, String thumb, String day) {
+    public PlannedMeal(String id, String name, String category, String country, String thumb, String day,String date) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.country = country;
         this.thumb = thumb;
         this.day = day;
+        this.date = date ;
     }
 
     // Parcelable constructor
