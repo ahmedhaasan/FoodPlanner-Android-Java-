@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
@@ -119,8 +121,21 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
 
     @Override
     public void onImageClicked(String imageId) {
-        FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
-                FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(imageId);
-        Navigation.findNavController(navView).navigate(action);
+        if(NetworkUtils.isConnectedToInternet(getContext())){
+            FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
+                    FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(imageId);
+            Navigation.findNavController(navView).navigate(action);
+        }
+        else {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("No Internet Connection")
+                    .setMessage("Please check your internet connection and try again.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+/*
+            Toast.makeText(getContext(), "Remember You Are offline Now Can't Show Meal Detaisls", Toast.LENGTH_SHORT).show();
+*/
+        }
+
     }
 }

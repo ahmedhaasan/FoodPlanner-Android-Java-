@@ -7,4 +7,5 @@ import java.util.List;
 public interface MealsContract {
     void showMeals(List<Meal> meals);
     void showMealsError(String message);
+    void onMealImageClicked(String mealID);
 }

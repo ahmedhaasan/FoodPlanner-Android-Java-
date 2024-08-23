@@ -1,5 +1,6 @@
     package com.example.foodplanneritiandroidjava.view.plans;
 
+    import android.app.AlertDialog;
     import android.os.Bundle;
 
     import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@
     import android.view.ViewGroup;
     import android.widget.Toast;
 
+    import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
     import com.example.foodplanneritiandroidjava.R;
     import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
     import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
@@ -128,10 +130,18 @@
 //                    FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(imageId);
 //            Navigation.findNavController(getActivity().getCurrentFocus()).navigate(action);
             // to navigate to meal details when a press
-            PlansFragmentDirections.ActionPlansFragmentToMealDetailsFragment action =
-                    PlansFragmentDirections.actionPlansFragmentToMealDetailsFragment(mealId);
-            Navigation.findNavController(navView).navigate(action);
-
+            if(NetworkUtils.isConnectedToInternet(getContext())){
+                PlansFragmentDirections.ActionPlansFragmentToMealDetailsFragment action =
+                        PlansFragmentDirections.actionPlansFragmentToMealDetailsFragment(mealId);
+                Navigation.findNavController(navView).navigate(action);
+            }
+            else {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Remember No you are Offline ")
+                        .setMessage("Check Network and come again ")
+                        .setPositiveButton(android.R.string.ok,null)
+                        .show();
+            }
 
         }
     }

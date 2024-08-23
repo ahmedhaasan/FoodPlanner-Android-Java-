@@ -30,6 +30,7 @@ public class FireBasePresenter implements  FireBasePresenterService {
 
 
     public void handleEmailPasswordLogin(String email, String password) {
+
         fireBaseReposiatory.loginWithEmailAndPassword(email, password, new LoginCallback() {
             @Override
             public void onSuccess(FirebaseUser user) {

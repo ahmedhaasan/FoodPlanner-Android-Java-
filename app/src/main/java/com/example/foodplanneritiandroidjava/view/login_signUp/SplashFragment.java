@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
@@ -61,7 +62,7 @@ public class SplashFragment extends Fragment {
             } else {
                 // No user is signed in, navigate to the login fragment
                 navController.navigate(R.id.action_splash_fragment_to_login_fragment, null, navOptions);
-            }
-        }, 1000); // Delay of 1 second
+                navController.popBackStack(R.id.splash_fragment, true);            }
+        }, 5000); // Delay of 1 second
     }
 }

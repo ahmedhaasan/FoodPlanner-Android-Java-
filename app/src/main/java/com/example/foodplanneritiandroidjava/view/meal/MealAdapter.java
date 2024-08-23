@@ -66,6 +66,7 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 NavController navController = Navigation.findNavController(view);
 
                 if (fragment instanceof MealFragment) {
@@ -83,7 +84,6 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
                 }
             }
         });
-
 
 
     }
