@@ -26,6 +26,11 @@ public class DailyMealPresenter implements DailyMealService, MealsCallBack {
     }
 
     @Override
+    public void onAddToFavoritePressed(Meal meal) {
+        reposiatory.insertmeal(meal);
+    }
+
+    @Override
     public void onMealsSuccess(List<Meal> meals) {
         homeFragment.showDailyMeals(meals);  // pass the meals to home fragment
     }

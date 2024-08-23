@@ -1,6 +1,9 @@
 package com.example.foodplanneritiandroidjava.view.home.details;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
@@ -35,13 +39,18 @@ import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresente
 import com.example.foodplanneritiandroidjava.presenter.mealDetails.DetailsPresenter;
 import com.example.foodplanneritiandroidjava.presenter.plans.PlannedPresenter;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
+import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeActivity;
+import com.example.foodplanneritiandroidjava.view.login_signUp.MainActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,18 +58,20 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
     private RecyclerView mealIngrediantRecycler;
     private ImageView detailedImage;
-    private ImageView  detailedPlanIcon;
-    FloatingActionButton detailedFavIcon ;
+    private ImageView detailedPlanIcon;
+    FloatingActionButton detailedFavIcon;
     private TextView detailMealName, detailMealCategory, detailMealCountry, instructionSteps;
     private WebView mealVideo;
 
     private LinearLayoutManager ingrediantManager;
     private IngrediantsAdapter ingrediantsAdapter;
     private DetailsPresenter detailsPresenter;
-    private PlannedPresenter plannedPresenter ;
+    private PlannedPresenter plannedPresenter;
     private String mealId;
     private List<Meal> meal;
     List<Ingredient> mealIngrediants;
+
+    boolean isGuest ;
 
     //
     FavoritePresenter favoritePresenter;
@@ -73,6 +84,11 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
             MealDetailsFragmentArgs args = MealDetailsFragmentArgs.fromBundle(getArguments());
             mealId = args.getMealID();
         }
+
+        // get user state from shared
+        SharedPreferences prefs = requireActivity().getSharedPreferences(SomeContstants.USERSTATE, getContext().MODE_PRIVATE);
+        // Retrieve the guest status
+        boolean isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
     }
 
     @Override
@@ -111,9 +127,9 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
         // favPresenter
         favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
-        plannedPresenter = new PlannedPresenter( new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
+        plannedPresenter = new PlannedPresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
         detailsPresenter.getMealDetail(mealId);
-       // detailsPresenter.getMealDetail(mealId);
+        // detailsPresenter.getMealDetail(mealId);
 
         // Initialize favorite button click listener
         handleFavoritePress();
@@ -122,9 +138,13 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         detailedPlanIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isGuest) {
+                    showLoginDialog();
+                } else{
+                    showDaySelectionDialog();
+                    //Toast.makeText(getContext(), "added sucssesfully", Toast.LENGTH_SHORT).show();
+                }
 
-                showDaySelectionDialog();
-                //Toast.makeText(getContext(), "added sucssesfully", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -224,11 +244,38 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         detailedFavIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                favoritePresenter.insertMeal(meal.get(0));
-                Log.i("koko",favoritePresenter.getPlanned().toString());
-                Toast.makeText(getContext(), "Added To Favorite Successfully ", Toast.LENGTH_SHORT).show();
+                // Use the guest status as needed
+                if (isGuest) {
+                    showLoginDialog();
+                } else {
+                    favoritePresenter.insertMeal(meal.get(0));
+                    Log.i("koko", favoritePresenter.getPlanned().toString());
+                    Toast.makeText(getContext(), "Added To Favorite Successfully ", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+    }
+
+    // dialog to tell user you are not register
+    // dialog to show guest user to go and signIn
+    private void showLoginDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Login Required")
+                .setMessage("You need to log in to access this feature.")
+                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle login action
+                        // navigate to login to as guest
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.putExtra("Navigation", "login");
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     /// method to handel plan icon
@@ -244,7 +291,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
         // Setup Spinner with days of the week
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.days_of_week, android.R.layout.simple_spinner_item);
+                R.array.days_of_week, android.R.layout.simple_spinner_item);  // here is the array of days
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDays.setAdapter(adapter);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -257,7 +304,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
             // Get the selected day from Spinner
             String selectedDay = spinnerDays.getSelectedItem().toString();
             if (meal != null && !meal.isEmpty()) { // Check if meal is initialized
-                handleSelectedDay(selectedDay);
+                handleSelectedDay(selectedDay,getDateOfDayInCurrentWeek(selectedDay));
                 Toast.makeText(getContext(), "Added to planned day successfully", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Meal is not available", Toast.LENGTH_SHORT).show();
@@ -269,14 +316,33 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
     }
 
 
-
-    private void handleSelectedDay(String selectedDay) {
+    private void handleSelectedDay(String selectedDay,String date ) {
         // Logic to handle the selected day
         // For example, adding the selected day to the plan
         PlannedMeal plannedMeal = new PlannedMeal(meal.get(0).getId(), meal.get(0).getName(),
-                meal.get(0).getCategory(), meal.get(0).getCountry(), meal.get(0).getThumb(), selectedDay);
+                meal.get(0).getCategory(), meal.get(0).getCountry(), meal.get(0).getThumb(), selectedDay,date);
         plannedPresenter.insertPlannedMeal(plannedMeal);
     }
 
+
+
+    // function to handel date
+    public String getDateOfDayInCurrentWeek(String dayName) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+        // Find the start of the current week (e.g., Sunday or Monday)
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        for (int i = 0; i < 7; i++) {
+            String currentDay = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+            if (currentDay.equalsIgnoreCase(dayName)) {
+                return sdf.format(calendar.getTime());
+            }
+            calendar.add(Calendar.DAY_OF_WEEK, 1);
+        }
+
+        return null;  // If the dayName doesn't match any day in the current week
+    }
 
 }

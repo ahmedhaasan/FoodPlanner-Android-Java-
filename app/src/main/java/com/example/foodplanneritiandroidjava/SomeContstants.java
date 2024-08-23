@@ -11,4 +11,6 @@ public class SomeContstants {
 
     public   static String GUESTUSER= "GUESTUSER";
     public  static String ISGUEST = "ISGUEST";
+    public static String LOGEDUSER = "LOGGEDUSER";
+    public static String USERSTATE = "USERSTATE";
 }

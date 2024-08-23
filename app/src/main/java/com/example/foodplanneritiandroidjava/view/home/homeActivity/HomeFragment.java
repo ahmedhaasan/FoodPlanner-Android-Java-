@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +49,7 @@ import com.example.foodplanneritiandroidjava.view.home.category.CategoryContract
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesAdapter;
 import com.example.foodplanneritiandroidjava.view.home.countries.CountriesContract;
 import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealContract;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     CardView dailyMealCardView ;
     ImageView dailyMealImage;
     TextView dailyMealName ;
+    FloatingActionButton addToFavorite ;
     RecyclerView categoryRecycler , ingrediantsRecycler,countriesRecycler;
     LinearLayoutManager categoryLayoutManager;
 
@@ -106,6 +109,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         dailyMealCardView = view.findViewById(R.id.dailyMealCardView);
         dailyMealImage = view.findViewById(R.id.dailyMealImage);
         dailyMealName = view.findViewById(R.id.categoryName);
+        addToFavorite = view.findViewById(R.id.daily_add_to_fav);
 
         // Initialize RecyclerView and set layout manager
         categoryRecycler = view.findViewById(R.id.categoryRecycler1);
@@ -177,6 +181,32 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
         /**************************/
 
+        // action on add To Fav
+        dailyMealImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(view);
+
+                HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
+                        HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.get(0).getId());
+                navController.navigate(action);
+            }
+        });
+
+        // handel when the add To favorite is pressed on daily meal image
+        addToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!randomMeal.isEmpty()) {
+                    Log.d("HomeFragment", "RandomMeal size: " + randomMeal.size());
+                    dailyPresenter.onAddToFavoritePressed(randomMeal.get(0));
+                    Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "No meal available to add to favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 
@@ -193,8 +223,11 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void showDailyMeals(List<Meal> meals) {
         randomMeal.addAll(meals);
-     updateMealCard(meals);
+        if (!meals.isEmpty()) {
+            updateMealCard(meals);
+        }
     }
+
 
     @Override
     public void showDailyError(String message) {
