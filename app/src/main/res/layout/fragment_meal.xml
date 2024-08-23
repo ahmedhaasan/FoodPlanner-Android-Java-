@@ -4,46 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
+    android:paddingTop="2dp"
     tools:context=".view.meal.MealFragment">
 
     <!-- View for background color -->
-    <View
-        android:id="@+id/category_Name_view"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#80050305"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Category name TextView -->
-    <TextView
-        android:id="@+id/category_name"
-        android:layout_width="wrap_content"
+    <!-- Header Card View -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_card_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Category Name"
-        android:textColor="#EDE9E9"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/category_Name_view" />
+        android:layout_margin="10dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!-- RecyclerView for displaying meals -->
-    <TextView
-        android:id="@+id/constTextmeal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/constMeal"
-        android:textColor="#EFEFEF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/category_name"
-        app:layout_constraintTop_toTopOf="@+id/category_Name_view" />
+        <!-- Header Content -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <!-- Header Title -->
+
+            <!-- Optional: Add a Header Icon -->
+
+            <TextView
+                android:id="@+id/category_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Category Type"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.797"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/header_icon"
+                android:layout_width="101dp"
+                android:layout_height="63dp"
+                android:layout_marginEnd="28dp"
+                android:src="@drawable/category__2_"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/category_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mealsRecycler"
@@ -56,6 +70,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category_Name_view" />
+        app:layout_constraintTop_toBottomOf="@+id/header_card_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

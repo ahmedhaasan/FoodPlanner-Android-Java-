@@ -20,7 +20,6 @@ import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
 import com.example.foodplanneritiandroidjava.view.meal.MealFragment;
-import com.example.foodplanneritiandroidjava.view.meal.MealFragmentDirections;
 
 import java.util.List;
 

@@ -23,8 +23,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -114,20 +116,67 @@ public class FireBaseReposiatory implements  FireBaseModel {
 
     }
 
+
+    /********************************************************/
     @Override
     public void uploadDataToFirebase(String userId, DataUploadCallback callback, Context context) {
         MealParentReposiatory reposiatory = MealParentReposiatory.getInstance(new MealsRemoteDataSource(), new MealsLocalDataSource(context));
 
+        // Get references to the collections
+        CollectionReference favoriteMealsRef = firestore.collection(userId).document("favoriteMeals").collection("meals");
+        CollectionReference plannedMealsRef = firestore.collection(userId).document("plannedMeals").collection("plannedMeals");
+
+        // Batch delete all documents in favoriteMeals collection
+        favoriteMealsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                WriteBatch batch = firestore.batch();
+                for (DocumentSnapshot document : task.getResult()) {
+                    batch.delete(document.getReference());
+                }
+                // Commit the batch delete
+                batch.commit().addOnCompleteListener(deleteTask -> {
+                    if (deleteTask.isSuccessful()) {
+                        // Proceed to upload new favorite meals data after deletion
+                        uploadFavoriteMeals(reposiatory, favoriteMealsRef, callback);
+                    } else {
+                        callback.onUploadFailure(String.valueOf(deleteTask.getException()));
+                    }
+                });
+            } else {
+                callback.onUploadFailure(String.valueOf(task.getException()));
+            }
+        });
+
+        // Batch delete all documents in plannedMeals collection
+        plannedMealsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                WriteBatch batch = firestore.batch();
+                for (DocumentSnapshot document : task.getResult()) {
+                    batch.delete(document.getReference());
+                }
+                // Commit the batch delete
+                batch.commit().addOnCompleteListener(deleteTask -> {
+                    if (deleteTask.isSuccessful()) {
+                        // Proceed to upload new planned meals data after deletion
+                        uploadPlannedMeals(reposiatory, plannedMealsRef, callback);
+                    } else {
+                        callback.onUploadFailure(String.valueOf(deleteTask.getException()));
+                    }
+                });
+            } else {
+                callback.onUploadFailure(String.valueOf(task.getException()));
+            }
+        });
+    }
+
+    private void uploadFavoriteMeals(MealParentReposiatory reposiatory, CollectionReference favoriteMealsRef, DataUploadCallback callback) {
         // Observe LiveData for favorite meals
         reposiatory.getAllLocalMealsMeals().observeForever(new Observer<List<Meal>>() {
             @Override
             public void onChanged(List<Meal> favoriteMeals) {
                 if (favoriteMeals != null && !favoriteMeals.isEmpty()) {
                     for (Meal meal : favoriteMeals) {
-                        firestore.collection(userId)
-                                .document("favoriteMeals")
-                                .collection("meals")
-                                .document(meal.getId()) // Use unique ID for each meal
+                        favoriteMealsRef.document(meal.getId())
                                 .set(meal)
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
@@ -140,17 +189,16 @@ public class FireBaseReposiatory implements  FireBaseModel {
                 }
             }
         });
+    }
 
+    private void uploadPlannedMeals(MealParentReposiatory reposiatory, CollectionReference plannedMealsRef, DataUploadCallback callback) {
         // Observe LiveData for planned meals
         reposiatory.getAllPlannedMeals().observeForever(new Observer<List<PlannedMeal>>() {
             @Override
             public void onChanged(List<PlannedMeal> plannedMeals) {
                 if (plannedMeals != null && !plannedMeals.isEmpty()) {
                     for (PlannedMeal plannedMeal : plannedMeals) {
-                        firestore.collection(userId)
-                                .document("plannedMeals")
-                                .collection("plannedMeals")
-                                .document(plannedMeal.getId()) // Use unique ID for each planned meal
+                        plannedMealsRef.document(plannedMeal.getId())
                                 .set(plannedMeal)
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
@@ -165,6 +213,8 @@ public class FireBaseReposiatory implements  FireBaseModel {
         });
     }
 
+
+    /*****************************************************************/
 
     @Override
     public void downloadDataFromFirebase(String userId, DataDownloadCallback callback, Context context) {

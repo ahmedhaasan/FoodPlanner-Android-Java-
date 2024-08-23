@@ -1,5 +1,6 @@
 package com.example.foodplanneritiandroidjava.view.login_signUp.login.view;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.firebase.FireBasePresenter;
@@ -31,18 +33,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class login_fragment extends Fragment implements LoginView {
 
 
-    TextView registerText ;
+    TextView registerText;
     View v1;
     MaterialButton sign_in_button;
-    SignInButton signWithGoogleButton;
-    MaterialButton go_as_Guest ;
-/*
-    TextInputLayout email_layout, password_layout;
-*/
+    CircleImageView signWithGoogleButton;
+    MaterialButton go_as_Guest;
+    /*
+        TextInputLayout email_layout, password_layout;
+    */
     EditText email_edit_text, password_editText;
     Dialog loadingDialog;
 
@@ -64,7 +68,6 @@ public class login_fragment extends Fragment implements LoginView {
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(getContext(), gso);
-
         fireBasePresenter = new FireBasePresenter(this);
 
     }
@@ -91,7 +94,7 @@ public class login_fragment extends Fragment implements LoginView {
         loadingDialog = new Dialog(getContext());
         loadingDialog.setContentView(R.layout.loading_dialog);
         loadingDialog.setCancelable(false);
-        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Check if user is already signed in
        /* if (firebaseAuth.getCurrentUser() != null) {
@@ -101,19 +104,55 @@ public class login_fragment extends Fragment implements LoginView {
         sign_in_button.setOnClickListener(v -> {
             String email = email_edit_text.getText().toString();
             String password = password_editText.getText().toString();
-            loadingDialog.show(); // Show loading dialog when login starts
-            fireBasePresenter.handleEmailPasswordLogin(email, password);
+
+            // check if network is connected frist
+            if (NetworkUtils.isConnectedToInternet(getContext())) {
+                if (!email.isEmpty() && password.isEmpty()) {
+
+                    loadingDialog.show(); // Show loading dialog when login starts
+                    fireBasePresenter.handleEmailPasswordLogin(email, password);
+                }
+            } else {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("No Internet Connection")
+                        .setMessage("Please check your internet connection and try again.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
         });
+
 
         // action on sign in with google
         signWithGoogleButton.setOnClickListener(v -> {
-            loadingDialog.show(); // Show loading dialog when Google Sign-In starts
-            signIn();
+
+
+            // check if network is connected frist
+            if (NetworkUtils.isConnectedToInternet(getContext())) {
+
+                loadingDialog.show(); // Show loading dialog when Google Sign-In starts
+                signIn();
+            } else {
+                Toast.makeText(getContext(), "Please Check the Network Frist ", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
-        registerText.setOnClickListener(v ->
-                Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment)
+        registerText.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                                if (NetworkUtils.isConnectedToInternet(getContext())) {
+
+                                                    Navigation.findNavController(v1).navigate(R.id.action_login_fragment_to_signUp_fragment);
+
+                                                } else {
+                                                    Toast.makeText(getContext(), "Please Check the Network Frist ", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                            }
+                                        }
+
+
         );
 
         // action on go as Guest
@@ -127,7 +166,6 @@ public class login_fragment extends Fragment implements LoginView {
                 editor.putBoolean(SomeContstants.ISGUEST, true); // or false if not a guest
                 editor.apply();
                 navigateToHome();
-
 
 
             }
@@ -161,18 +199,15 @@ public class login_fragment extends Fragment implements LoginView {
         loadingDialog.dismiss(); // Dismiss the loading dialog on success
         Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
         // store user to check with firebase and shared
-        requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE).edit().putString("newUser","new").apply();
+        requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE).edit().putString("newUser", "new").apply();
         navigateToHome();
 
         // change that the user is not a gurst user
-
         SharedPreferences guestUser = getActivity().getSharedPreferences(SomeContstants.GUESTUSER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = guestUser.edit();
         editor.putBoolean(SomeContstants.ISGUEST, false);
         editor.apply();
     }
-
-
 
     @Override
     public void onLoginFailure(String errorMessage) {

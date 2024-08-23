@@ -1,12 +1,17 @@
 package com.example.foodplanneritiandroidjava.view.home.homeActivity;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +20,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeListener;
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeReceiver;
+import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
@@ -40,16 +51,19 @@ import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealCon
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract , IngrediantsContract
-, CountriesContract {
+, CountriesContract , NetworkChangeListener {
 
 
     CardView dailyMealCardView ;
     ImageView dailyMealImage;
     TextView dailyMealName ;
     RecyclerView categoryRecycler , ingrediantsRecycler,countriesRecycler;
-    LinearLayoutManager categoryLayoutManager,ingrediantLayoutManager;
+    LinearLayoutManager categoryLayoutManager;
+
+    GridLayoutManager ingrediantLayoutManager ;  // this manager for ingrediants
 
     /// lists
     List<Meal> randomMeal ;
@@ -65,6 +79,13 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     CategoryAdapter categoryAdapter ;
     IngrediantsAdapter ingrediantsAdapter ;
     CountriesAdapter countriesAdapter ;
+
+    ScrollView home_scrollView ;
+    /**************************************/
+    private NetworkChangeReceiver networkChangeReceiver;
+    LottieAnimationView noInternet_animation ;
+
+    /**************************************/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +105,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         // Initialize views
         dailyMealCardView = view.findViewById(R.id.dailyMealCardView);
         dailyMealImage = view.findViewById(R.id.dailyMealImage);
-        dailyMealName = view.findViewById(R.id.dailyMealName);
+        dailyMealName = view.findViewById(R.id.categoryName);
 
         // Initialize RecyclerView and set layout manager
         categoryRecycler = view.findViewById(R.id.categoryRecycler1);
@@ -95,10 +116,11 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
         // ingrediant recycler
         ingrediantsRecycler = view.findViewById(R.id.ingredientsRecycler);
-        ingrediantsRecycler.setHasFixedSize(true);
-        ingrediantLayoutManager = new LinearLayoutManager(getContext());
-        ingrediantLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        // below line for divide the recycleer view
+        ingrediantLayoutManager=  new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
         ingrediantsRecycler.setLayoutManager(ingrediantLayoutManager);
+        ingrediantsRecycler.setHasFixedSize(true);
+        ingrediantLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
 
         // countries recycler
         countriesRecycler = view.findViewById(R.id.countriesRecycler);
@@ -106,6 +128,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         countriesRecycler.setLayoutManager(layoutManager);
+
 
 
         // Initialize data lists
@@ -135,6 +158,25 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
         countriesPresenter = new CountriesPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
         countriesPresenter.getAllCountries();
+
+        /**************************/
+        noInternet_animation = view.findViewById(R.id.no_internet_animation);
+        home_scrollView = view.findViewById(R.id.home_scrollView);
+        // check for network
+        // Check initial connectivity status
+        if (!NetworkUtils.isConnectedToInternet(requireContext())) {
+            disableFragment();
+            //showNoInternetMessage();
+        }
+
+        // Register the receiver to listen for connectivity changes
+        networkChangeReceiver = new NetworkChangeReceiver(this);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        requireContext().registerReceiver(networkChangeReceiver, filter);
+
+
+        /**************************/
+
 
     }
 
@@ -210,7 +252,68 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     public void showCountriesError(String message) {
 
     }
+
+    // this method from Network Change Listener to check the Connectivity of the network
+
+    @Override
+    public void onNetworkChanged(boolean isConnected) {
+        if (isConnected) {
+            // Internet connection restored
+            Toast.makeText(requireContext(), "Internet Connected", Toast.LENGTH_SHORT).show();
+            enableFragment();
+        } else {
+            // Internet connection lost
+            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            disableFragment();
+        }
+
+    }
+
+    // needed for network connection
+
+    private void disableFragment() {
+        // Logic to disable specific functionality within the fragment
+        Toast.makeText(requireContext(), "Fragment Disabled Due to No Internet", Toast.LENGTH_SHORT).show();
+        home_scrollView.setVisibility(View.GONE);
+        if (noInternet_animation != null) {
+            noInternet_animation.setVisibility(View.VISIBLE);
+            noInternet_animation.playAnimation();  // Ensure the animation plays
+        }
+
+    }
+
+    private void enableFragment() {
+        // Logic to enable the fragment when the internet connection is restored
+        refreshFragment();
+        home_scrollView.setVisibility(View.VISIBLE);
+        if (noInternet_animation != null) {
+            noInternet_animation.setVisibility(View.GONE);
+            noInternet_animation.cancelAnimation();  // Stop the animation
+        }
+        Toast.makeText(requireContext(), "Fragment Enabled", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void refreshFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.homeFragment);
+
+        if (fragment != null) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.detach(fragment);
+            transaction.attach(fragment);
+            transaction.commit();
+        }
+    }
+    // to unregister the connection
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Unregister the receiver when the fragment view is destroyed
+        requireContext().unregisterReceiver(networkChangeReceiver);
+    }
 }
+
 
 
     // from Countries Contract

@@ -37,6 +37,7 @@ import com.example.foodplanneritiandroidjava.presenter.plans.PlannedPresenter;
 import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +49,8 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
     private RecyclerView mealIngrediantRecycler;
     private ImageView detailedImage;
-    private ImageView detailedFavIcon, detailedPlanIcon;
+    private ImageView  detailedPlanIcon;
+    FloatingActionButton detailedFavIcon ;
     private TextView detailMealName, detailMealCategory, detailMealCountry, instructionSteps;
     private WebView mealVideo;
 
@@ -86,12 +88,12 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
         // Initialize views
         mealIngrediantRecycler = view.findViewById(R.id.ingrediant_detail_recycler);
-        detailedImage = view.findViewById(R.id.favorite_meal_image);
-        detailedFavIcon = view.findViewById(R.id.add_favorite_image_icon);
-        detailedPlanIcon = view.findViewById(R.id.addTo_plan_image_icon);
-        detailMealName = view.findViewById(R.id.favorite_meal_name);
-        detailMealCategory = view.findViewById(R.id.favorite_meal_category);
-        detailMealCountry = view.findViewById(R.id.favorite_meal_country);
+        detailedImage = view.findViewById(R.id.meal_image);
+        detailedFavIcon = view.findViewById(R.id.add_to_favorite_button);
+        detailedPlanIcon = view.findViewById(R.id.add_to_plan_button);
+        detailMealName = view.findViewById(R.id.meal_name);
+        detailMealCategory = view.findViewById(R.id.meal_category);
+        detailMealCountry = view.findViewById(R.id.meal_country);
         mealVideo = view.findViewById(R.id.meal_videoView);
         instructionSteps = view.findViewById(R.id.mealsStepsField);
 
@@ -122,7 +124,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
             public void onClick(View view) {
 
                 showDaySelectionDialog();
-                Toast.makeText(getContext(), "added sucssesfully", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "added sucssesfully", Toast.LENGTH_SHORT).show();
             }
         });
     }

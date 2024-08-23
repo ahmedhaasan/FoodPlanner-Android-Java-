@@ -44,9 +44,9 @@ public class FavoritePresenter implements  favoritePresenterService{
     }
 
     @Override
-    public void deleteAllMeals(List<Meal> meals) {
+    public void deleteAllMeals() {
 
-        reposiatory.deleteAllLocalMeals(meals);
+        reposiatory.deleteAllLocalMeals();
     }
 
     @Override

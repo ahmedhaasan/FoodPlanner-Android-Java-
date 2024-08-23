@@ -45,6 +45,9 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if(fragment instanceof SearchFragment){
+            View v = inflater.inflate(R.layout.search_meal_row,parent,false); // to infilate the row of search instead of meal
+        }
         View v = inflater.inflate(R.layout.meal_row,parent,false);
 
         return  new MealAdapter.ViewHolder(v);
@@ -56,6 +59,17 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.countryName.setText(MealT.getCountry());
         holder.categoryName.setText(MealT.getCategory());
 
+        if(fragment instanceof  SearchFragment){
+            holder.countryName.setVisibility(View.GONE);
+            holder.categoryName.setVisibility(View.GONE);
+        }
+        // will decrease the size of the image in cass of search
+        if(fragment instanceof SearchFragment){
+            Glide.with(context)
+                    .load(MealT.getThumb())
+                    .apply(new RequestOptions().override(200   , 200))
+                    .into(holder.mealImage);
+        }
 
         Glide.with(context)
                 .load(MealT.getThumb())
@@ -66,6 +80,7 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 NavController navController = Navigation.findNavController(view);
 
                 if (fragment instanceof MealFragment) {
@@ -85,7 +100,6 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         });
 
 
-
     }
 
     @Override
@@ -101,7 +115,7 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.favorite_meal_image);
-            favoriteIcon = itemView.findViewById(R.id.add_favorite_image_icon);
+            favoriteIcon = itemView.findViewById(R.id.add_to_favorite_button);
             planIcon = itemView.findViewById(R.id.addTo_plan_image_icon);
             categoryName = itemView.findViewById(R.id.favorite_meal_category);
             countryName = itemView.findViewById(R.id.favorite_meal_country);

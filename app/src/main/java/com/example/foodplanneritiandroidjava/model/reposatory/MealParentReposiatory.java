@@ -52,9 +52,9 @@ public class MealParentReposiatory implements MealParentReposiatoryService {
     }
 
     @Override
-    public void deleteAllLocalMeals(List<Meal> meals) {
+    public void deleteAllLocalMeals() {
 
-        localDataSource.deleteAllMeals(meals);
+        localDataSource.deleteAllMeals();
     }
 
     public LiveData<Meal> getMealById(String mealId) {

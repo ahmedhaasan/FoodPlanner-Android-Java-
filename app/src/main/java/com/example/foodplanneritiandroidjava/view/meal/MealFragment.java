@@ -109,4 +109,9 @@ public class MealFragment extends Fragment implements MealsContract {
     public void showMealsError(String message) {
         Toast.makeText(context, "error getting meals: " + message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onMealImageClicked(String mealID) {
+
+    }
 }

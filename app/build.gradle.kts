@@ -83,7 +83,12 @@ dependencies {
     // Firebase Crashlytics dependency
     implementation("com.google.firebase:firebase-crashlytics:18.3.7")
     // lotti animation
-    implementation("com.airbnb.android:lottie:3.7.2")
+    implementation("com.airbnb.android:lottie:6.0.0")
+        // circle imaage
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+
+
 
     // rounded image
     implementation ("com.makeramen:roundedimageview:2.3.0")
