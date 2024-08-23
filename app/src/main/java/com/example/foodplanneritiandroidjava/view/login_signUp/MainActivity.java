@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
          navController = Navigation.findNavController(this,R.id.nav_host_fragmentMain);
-        NavigationUI.setupActionBarWithNavController(this,navController);
+        //NavigationUI.setupActionBarWithNavController(this,navController);
 
      /*   Intent intent = getIntent();
         String navTo = intent.getStringExtra("Navigation");

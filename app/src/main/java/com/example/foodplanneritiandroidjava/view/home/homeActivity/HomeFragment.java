@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,7 @@ import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealCon
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract , IngrediantsContract
 , CountriesContract , NetworkChangeListener {
@@ -59,7 +61,9 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     ImageView dailyMealImage;
     TextView dailyMealName ;
     RecyclerView categoryRecycler , ingrediantsRecycler,countriesRecycler;
-    LinearLayoutManager categoryLayoutManager,ingrediantLayoutManager;
+    LinearLayoutManager categoryLayoutManager;
+
+    GridLayoutManager ingrediantLayoutManager ;  // this manager for ingrediants
 
     /// lists
     List<Meal> randomMeal ;
@@ -112,10 +116,11 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
         // ingrediant recycler
         ingrediantsRecycler = view.findViewById(R.id.ingredientsRecycler);
-        ingrediantsRecycler.setHasFixedSize(true);
-        ingrediantLayoutManager = new LinearLayoutManager(getContext());
-        ingrediantLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        // below line for divide the recycleer view
+        ingrediantLayoutManager=  new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
         ingrediantsRecycler.setLayoutManager(ingrediantLayoutManager);
+        ingrediantsRecycler.setHasFixedSize(true);
+        ingrediantLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
 
         // countries recycler
         countriesRecycler = view.findViewById(R.id.countriesRecycler);

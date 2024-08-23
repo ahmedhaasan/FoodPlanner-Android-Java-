@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.search;
+package com.example.foodplanneritiandroidjava.view.search.presenter;
 
 import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;

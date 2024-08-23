@@ -45,6 +45,9 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if(fragment instanceof SearchFragment){
+            View v = inflater.inflate(R.layout.search_meal_row,parent,false); // to infilate the row of search instead of meal
+        }
         View v = inflater.inflate(R.layout.meal_row,parent,false);
 
         return  new MealAdapter.ViewHolder(v);
@@ -56,6 +59,17 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.countryName.setText(MealT.getCountry());
         holder.categoryName.setText(MealT.getCategory());
 
+        if(fragment instanceof  SearchFragment){
+            holder.countryName.setVisibility(View.GONE);
+            holder.categoryName.setVisibility(View.GONE);
+        }
+        // will decrease the size of the image in cass of search
+        if(fragment instanceof SearchFragment){
+            Glide.with(context)
+                    .load(MealT.getThumb())
+                    .apply(new RequestOptions().override(200   , 200))
+                    .into(holder.mealImage);
+        }
 
         Glide.with(context)
                 .load(MealT.getThumb())

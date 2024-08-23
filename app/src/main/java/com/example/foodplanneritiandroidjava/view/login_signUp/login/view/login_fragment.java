@@ -209,7 +209,6 @@ public class login_fragment extends Fragment implements LoginView {
         editor.apply();
     }
 
-
     @Override
     public void onLoginFailure(String errorMessage) {
         loadingDialog.dismiss(); // Dismiss the loading dialog on failure

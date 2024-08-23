@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,7 +19,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <TextView
                 android:id="@+id/dailyMealText"
@@ -43,7 +45,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/categoryRecycler1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dailyMealText">
+                app:layout_constraintTop_toBottomOf="@+id/dailyMealText"
+                app:layout_constraintVertical_bias="0.0">
 
                 <ImageView
                     android:id="@+id/dailyMealImage"
@@ -60,11 +63,11 @@
 
                 <TextView
                     android:id="@+id/categoryName"
-                    android:text="@string/dailyMeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:padding="10sp"
+                    android:text="@string/dailyMeal"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />

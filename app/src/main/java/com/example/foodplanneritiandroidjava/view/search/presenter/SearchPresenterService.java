@@ -1,8 +1,5 @@
-package com.example.foodplanneritiandroidjava.view.search;
+package com.example.foodplanneritiandroidjava.view.search.presenter;
 
-import androidx.lifecycle.LiveData;
-
-import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
 import com.example.foodplanneritiandroidjava.model.network.IngrediantsCallBack;

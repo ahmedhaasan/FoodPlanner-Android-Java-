@@ -9,17 +9,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -42,6 +39,7 @@ import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiat
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
+import com.example.foodplanneritiandroidjava.view.search.presenter.SearchPresenter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -49,14 +47,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment implements SearchContract, NetworkChangeListener,
-        MealsCallBack, CategoriesCallBack, CountriesCallBack, IngrediantsCallBack  {
+        MealsCallBack, CategoriesCallBack, CountriesCallBack, IngrediantsCallBack {
 
     private EditText searchMealField;
     // private Button searchMealButton;
     private ChipGroup chipMealGroup;
     private Chip categoriesChip, countriesChip, ingrediantsChip, mealNameChip, mealIdChip;
     private RecyclerView searchRecycler;
-    private LinearLayoutManager searchMealManager;
+    private GridLayoutManager searchMealManager;
 
     // Meal presenter instance
     private MealPresenter mealPresenter;
@@ -113,13 +111,11 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         categoriesChip = view.findViewById(R.id.category_chip);
         countriesChip = view.findViewById(R.id.countries_chip);
         ingrediantsChip = view.findViewById(R.id.ingrediants_chip);
-        mealNameChip = view.findViewById(R.id.meal_name_chip);
-        mealIdChip = view.findViewById(R.id.meal_id_chip);
 
         // RecyclerView setup
         searchRecycler = view.findViewById(R.id.mealSearchRecycler);
         searchRecycler.setHasFixedSize(true);
-        searchMealManager = new LinearLayoutManager(getContext());
+        searchMealManager = new GridLayoutManager(getContext(),2);
         searchMealManager.setOrientation(RecyclerView.VERTICAL);
         searchRecycler.setLayoutManager(searchMealManager);
         searchRecycler.setAdapter(mealAdapter);
@@ -193,7 +189,6 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
                     Log.d("SearchFragment", "No chip selected");
                     return;
                 }
-
                 Chip checkedChip = group.findViewById(checkedId);
 
                 if (checkedChip != null) {
@@ -214,9 +209,9 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
             for (Category category : categories) {
                 if (category.getName().toLowerCase().contains(query)) {
                     searchPresenter.getMealsByCategoryName(SearchFragment.this, category.getName());
-                    break;
+
+                    mealAdapter.setMealList(mealList);
                 }
-                mealAdapter.setMealList(mealList);
             }
             // Handle category chip selection
         } else if (chipId == R.id.countries_chip) {
@@ -225,9 +220,8 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
             for (Country country : countries) {
                 if (country.getName().toLowerCase().contains(query)) {
                     searchPresenter.getMealsByCountry(SearchFragment.this, country.getName());
-                    break;
+                    mealAdapter.setMealList(mealList);
                 }
-                mealAdapter.setMealList(mealList);
 
             }
             // Handle countries chip selection
@@ -237,9 +231,8 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
             for (Ingredient ingredient : ingredients) {
                 if (ingredient.getName().toLowerCase().contains(query)) {
                     searchPresenter.getMealsByCountry(SearchFragment.this, ingredient.getName());
-                    break;
+                    mealAdapter.setMealList(mealList);
                 }
-                mealAdapter.setMealList(mealList);
 
             }
             // Handle ingredients chip selection
@@ -263,15 +256,13 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         });*/
 
 
-
     /*********************************/
-
 
 
     /*****************************/
 
 
-        // check the chip id
+    // check the chip id
 
     String getChipName() {
         String chipName = "";
@@ -294,8 +285,6 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
 
         return chipName;
     }
-
-
 
 
     @Override
@@ -365,8 +354,9 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     public void onMealsSuccess(List<Meal> meals) {
         if (meals != null) {
             mealList.addAll(meals);
-            for(Meal meal : meals){
-                Log.i("mealsDone",meal.getName());            }
+        /*    for (Meal meal : meals) {
+                Log.i("mealsDone", meal.getName());
+            }*/
         }
     }
 
@@ -380,8 +370,8 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     public void onSuccessCategory(List<Category> categories) {
         if (categories != null) {
             this.categories.addAll(categories);
-            for(Category category:categories){
-                Log.i("kola",category.getName());
+            for (Category category : categories) {
+                Log.i("kola", category.getName());
             }
         }
     }
@@ -398,8 +388,8 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     public void onCountriesSuccess(List<Country> countries) {
         if (countries != null) {
             this.countries.addAll(countries);
-            for(Country country: countries){
-                Log.i("kola",country.getName());
+            for (Country country : countries) {
+                Log.i("kola", country.getName());
             }
         }
     }
@@ -414,8 +404,8 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
 
         if (ingredients != null) {
             this.ingredients.addAll(ingredients);
-            for(Ingredient ingredient:ingredients){
-                Log.i("kola",ingredient.getName());
+            for (Ingredient ingredient : ingredients) {
+                Log.i("kola", ingredient.getName());
             }
         }
     }
@@ -425,7 +415,6 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
 
         Toast.makeText(getContext(), "Error to get Ingrediants" + message, Toast.LENGTH_SHORT).show();
     }
-
 
 
 }

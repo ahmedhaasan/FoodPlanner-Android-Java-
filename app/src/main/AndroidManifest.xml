@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,25 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodPlanneritiAndroidJava"
         tools:targetApi="31">
+        <activity
+            android:name=".view.splashScreen.SplashScreen"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- MainActivity as the entry point -->
         <activity
             android:name=".view.login_signUp.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
-        <!-- HomeActivity (without intent filters) -->
+        </activity> <!-- HomeActivity (without intent filters) -->
         <activity
             android:name=".view.home.homeActivity.HomeActivity"
-            android:exported="true">
-        </activity>
-
-
-
+            android:exported="true"></activity>
     </application>
 
 </manifest>
