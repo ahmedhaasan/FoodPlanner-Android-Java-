@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -78,7 +79,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     /**************************************/
     private NetworkChangeReceiver networkChangeReceiver;
     LottieAnimationView noInternet_animation;
-    ScrollView searc_scrollView;
+    ConstraintLayout mainContent_layout;
     View v2;
 
     /**************************************/
@@ -122,7 +123,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
 
         /**************************/
         noInternet_animation = view.findViewById(R.id.no_internet);
-        searc_scrollView = view.findViewById(R.id.searc_scrollView);
+        mainContent_layout = view.findViewById(R.id.main_search_content_layout);
         // check for network
         // Check initial connectivity status
         if (!NetworkUtils.isConnectedToInternet(requireContext())) {
@@ -318,22 +319,22 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         Toast.makeText(requireContext(), "Fragment Disabled Due to No Internet", Toast.LENGTH_SHORT).show();
         if (noInternet_animation != null) {
             noInternet_animation.setVisibility(View.VISIBLE);
-            searc_scrollView.setVisibility(View.GONE);
+            mainContent_layout.setVisibility(View.GONE);
             noInternet_animation.playAnimation();  // Ensure the animation plays
         }
-
     }
 
     private void enableFragment() {
         // Logic to enable the fragment when the internet connection is restored
         refreshFragment();
-        searc_scrollView.setVisibility(View.VISIBLE);
+        mainContent_layout.setVisibility(View.VISIBLE);
         if (noInternet_animation != null) {
             noInternet_animation.setVisibility(View.GONE);
             noInternet_animation.cancelAnimation();  // Stop the animation
         }
         Toast.makeText(requireContext(), "Fragment Enabled", Toast.LENGTH_SHORT).show();
     }
+
 
 
     private void refreshFragment() {

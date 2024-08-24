@@ -24,6 +24,7 @@
     <!-- Email Text Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
+        android:background="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -45,6 +46,7 @@
     <!-- Password Text Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordInputLayout"
+        android:background="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
