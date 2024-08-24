@@ -100,7 +100,7 @@ public class PlansFragment extends Fragment implements PlannedContract {
         });
 
 
-                // Set up Spinner
+                // Set up Spinner for select the day and filter using it
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                         getContext(), R.array.days_of_week, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -208,20 +208,20 @@ public class PlansFragment extends Fragment implements PlannedContract {
     ///////// this method return the  meals withen the date specified
     public ArrayList<String> getStartAndEndDate() {
         Calendar calendar = Calendar.getInstance();
-        Date date = new Date();
+        Date date= new Date();
         calendar.setTime(date);
         calendar.setTime(date);
-        ArrayList<String> strings = new ArrayList<>();
-        String o = "";
+        ArrayList<String> strings =new ArrayList<>();
+        String o= calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.ENGLISH);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        while (!Objects.requireNonNull(o).equalsIgnoreCase("Saturday")) {
-            calendar.add(Calendar.DAY_OF_YEAR, -1);
-            o = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+        while (!Objects.requireNonNull(o).equalsIgnoreCase("Saturday")){
+            calendar.add(Calendar.DAY_OF_YEAR,-1);
+            o= calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.ENGLISH);
         }
         strings.add(sdf.format(calendar.getTime()));
-        while (!Objects.requireNonNull(o).equalsIgnoreCase("Friday")) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
-            o = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+        while (!Objects.requireNonNull(o).equalsIgnoreCase("Friday")){
+            calendar.add(Calendar.DAY_OF_YEAR,1);
+            o= calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.ENGLISH);
         }
         strings.add(sdf.format(calendar.getTime()));
         return strings;

@@ -24,34 +24,39 @@ import com.example.foodplanneritiandroidjava.view.search.SearchFragmentDirection
 
 import java.util.List;
 
-public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
+public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
-    List<Meal> mealList ;
-    Context context ;
-    Fragment fragment ;
+    List<Meal> mealList;
+    Context context;
+    Fragment fragment;
 
-    public MealAdapter(Context context , List<Meal> mealList, Fragment fragment) {
+    public MealAdapter(Context context, List<Meal> mealList, Fragment fragment) {
         this.mealList = mealList;
-        this.context = context ;
-        this.fragment = fragment ;
+        this.context = context;
+        this.fragment = fragment;
     }
 
-    public void setMealList(List<Meal> mealList){
+    public void setMealList(List<Meal> mealList) {
         this.mealList.clear();
         this.mealList.addAll(mealList);
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if(fragment instanceof SearchFragment){
-            View v = inflater.inflate(R.layout.search_meal_row,parent,false); // to infilate the row of search instead of meal
-        }
-        View v = inflater.inflate(R.layout.meal_row,parent,false);
+        View v;
 
-        return  new MealAdapter.ViewHolder(v);
+        if (fragment instanceof SearchFragment) {
+            v = inflater.inflate(R.layout.search_meal_row, parent, false);
+        } else {
+            v = inflater.inflate(R.layout.meal_row, parent, false);
+        }
+
+        return new MealAdapter.ViewHolder(v);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Meal MealT = mealList.get(position);
@@ -59,47 +64,36 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
         holder.countryName.setText(MealT.getCountry());
         holder.categoryName.setText(MealT.getCategory());
 
-        if(fragment instanceof  SearchFragment){
+        if (fragment instanceof SearchFragment) {
             holder.countryName.setVisibility(View.GONE);
             holder.categoryName.setVisibility(View.GONE);
-        }
-        // will decrease the size of the image in cass of search
-        if(fragment instanceof SearchFragment){
             Glide.with(context)
                     .load(MealT.getThumb())
-                    .apply(new RequestOptions().override(200   , 200))
+                    .apply(new RequestOptions().override(100, 100))
+                    .into(holder.mealImage);
+        } else {
+            Glide.with(context)
+                    .load(MealT.getThumb())
+                    .apply(new RequestOptions().override(200, 200))
                     .into(holder.mealImage);
         }
 
-        Glide.with(context)
-                .load(MealT.getThumb())
-                .apply(new RequestOptions().override(200, 200))
-                .into(holder.mealImage);
-
-        // on image press\
-        holder.mealImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                NavController navController = Navigation.findNavController(view);
-
-                if (fragment instanceof MealFragment) {
-                    MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
-                            MealFragmentDirections.actionMealFragmentToMealDetailsFragment(MealT.getId());
-                    navController.navigate(action);
-                } else if (fragment instanceof FavoriteFragment) {
-                    FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
-                            FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(MealT.getId());
-                    navController.navigate(action);
-                }else if(fragment instanceof SearchFragment){
-                    SearchFragmentDirections.ActionSearchFragmentToMealDetailsFragment action =
-                            SearchFragmentDirections.actionSearchFragmentToMealDetailsFragment(MealT.getId());
-                    navController.navigate(action);
-                }
+        holder.mealImage.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(view);
+            if (fragment instanceof MealFragment) {
+                MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
+                        MealFragmentDirections.actionMealFragmentToMealDetailsFragment(MealT.getId());
+                navController.navigate(action);
+            } else if (fragment instanceof FavoriteFragment) {
+                FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
+                        FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(MealT.getId());
+                navController.navigate(action);
+            } else if (fragment instanceof SearchFragment) {
+                SearchFragmentDirections.ActionSearchFragmentToMealDetailsFragment action =
+                        SearchFragmentDirections.actionSearchFragmentToMealDetailsFragment(MealT.getId());
+                navController.navigate(action);
             }
         });
-
-
     }
 
     @Override
@@ -109,18 +103,16 @@ public class MealAdapter extends  RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-      ImageView mealImage ,favoriteIcon,planIcon;
-      TextView categoryName , countryName,mealName;
+        ImageView mealImage, favoriteIcon, planIcon;
+        TextView categoryName, countryName, mealName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.favorite_meal_image);
             favoriteIcon = itemView.findViewById(R.id.add_to_favorite_button);
-            //planIcon = itemView.findViewById(R.id.addTo_plan_image_icon);
             categoryName = itemView.findViewById(R.id.favorite_meal_category);
             countryName = itemView.findViewById(R.id.favorite_meal_country);
             mealName = itemView.findViewById(R.id.favorite_meal_name);
-
         }
     }
 }
