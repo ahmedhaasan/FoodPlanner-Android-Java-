@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,18 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
-import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
-import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -75,7 +70,9 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
         favoriteRecyclerView.setAdapter(favoriteAdapter);
 
         // intialize the favorite presenter
-        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())));
+        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())));
+
         LiveData<List<Meal>> favMeals = favoritePresenter.getAllMeals();
         favMeals.observe(this, new Observer<List<Meal>>() {
             @Override
@@ -87,10 +84,7 @@ public class FavoriteFragment extends Fragment  implements FavoriteContract{
 
     }
 
-    @Override
-    public void onFavoriteClicked(Meal meal) {
 
-    }
 
 
     // when delete the the meal  ask in dialog Frist

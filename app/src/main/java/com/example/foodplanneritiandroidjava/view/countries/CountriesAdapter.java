@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home.countries;
+package com.example.foodplanneritiandroidjava.view.countries;
 
 import android.content.Context;
 import android.util.Log;
@@ -17,17 +17,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.homeActivity.HomeFragmentDirections;
 
 import java.util.List;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.ViewHolder> {
     List<Country> countries;
     Context context;
+    CountriesContract countriesContract ;
 
-    public CountriesAdapter(Context context, List<Country> countries) {
+    public CountriesAdapter(Context context, List<Country> countries,CountriesContract countriesContract) {
         this.context = context;
         this.countries = countries;
+        this.countriesContract = countriesContract ;
     }
 
 
@@ -70,12 +72,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
         holder.countryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-          /*      HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
-                        HomeFragmentDirections.actionHomeFragmentToMealFragment(country.getName(), SomeContstants.COUNTRY);
-                Navigation.findNavController(view).navigate(action);*/
-
-                HomeFragmentDirections.ActionHomeFragmentToMealFragment action = HomeFragmentDirections.actionHomeFragmentToMealFragment(country.getName(),SomeContstants.COUNTRY);
-                Navigation.findNavController(view).navigate(action);
+                countriesContract.onCountryImagePressed(country.getName(),SomeContstants.COUNTRY);
             }
         });
 

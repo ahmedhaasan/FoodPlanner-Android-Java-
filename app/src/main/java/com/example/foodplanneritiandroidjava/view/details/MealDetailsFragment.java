@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home.details;
+package com.example.foodplanneritiandroidjava.view.details;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +34,11 @@ import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
-import com.example.foodplanneritiandroidjava.presenter.favorite.FavoritePresenter;
 import com.example.foodplanneritiandroidjava.presenter.mealDetails.DetailsPresenter;
 import com.example.foodplanneritiandroidjava.presenter.plans.PlannedPresenter;
-import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeActivity;
+import com.example.foodplanneritiandroidjava.view.Ingrediants.IngrediantsAdapter;
+import com.example.foodplanneritiandroidjava.view.details.MealDetailsFragmentArgs;
 import com.example.foodplanneritiandroidjava.view.login_signUp.MainActivity;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -69,12 +65,12 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
     private PlannedPresenter plannedPresenter;
     private String mealId;
     private List<Meal> meal;
-    List<Ingredient> mealIngrediants;
 
     boolean isGuest ;
 
     //
-    FavoritePresenter favoritePresenter;
+ /*   List<Ingredient> mealIngrediants;
+    FavoritePresenter favoritePresenter;*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,8 +83,8 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
 
         // get user state from shared
         SharedPreferences prefs = requireActivity().getSharedPreferences(SomeContstants.USERSTATE, getContext().MODE_PRIVATE);
-        // Retrieve the guest status
-        boolean isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
+        // Retrieve the guest status and assign it to the instance variable
+        isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
     }
 
     @Override
@@ -121,15 +117,17 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         mealIngrediantRecycler.setAdapter(ingrediantsAdapter);
 
         // Initialize presenter and fetch meal details
-        detailsPresenter = new DetailsPresenter(
-                new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
+        detailsPresenter = new DetailsPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
         detailsPresenter.getMealDetail(mealId);
 
-        // favPresenter
-        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
-        plannedPresenter = new PlannedPresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
+     /*   // favPresenter
+        favoritePresenter = new FavoritePresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
+        plannedPresenter = new PlannedPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())));
         detailsPresenter.getMealDetail(mealId);
-        // detailsPresenter.getMealDetail(mealId);
+        // detailsPresenter.getMealDetail(mealId);*/
 
         // Initialize favorite button click listener
         handleFavoritePress();
@@ -224,6 +222,11 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         }
     }
 
+    @Override
+    public void onMealDetailsFails(String error) {
+        Toast.makeText(getContext(), "error fetching mealDetails"+error, Toast.LENGTH_SHORT).show();
+    }
+
     private String extractVideoId(String youtubeUrl) {
         String videoId = null;
         if (youtubeUrl != null) {
@@ -248,8 +251,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
                 if (isGuest) {
                     showLoginDialog();
                 } else {
-                    favoritePresenter.insertMeal(meal.get(0));
-                    Log.i("koko", favoritePresenter.getPlanned().toString());
+                    detailsPresenter.insertMealIntoFavorite(meal.get(0));
                     Toast.makeText(getContext(), "Added To Favorite Successfully ", Toast.LENGTH_SHORT).show();
                 }
 
@@ -321,7 +323,7 @@ public class MealDetailsFragment extends Fragment implements DetailsContract {
         // For example, adding the selected day to the plan
         PlannedMeal plannedMeal = new PlannedMeal(meal.get(0).getId(), meal.get(0).getName(),
                 meal.get(0).getCategory(), meal.get(0).getCountry(), meal.get(0).getThumb(), selectedDay,date);
-        plannedPresenter.insertPlannedMeal(plannedMeal);
+        detailsPresenter.insertMealIntoPlanned(plannedMeal);
     }
 
 

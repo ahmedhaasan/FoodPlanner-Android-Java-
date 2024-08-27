@@ -3,18 +3,18 @@ package com.example.foodplanneritiandroidjava.presenter.category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.category.CategoryContract;
 
 import java.util.List;
 
 public class CategoryPresenter implements CategoryPresenterService, CategoriesCallBack {
 
     MealParentReposiatory reposiatory;
-    HomeFragment homeFragment ;
+    CategoryContract categoryContract;   // this from category contract which is implemented in home fragment
 
 
-    public CategoryPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
-        this.homeFragment = homeFragment;
+    public CategoryPresenter(MealParentReposiatory reposiatory, CategoryContract categoryContract) {
+        this.categoryContract = categoryContract;
         this.reposiatory = reposiatory;
 
     }
@@ -27,12 +27,12 @@ public class CategoryPresenter implements CategoryPresenterService, CategoriesCa
 
     @Override
     public void onSuccessCategory(List<Category> categories) {
-        homeFragment.showsCategories(categories);
+        categoryContract.showsCategories(categories);
     }
 
     @Override
     public void onFailurResult(String message) {
 
-        homeFragment.showCategoriesError(message);
+        categoryContract.showCategoriesError(message);
     }
 }

@@ -69,11 +69,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
             holder.categoryName.setVisibility(View.GONE);
             Glide.with(context)
                     .load(MealT.getThumb())
+                    .placeholder(R.drawable.back_7)
                     .apply(new RequestOptions().override(100, 100))
                     .into(holder.mealImage);
         } else {
             Glide.with(context)
                     .load(MealT.getThumb())
+                    .placeholder(R.drawable.back_7)
                     .apply(new RequestOptions().override(200, 200))
                     .into(holder.mealImage);
         }
@@ -84,10 +86,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
                 MealFragmentDirections.ActionMealFragmentToMealDetailsFragment action =
                         MealFragmentDirections.actionMealFragmentToMealDetailsFragment(MealT.getId());
                 navController.navigate(action);
-            } else if (fragment instanceof FavoriteFragment) {
-                FavoriteFragmentDirections.ActionFavoriteFragmentToMealDetailsFragment action =
-                        FavoriteFragmentDirections.actionFavoriteFragmentToMealDetailsFragment(MealT.getId());
-                navController.navigate(action);
+
             } else if (fragment instanceof SearchFragment) {
                 SearchFragmentDirections.ActionSearchFragmentToMealDetailsFragment action =
                         SearchFragmentDirections.actionSearchFragmentToMealDetailsFragment(MealT.getId());

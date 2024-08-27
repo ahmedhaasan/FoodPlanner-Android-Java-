@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home.Ingrediants;
+package com.example.foodplanneritiandroidjava.view.Ingrediants;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.homeActivity.HomeFragment;
 
 import java.util.List;
 
@@ -25,12 +25,12 @@ public class IngrediantsAdapter extends RecyclerView.Adapter<IngrediantsAdapter.
 
     List<Ingredient> ingredients;
     Context context;
-    HomeFragment homeFragment ;
+    IngrediantsContract ingrediantsContract;
 
-    public IngrediantsAdapter(Context context, List<Ingredient> ingredients , HomeFragment homeActivity) {
+    public IngrediantsAdapter(Context context, List<Ingredient> ingredients , IngrediantsContract ingrediantsContract) {
         this.context = context;
         this.ingredients = ingredients;
-        this.homeFragment = homeActivity ;
+        this.ingrediantsContract = ingrediantsContract ;
     }
     public IngrediantsAdapter(Context context, List<Ingredient> ingredients ) {
         this.context = context;
@@ -68,8 +68,8 @@ public class IngrediantsAdapter extends RecyclerView.Adapter<IngrediantsAdapter.
         holder.IngrediantImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(homeFragment instanceof  HomeFragment) {
-                    homeFragment.onIngredianImagePressed(ingredient.getName(), SomeContstants.INGREDIANT);
+                if(ingrediantsContract instanceof  HomeFragment) {
+                    ingrediantsContract.onIngredianImagePressed(ingredient.getName(), SomeContstants.INGREDIANT);
                 }else {
                     Toast.makeText(context, "Can't Enter Ingrediants", Toast.LENGTH_SHORT).show();
                 }

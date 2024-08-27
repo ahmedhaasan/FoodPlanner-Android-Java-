@@ -21,7 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.PlannedMeal;
@@ -29,12 +29,10 @@ import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
 import com.example.foodplanneritiandroidjava.presenter.plans.PlannedPresenter;
-import com.example.foodplanneritiandroidjava.view.favorite.FavoriteFragmentDirections;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -50,8 +48,8 @@ public class PlansFragment extends Fragment implements PlannedContract {
     PlannedPresenter plannedPresenter;
     // list of Live planned list
 
-    // view to use when navigate
-    View navView;
+  /*  // view to use when navigate
+    View navView;*/
     Spinner filterSpenner; // Add this line
     ArrayList <PlannedMeal> FilteredList=new ArrayList<>();
 
@@ -74,7 +72,7 @@ public class PlansFragment extends Fragment implements PlannedContract {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navView = view;
+       /* navView = view;*/
         ////////////////
         plannedRecyclerView = view.findViewById(R.id.planned_recycler);
         plansManager = new LinearLayoutManager(getContext());
@@ -88,7 +86,8 @@ public class PlansFragment extends Fragment implements PlannedContract {
         plannedRecyclerView.setAdapter(planesAdapter);
 
         // Initialize planned presenter
-        plannedPresenter = new PlannedPresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
+        plannedPresenter = new PlannedPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(), new MealsLocalDataSource(getContext())), this);
         LiveData<List<PlannedMeal>> livePlannedMeals = plannedPresenter.getAllPlanned();
         livePlannedMeals.observe(getViewLifecycleOwner(), new Observer<List<PlannedMeal>>() {
                 @Override
@@ -133,7 +132,9 @@ public class PlansFragment extends Fragment implements PlannedContract {
             int a=compareDates(startAndEnd.get(0),meals.get(i).getDate())
                     ;
             int b=compareDates(startAndEnd.get(1),meals.get(i).getDate());
-            if (compareDates(startAndEnd.get(0),meals.get(i).getDate())<=0&&compareDates(startAndEnd.get(1),meals.get(i).getDate())>=0&&(Day.equals(getString(R.string.NONE))||Day.equals(meals.get(i).getDay()))){
+            if (compareDates(startAndEnd.get(0),meals.get(i).getDate())
+                    <=0&&compareDates(startAndEnd.get(1),meals.get(i).getDate())>=0&&(Day.equals(getString(R.string.NONE))
+                    ||Day.equals(meals.get(i).getDay()))){
                 Result.add(meals.get(i));
             }
         }
@@ -155,21 +156,6 @@ public class PlansFragment extends Fragment implements PlannedContract {
         return null;
     }
 
-    @Override
-    public void showPlannedMealsWithData(LiveData<List<PlannedMeal>> plannedMeals) {
-
-    }
-
-    @Override
-    public void showPlannedError(String error) {
-
-    }
-
-    @Override
-    public void onPlannedCliced(PlannedMeal plannedMeal) {
-
-    }
-
     // manage when delete
     @Override
     public void onPlannedDeleted(PlannedMeal plannedMeal) {
@@ -179,10 +165,7 @@ public class PlansFragment extends Fragment implements PlannedContract {
 
     }
 
-    @Override
-    public void onPlannedAddedToFavorite(PlannedMeal plannedMeal) {
 
-    }
 
     @Override
     public void onPlannedImageAdded(String mealId) {
@@ -193,7 +176,7 @@ public class PlansFragment extends Fragment implements PlannedContract {
         if (NetworkUtils.isConnectedToInternet(getContext())) {
             PlansFragmentDirections.ActionPlansFragmentToMealDetailsFragment action =
                     PlansFragmentDirections.actionPlansFragmentToMealDetailsFragment(mealId);
-            Navigation.findNavController(navView).navigate(action);
+            Navigation.findNavController(getView()).navigate(action);
         } else {
             new AlertDialog.Builder(getContext())
                     .setTitle("Remember No you are Offline ")

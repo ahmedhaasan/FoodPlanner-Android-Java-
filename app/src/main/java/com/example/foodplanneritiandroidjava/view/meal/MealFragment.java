@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
@@ -31,7 +32,7 @@ public class MealFragment extends Fragment implements MealsContract {
     TextView mealTypeParent;
     Context context;
     RecyclerView mealRecycler;
-    String mealType,mealSourceType ;
+    String mealType, mealSourceType;
     LinearLayoutManager mealManger;
 
 
@@ -61,8 +62,8 @@ public class MealFragment extends Fragment implements MealsContract {
         // Check the navigated type
         if (getArguments() != null) {
             MealFragmentArgs args = MealFragmentArgs.fromBundle(getArguments());
-            mealType = args.getMealType();
-           mealSourceType = args.getMealSourceType();// This will tell you if it's category, country, or ingredient
+            mealType = args.getMealType();  // this will make search depending on its value
+            mealSourceType = args.getMealSourceType();// This will tell you if it's category, country, or ingredient
 
         }
 
@@ -70,14 +71,28 @@ public class MealFragment extends Fragment implements MealsContract {
         mealList = new ArrayList<>();
 
         // Initialize data source
-        reposiatory = MealParentReposiatory.getInstance(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext()));
+        reposiatory = MealParentReposiatory.getInstance(new MealsRemoteDataSource(), new MealsLocalDataSource(getContext()));
 
         // Initialize meal presenter
-        mealPresenter = new MealPresenter(reposiatory, this, mealType,mealSourceType);
-        mealPresenter.getMeals();
+        mealPresenter = new MealPresenter(reposiatory, this);
+        if (mealSourceType.equals(SomeContstants.CATEGORY)) {
 
+            mealPresenter.getMealsByCategoryName(mealType);
+        } else if (mealSourceType.equals(SomeContstants.COUNTRY)) {
+
+            mealPresenter.getMealsByCountryName(mealType);
+        } else if (mealSourceType.equals(SomeContstants.INGREDIANT)) {
+            mealPresenter.getMealsByIngrediantsName(mealType);
+
+        } else if (mealSourceType.equals(SomeContstants.MEAL_NAME)) {
+            mealPresenter.getMealsByMealName(mealType);
+        } else if (mealSourceType.equals(SomeContstants.MEAL_ID)) {
+            mealPresenter.getMealsByID(mealType);
+        } else {
+            mealPresenter.getRandomMeal();
+        }
         // Initialize meal adapter
-        mealAdapter = new MealAdapter(getContext(), mealList,this);
+        mealAdapter = new MealAdapter(getContext(), mealList, this);
     }
 
     @Override
@@ -102,6 +117,7 @@ public class MealFragment extends Fragment implements MealsContract {
 
     @Override
     public void showMeals(List<Meal> meals) {
+
         mealAdapter.setMealList(meals);
     }
 

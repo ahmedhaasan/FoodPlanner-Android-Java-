@@ -69,16 +69,19 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"/>
 
+
+        <!-- Scrollable Content Section -->
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleSelection="true"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/filterBy_text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/category_chip"
@@ -86,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/categories"
-                app:closeIconVisible="false"/>
+                app:closeIconVisible="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/countries_chip"
@@ -94,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/countries"
-                app:closeIconVisible="false"/>
+                app:closeIconVisible="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/ingrediants_chip"
@@ -102,11 +105,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ingrediants"
-                app:closeIconVisible="false"/>
+                app:closeIconVisible="false" />
 
         </com.google.android.material.chip.ChipGroup>
 
-        <!-- Scrollable Content Section -->
+        <!-- Spinner for Filtering -->
+
+        <!-- Spinner for Filtering -->
+        <Spinner
+            android:id="@+id/search_meal_spinner"
+            android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/chip_group"
+        app:layout_constraintTop_toBottomOf="@id/filterBy_text"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+
         <ScrollView
             android:id="@+id/searc_scrollView"
             android:layout_width="match_parent"

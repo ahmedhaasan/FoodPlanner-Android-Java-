@@ -15,12 +15,6 @@ import java.util.List;
 public class FavoritePresenter implements  favoritePresenterService{
 
     MealParentReposiatory reposiatory ;
-    private LifecycleOwner lifecycleOwner;
-
-    public FavoritePresenter(LifecycleOwner lifecycleOwner, MealParentReposiatory reposiatory) {
-        this.lifecycleOwner = lifecycleOwner;
-        this.reposiatory = reposiatory;
-    }
 
     public FavoritePresenter(MealParentReposiatory reposiatory) {
         this.reposiatory = reposiatory ;

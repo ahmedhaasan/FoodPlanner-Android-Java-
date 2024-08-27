@@ -4,7 +4,7 @@
     android:id="@+id/mainDrawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.home.homeActivity.HomeActivity">
+    tools:context=".view.homeActivity.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_layout"

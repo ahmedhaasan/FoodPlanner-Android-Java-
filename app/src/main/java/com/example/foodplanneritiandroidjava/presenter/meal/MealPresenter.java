@@ -3,58 +3,28 @@ package com.example.foodplanneritiandroidjava.presenter.meal;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
-import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.view.meal.MealFragment;
-import com.example.foodplanneritiandroidjava.view.search.SearchFragment;
+import com.example.foodplanneritiandroidjava.view.meal.MealsContract;
 
 import java.util.List;
 
 public class MealPresenter implements MealPresenterService, MealsCallBack {
 
     MealParentReposiatory reposiatory;
-    MealFragment mealFragment;
-    SearchFragment searchFragment ;
+    MealsContract mealsContract;
     String mealType;
     String mealSourceType; // New field to store the type of the meal source
 
 
-    public MealPresenter(MealParentReposiatory reposiatory, SearchFragment searchFragment, String mealSourceType) {
+    public MealPresenter(MealParentReposiatory reposiatory, MealsContract mealsContract) {
         this.reposiatory = reposiatory;
-        this.searchFragment = searchFragment;
-        this.mealSourceType = mealSourceType;
-
-    }
-    public MealPresenter(MealParentReposiatory reposiatory, MealFragment mealFragment, String mealType, String mealSourceType) {
-        this.reposiatory = reposiatory;
-        this.mealFragment = mealFragment;
+        this.mealsContract = mealsContract;
         this.mealType = mealType;
         this.mealSourceType = mealSourceType;
     }
 
-    public void setMealTypeAndSearchMethod(String mealType,String mealSourceType){
-        this.mealType = mealType;
-        this.mealSourceType = mealSourceType;
-    }
 
-    // from  Meal Presenter Service
-    // check and get meals by name or by ingrediant
-    @Override
-    public void getMeals() {
-        if (mealSourceType.equals(SomeContstants.CATEGORY)) {
-            reposiatory.getMealsByCategoryName(this, mealType);
-        } else if (mealSourceType.equals(SomeContstants.COUNTRY)) {
-            reposiatory.getMealsByCountry(this, mealType);
-        } else if (mealSourceType.equals(SomeContstants.INGREDIANT)) {
-            reposiatory.getMealsByIngrediant(this, mealType);
-        } else if (mealSourceType.equals(SomeContstants.MEAL_NAME)) {
-            reposiatory.getMealsByName(this, mealType);
-        }else if(mealSourceType.equals(SomeContstants.MEAL_ID)){
-            reposiatory.getMealsById(this,mealType);
-        }else {
-            reposiatory.makeRandomMealCall(this);
-        }
-    }
 
     @Override
     public void getMealsByFristLetter(String fristLetter) {
@@ -66,29 +36,58 @@ public class MealPresenter implements MealPresenterService, MealsCallBack {
     @Override
     public void onFavClicked(Meal meal) {
 
+        reposiatory.insertmeal(meal);
     }
 
     @Override
-    public void onAddToPlanClicked(Meal meal) {
-
+    public void getMealsByCategoryName(String categoryName) {
+        reposiatory.getMealsByCategoryName(this,categoryName);
     }
+
+    @Override
+    public void getMealsByCountryName(String countryName) {
+
+        reposiatory.getMealsByCountry(this,countryName);
+    }
+
+    @Override
+    public void getMealsByIngrediantsName(String ingrediantName) {
+
+        reposiatory.getMealsByIngrediant(this,ingrediantName);
+    }
+
+    @Override
+    public void getMealsByMealName(String mealName) {
+
+        reposiatory.getMealsByName(this,mealName);
+    }
+
+    @Override
+    public void getMealsByID(String mealID) {
+
+        reposiatory.getMealsById(this,mealID);
+    }
+
+    @Override
+    public void getRandomMeal() {
+
+        reposiatory.makeRandomMealCall(this);
+    }
+
 
     // from mealCall callBack
     @Override
     public void onMealsSuccess(List<Meal> meals) {
-        if (mealFragment != null) {
-            mealFragment.showMeals(meals);
+        if (mealsContract != null) {
+            mealsContract.showMeals(meals);
         }
 
-        if (searchFragment != null) {
-            searchFragment.showSearchList(meals);
-        }
     }
 
     @Override
     public void onMealsFailure(String message) {
-        if (mealFragment != null) {
-            mealFragment.showMealsError(message);
+        if (mealsContract != null) {
+            mealsContract.showMealsError(message);
         }
 
     }

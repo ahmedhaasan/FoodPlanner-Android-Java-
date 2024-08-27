@@ -61,6 +61,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         Glide.with(context)
                 .load(MealT.getThumb())
+                .placeholder(R.drawable.back_7)
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.mealImage);
 
