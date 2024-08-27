@@ -2,7 +2,7 @@ package com.example.foodplanneritiandroidjava.firebase;
 
 import android.content.Context;
 
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeActivity;
+import com.example.foodplanneritiandroidjava.view.homeActivity.HomeActivity;
 import com.example.foodplanneritiandroidjava.view.login_signUp.login.LoginCallback;
 import com.example.foodplanneritiandroidjava.view.login_signUp.login.view.LoginView;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,7 +71,6 @@ public class FireBasePresenter implements  FireBasePresenterService {
             @Override
             public void onUploadSuccess() {
                 homeActivity.hideLoading();
-                homeActivity.showUploadSuccessMessage();
             }
 
             @Override
@@ -80,7 +79,7 @@ public class FireBasePresenter implements  FireBasePresenterService {
                 homeActivity.showErrorMessage(errorMessage);
             }
         },context);
-
+        homeActivity.showUploadSuccessMessage();
 
     }
 
@@ -92,7 +91,6 @@ public class FireBasePresenter implements  FireBasePresenterService {
             @Override
             public void onDawnloadSuccess() {
                 homeActivity.hideLoading();
-                homeActivity.showDownloadSuccessMessage();
             }
 
             @Override
@@ -102,6 +100,8 @@ public class FireBasePresenter implements  FireBasePresenterService {
                 homeActivity.showErrorMessage(errorMessage);
             }
         },context);
+        homeActivity.showDownloadSuccessMessage();
+
     }
 }
 

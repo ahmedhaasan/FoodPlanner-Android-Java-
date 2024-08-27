@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home.category;
+package com.example.foodplanneritiandroidjava.view.category;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragmentDirections;
+import com.example.foodplanneritiandroidjava.view.homeActivity.HomeFragmentDirections;
 
 import java.util.List;
 
@@ -24,11 +24,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     List<Category> categories;
     private Context context;
+    CategoryContract categoryContract;
 
 
-    public CategoryAdapter(Context context, List<Category> categories) {
+    public CategoryAdapter(Context context, List<Category> categories,CategoryContract categoryContract) {
         this.categories = categories;
         this.context = context;
+        this.categoryContract = categoryContract ;
     }
 
     public void setCategoryList(List<Category> categories) {
@@ -55,6 +57,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 .clear(holder.categoryImage); // Clears any previous image
         Glide.with(context)
                 .load(category.getThumbnail())
+                .placeholder(R.drawable.back_7)
                 .apply(new RequestOptions().override(200, 200))
                 .into(holder.categoryImage);
 
@@ -63,9 +66,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.categoryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
-                        HomeFragmentDirections.actionHomeFragmentToMealFragment(category.getName(), SomeContstants.CATEGORY);
-                Navigation.findNavController(view).navigate(action);
+            categoryContract.onCategoryImagePressed(category.getName(),SomeContstants.CATEGORY);
+
             }
         });
     }

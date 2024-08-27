@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,36 +19,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeListener;
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeReceiver;
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkChangeListener;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkChangeReceiver;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
-import com.example.foodplanneritiandroidjava.model.network.CategoriesCallBack;
-import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
-import com.example.foodplanneritiandroidjava.model.network.IngrediantsCallBack;
-import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
 import com.example.foodplanneritiandroidjava.model.network.MealsRemoteDataSource;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
 import com.example.foodplanneritiandroidjava.model.reposatory.local.MealsLocalDataSource;
-import com.example.foodplanneritiandroidjava.presenter.meal.MealPresenter;
 import com.example.foodplanneritiandroidjava.view.meal.MealAdapter;
-import com.example.foodplanneritiandroidjava.view.search.presenter.SearchPresenter;
+import com.example.foodplanneritiandroidjava.presenter.search.SearchPresenter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends Fragment implements SearchContract, NetworkChangeListener,
-        MealsCallBack, CategoriesCallBack, CountriesCallBack, IngrediantsCallBack {
+public class SearchFragment extends Fragment implements SearchContract, NetworkChangeListener{
 
     private EditText searchMealField;
     // private Button searchMealButton;
@@ -56,8 +50,6 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     private RecyclerView searchRecycler;
     private GridLayoutManager searchMealManager;
 
-    // Meal presenter instance
-    private MealPresenter mealPresenter;
     // Meal adapter
     private MealAdapter mealAdapter;
     // Meal list
@@ -73,12 +65,12 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     ///
     // Remote source
     private MealParentReposiatory reposiatory;
-    private String mealSourceType;
+    Chip TempChip = null;
 
     /**************************************/
     private NetworkChangeReceiver networkChangeReceiver;
     LottieAnimationView noInternet_animation;
-    ScrollView searc_scrollView;
+    ConstraintLayout mainContent_layout;
     View v2;
 
     /**************************************/
@@ -122,7 +114,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
 
         /**************************/
         noInternet_animation = view.findViewById(R.id.no_internet);
-        searc_scrollView = view.findViewById(R.id.searc_scrollView);
+        mainContent_layout = view.findViewById(R.id.main_search_content_layout);
         // check for network
         // Check initial connectivity status
         if (!NetworkUtils.isConnectedToInternet(requireContext())) {
@@ -139,9 +131,9 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         /**************************/
 
         // Fetch meals for each letter from a to z
-        mealPresenter = new MealPresenter(reposiatory, this, mealSourceType);
+        searchPresenter = new SearchPresenter(reposiatory, this);
         for (char letter = 'a'; letter <= 'z'; letter++) {
-            mealPresenter.getMealsByFristLetter(String.valueOf(letter));
+            searchPresenter.getMealsByFristLetter(String.valueOf(letter));
 
         }
         // fetching all countries and all ingrediants and all categories
@@ -149,10 +141,11 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         categories = new ArrayList<>();
         countries = new ArrayList<>();
         ingredients = new ArrayList<>();
-        searchPresenter = new SearchPresenter(new MealParentReposiatory(new MealsRemoteDataSource(), new MealsLocalDataSource(requireContext())));
-        searchPresenter.getAllCountries(this);
-        searchPresenter.getIngridiants(this);
-        searchPresenter.makeCategoryCallBack(this);
+        searchPresenter = new SearchPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(), new MealsLocalDataSource(requireContext())),this);
+        searchPresenter.getAllCountries();
+        searchPresenter.getIngridiants();
+        searchPresenter.makeCategoryCallBack();
         // here i got all the cat and countries and ingre
 
         //
@@ -172,7 +165,7 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
                             filteredMeals.add(meal);
                         }
                     }
-                    mealAdapter.setMealList(filteredMeals);
+                    mealAdapter.setMealList(filteredMeals);  // selecting from all meals and add to adapter
                 }
                 return false; // Added to ensure a boolean is returned in all cases
             }
@@ -184,13 +177,12 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                 Log.d("SearchFragment", "Chip Checked ID: " + checkedId);
-
                 if (checkedId == View.NO_ID) {
                     Log.d("SearchFragment", "No chip selected");
                     return;
                 }
                 Chip checkedChip = group.findViewById(checkedId);
-
+                TempChip = checkedChip ;
                 if (checkedChip != null) {
                     Log.d("SearchFragment", "Chip Checked Name: " + checkedChip.getText().toString());
                     handleChipSelection(checkedChip.getId()); // Call method to handle the selection
@@ -203,57 +195,43 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
 
 
     private void handleChipSelection(int chipId) {
+        String query = searchMealField.getText().toString().toLowerCase();
         if (chipId == R.id.category_chip) {
-            Log.d("SearchFragment", "Category chip selected");
-            String query = searchMealField.getText().toString().toLowerCase();
-            for (Category category : categories) {
-                if (category.getName().toLowerCase().contains(query)) {
-                    searchPresenter.getMealsByCategoryName(SearchFragment.this, category.getName());
-
-                    mealAdapter.setMealList(mealList);
-                }
-            }
-            // Handle category chip selection
+            searchMealsByCategory(query);
         } else if (chipId == R.id.countries_chip) {
-            Log.d("SearchFragment", "Countries chip selected");
-            String query = searchMealField.getText().toString().toLowerCase();
-            for (Country country : countries) {
-                if (country.getName().toLowerCase().contains(query)) {
-                    searchPresenter.getMealsByCountry(SearchFragment.this, country.getName());
-                    mealAdapter.setMealList(mealList);
-                }
-
-            }
-            // Handle countries chip selection
+            searchMealsByCountry(query);
         } else if (chipId == R.id.ingrediants_chip) {
-            Log.d("SearchFragment", "Ingredients chip selected");
-            String query = searchMealField.getText().toString().toLowerCase();
-            for (Ingredient ingredient : ingredients) {
-                if (ingredient.getName().toLowerCase().contains(query)) {
-                    searchPresenter.getMealsByIngrediant(SearchFragment.this, ingredient.getName());
-                    mealAdapter.setMealList(mealList);
-                }
-
-            }
-            // Handle ingredients chip selection
-        } else {
-            Log.d("SearchFragment", "Other chip selected");
-            // Handle other chips if necessary
+            searchMealsByIngredient(query);
         }
     }
 
-    // Set up the search button action
-    /*    searchMealButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Update the adapter with all the fetched meals
-                if (allMeals.isEmpty()) {
-                    Toast.makeText(getContext(), "No meals found.", Toast.LENGTH_SHORT).show();
-                } else {
-                    mealAdapter.setMealList(allMeals);
-                }
+    private void searchMealsByCategory(String query) {
+        for (Category category : categories) {
+            if (category.getName().toLowerCase().contains(query)) {
+                searchPresenter.getMealsByCategoryName(category.getName());
+                mealAdapter.setMealList(mealList);
             }
-        });*/
+        }
+    }
+
+    private void searchMealsByCountry(String query) {
+        for (Country country : countries) {
+            if (country.getName().toLowerCase().contains(query)) {
+                searchPresenter.getMealsByCountry(country.getName());
+                mealAdapter.setMealList(mealList);
+            }
+        }
+    }
+
+    private void searchMealsByIngredient(String query) {
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getName().toLowerCase().contains(query)) {
+                searchPresenter.getMealsByIngrediant(ingredient.getName());
+                mealAdapter.setMealList(mealList);
+            }
+        }
+    }
+
 
 
     /*********************************/
@@ -287,13 +265,75 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     }
 
 
+        // from search  Contract
+
     @Override
-    public void showSearchList(List<Meal> searchedMeals) {
+    public void onSearchSuccess(List<Meal> searchedMeals) {
         if (searchedMeals != null && !searchedMeals.isEmpty()) {
             // Add the fetched meals to the full list
+
+            if(TempChip != null) {
+
+                    mealList.addAll(searchedMeals);
+            }
             allMeals.addAll(searchedMeals);
+
         }
     }
+
+    @Override
+    public void onSearchFail(String message) {
+        Toast.makeText(getContext(), "failed To search "+message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSuccessCategories(List<Category> categories) {
+        if (categories != null) {
+            this.categories.addAll(categories);
+            for (Category category : categories) {
+                Log.i("kola", category.getName());
+            }
+        }
+    }
+
+    @Override
+    public void showFailCatigories(String message) {
+        Toast.makeText(getContext(), "fail To get Categories" + message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showSuccessCountries(List<Country> countries) {
+        if (countries != null) {
+            this.countries.addAll(countries);
+            for (Country country : countries) {
+                Log.i("kola", country.getName());
+            }
+        }
+    }
+
+    @Override
+    public void showFailCountries(String message) {
+        Toast.makeText(getContext(), "Fail to Get Countries" + message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showSuccessIngrediants(List<Ingredient> ingredients) {
+        if (ingredients != null) {
+            this.ingredients.addAll(ingredients);
+            for (Ingredient ingredient : ingredients) {
+                Log.i("kola", ingredient.getName());
+            }
+        }
+    }
+
+    @Override
+    public void showFailIngrediants(String message) {
+        Toast.makeText(getContext(), "Error to get Ingrediants" + message, Toast.LENGTH_SHORT).show();
+
+    }
+
 
     // this method from Network Change Listener to check the Connectivity of the network
 
@@ -318,22 +358,22 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
         Toast.makeText(requireContext(), "Fragment Disabled Due to No Internet", Toast.LENGTH_SHORT).show();
         if (noInternet_animation != null) {
             noInternet_animation.setVisibility(View.VISIBLE);
-            searc_scrollView.setVisibility(View.GONE);
+            mainContent_layout.setVisibility(View.GONE);
             noInternet_animation.playAnimation();  // Ensure the animation plays
         }
-
     }
 
     private void enableFragment() {
         // Logic to enable the fragment when the internet connection is restored
         refreshFragment();
-        searc_scrollView.setVisibility(View.VISIBLE);
+        mainContent_layout.setVisibility(View.VISIBLE);
         if (noInternet_animation != null) {
             noInternet_animation.setVisibility(View.GONE);
             noInternet_animation.cancelAnimation();  // Stop the animation
         }
         Toast.makeText(requireContext(), "Fragment Enabled", Toast.LENGTH_SHORT).show();
     }
+
 
 
     private void refreshFragment() {
@@ -349,72 +389,6 @@ public class SearchFragment extends Fragment implements SearchContract, NetworkC
     }
 
 
-    // these methods implemented using meals Call back and category CallBAck
-    @Override
-    public void onMealsSuccess(List<Meal> meals) {
-        if (meals != null) {
-            mealList.addAll(meals);
-        /*    for (Meal meal : meals) {
-                Log.i("mealsDone", meal.getName());
-            }*/
-        }
-    }
-
-    @Override
-    public void onMealsFailure(String message) {
-
-        Toast.makeText(getContext(), "faliled To Get meals " + message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSuccessCategory(List<Category> categories) {
-        if (categories != null) {
-            this.categories.addAll(categories);
-            for (Category category : categories) {
-                Log.i("kola", category.getName());
-            }
-        }
-    }
-
-    @Override
-    public void onFailurResult(String message) {
-
-        Toast.makeText(getContext(), "fail To get Categories" + message, Toast.LENGTH_SHORT).show();
-    }
-
-
-    // implemented from countries and ingrediants callback
-    @Override
-    public void onCountriesSuccess(List<Country> countries) {
-        if (countries != null) {
-            this.countries.addAll(countries);
-            for (Country country : countries) {
-                Log.i("kola", country.getName());
-            }
-        }
-    }
-
-    @Override
-    public void onCountriesFails(String message) {
-        Toast.makeText(getContext(), "Fail to Get Countries" + message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSuccesIngrediants(List<Ingredient> ingredients) {
-
-        if (ingredients != null) {
-            this.ingredients.addAll(ingredients);
-            for (Ingredient ingredient : ingredients) {
-                Log.i("kola", ingredient.getName());
-            }
-        }
-    }
-
-    @Override
-    public void onFailIngridiants(String message) {
-
-        Toast.makeText(getContext(), "Error to get Ingrediants" + message, Toast.LENGTH_SHORT).show();
-    }
 
 
 }

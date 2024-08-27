@@ -10,10 +10,14 @@ import java.util.List;
 public interface PlannedContract {
 
     LiveData<List<Meal>> showPlannedMeals();
-    void showPlannedMealsWithData(LiveData<List<PlannedMeal>> plannedMeals);
-    void showPlannedError(String error);
-    void onPlannedCliced(PlannedMeal plannedMeal);
+
     void onPlannedDeleted(PlannedMeal plannedMeal);
-    void onPlannedAddedToFavorite(PlannedMeal plannedMeal);
     void onPlannedImageAdded(String mealId);
 }
+
+
+/*
+void showPlannedMealsWithData(LiveData<List<PlannedMeal>> plannedMeals);
+void showPlannedError(String error);
+void onPlannedCliced(PlannedMeal plannedMeal);
+void onPlannedAddedToFavorite(PlannedMeal plannedMeal);*/

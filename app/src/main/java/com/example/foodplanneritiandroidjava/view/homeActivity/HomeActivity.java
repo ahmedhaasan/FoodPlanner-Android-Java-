@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home.homeActivity;
+package com.example.foodplanneritiandroidjava.view.homeActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -73,9 +73,9 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         firebaseAuth = FirebaseAuth.getInstance();
-
-
         //EdgeToEdge.enable(this);
         setContentView(R.layout.home_activity);
         // drawer this for drawer
@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.home_itm);
+        actionBar.setHomeAsUpIndicator(R.drawable.main_menu);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -212,7 +212,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract {
             // Retrieve the current Firebase user
             FirebaseUser currentUser = firebaseAuth.getCurrentUser();
             if (currentUser != null) {
-                String userName = currentUser.getDisplayName();  // You can use getDisplayName() or getEmail() based on what you need
+                String userName = currentUser.getEmail();  // You can use getDisplayName() or getEmail() based on what you need
                 textView.setText(userName != null ? userName : "No name available");  // Provide a default value if name is null
             } else {
                 textView.setText("User not logged in");  // Handle the case where there is no logged-in user

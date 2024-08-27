@@ -3,18 +3,18 @@ package com.example.foodplanneritiandroidjava.presenter.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.network.CountriesCallBack;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.countries.CountriesContract;
 
 import java.util.List;
 
 public class CountriesPresenter implements CountryPresenterService, CountriesCallBack {
 
     MealParentReposiatory reposiatory;
-    HomeFragment homeFragment ;
+    CountriesContract countriesContract;
 
-    public CountriesPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
+    public CountriesPresenter(MealParentReposiatory reposiatory, CountriesContract countriesContract) {
         this.reposiatory = reposiatory;
-        this.homeFragment = homeFragment;
+        this.countriesContract = countriesContract;
     }
 
     @Override
@@ -24,12 +24,12 @@ public class CountriesPresenter implements CountryPresenterService, CountriesCal
 
     @Override
     public void onCountriesSuccess(List<Country> countries) {
-        homeFragment.showsCountries(countries);
+        countriesContract.showsCountries(countries);
     }
 
     @Override
     public void onCountriesFails(String message) {
 
-        homeFragment.showCountriesError(message);
+        countriesContract.showCountriesError(message);
     }
 }

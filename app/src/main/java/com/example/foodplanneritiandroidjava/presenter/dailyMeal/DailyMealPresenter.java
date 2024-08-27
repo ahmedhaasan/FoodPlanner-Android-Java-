@@ -3,7 +3,7 @@ package com.example.foodplanneritiandroidjava.presenter.dailyMeal;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Meal;
 import com.example.foodplanneritiandroidjava.model.network.MealsCallBack;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.dailyMeals.OnDailyMealContract;
 
 import java.util.List;
 
@@ -11,11 +11,12 @@ public class DailyMealPresenter implements DailyMealService, MealsCallBack {
 
     // refrence to Remote data source
     MealParentReposiatory reposiatory;
-    HomeFragment homeFragment ;
+    OnDailyMealContract onDailyMealContract;  // refrence from the interface
+                                            // and it will be passed throw the presenter constructor
 
-    public DailyMealPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
+    public DailyMealPresenter(MealParentReposiatory reposiatory, OnDailyMealContract onDailyMealContract) {
         this.reposiatory = reposiatory;
-        this.homeFragment = homeFragment;
+        this.onDailyMealContract = onDailyMealContract;
     }
 
 
@@ -32,11 +33,12 @@ public class DailyMealPresenter implements DailyMealService, MealsCallBack {
 
     @Override
     public void onMealsSuccess(List<Meal> meals) {
-        homeFragment.showDailyMeals(meals);  // pass the meals to home fragment
+        onDailyMealContract.showDailyMeals(meals);  // pass the meals to home fragment
+
     }
 
     @Override
     public void onMealsFailure(String message) {
-        homeFragment.showDailyError(message);  // pass the error to home frag
+        onDailyMealContract.showDailyError(message);  // pass the error to home frag
     }
 }

@@ -9,10 +9,8 @@ import java.util.List;
 
 public interface plansPresenterService {
 
-    void insertPlannedMeal(PlannedMeal plannedMeal);
     void deletePlannedMealById(String plannedMealId);
     LiveData<List<PlannedMeal>> getAllPlanned();
-    void deleteAllPlannedMeals(LiveData<List<PlannedMeal>> plannedMeals);
     void getAllPlannedMealsWithDate(String day);
 
 }

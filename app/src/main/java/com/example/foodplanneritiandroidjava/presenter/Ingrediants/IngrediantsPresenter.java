@@ -3,18 +3,18 @@ package com.example.foodplanneritiandroidjava.presenter.Ingrediants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
 import com.example.foodplanneritiandroidjava.model.network.IngrediantsCallBack;
 import com.example.foodplanneritiandroidjava.model.reposatory.MealParentReposiatory;
-import com.example.foodplanneritiandroidjava.view.home.homeActivity.HomeFragment;
+import com.example.foodplanneritiandroidjava.view.Ingrediants.IngrediantsContract;
 
 import java.util.List;
 
 public class IngrediantsPresenter implements  IngrediantPresenterService , IngrediantsCallBack {
 
     MealParentReposiatory reposiatory;
-    HomeFragment homeFragment ;
+    IngrediantsContract ingrediantsContract;
 
-    public IngrediantsPresenter(MealParentReposiatory reposiatory, HomeFragment homeFragment) {
+    public IngrediantsPresenter(MealParentReposiatory reposiatory, IngrediantsContract ingrediantsContract) {
         this.reposiatory = reposiatory;
-        this.homeFragment = homeFragment;
+        this.ingrediantsContract = ingrediantsContract;
     }
 
     @Override
@@ -24,12 +24,12 @@ public class IngrediantsPresenter implements  IngrediantPresenterService , Ingre
 
     @Override
     public void onSuccesIngrediants(List<Ingredient> ingredients) {
-        homeFragment.showsIngrediants(ingredients);
+        ingrediantsContract.showsIngrediants(ingredients);
     }
 
     @Override
     public void onFailIngridiants(String message) {
 
-        homeFragment.showsIngrediantsError(message);
+        ingrediantsContract.showsIngrediantsError(message);
     }
 }

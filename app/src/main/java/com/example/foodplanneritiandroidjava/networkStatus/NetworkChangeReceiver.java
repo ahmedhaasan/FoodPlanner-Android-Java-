@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.AnetworkStatues;
+package com.example.foodplanneritiandroidjava.networkStatus;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

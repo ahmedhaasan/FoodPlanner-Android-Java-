@@ -1,6 +1,10 @@
-package com.example.foodplanneritiandroidjava.view.home.homeActivity;
+package com.example.foodplanneritiandroidjava.view.homeActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -27,10 +31,11 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeListener;
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkChangeReceiver;
-import com.example.foodplanneritiandroidjava.AnetworkStatues.NetworkUtils;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkChangeListener;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkChangeReceiver;
+import com.example.foodplanneritiandroidjava.networkStatus.NetworkUtils;
 import com.example.foodplanneritiandroidjava.R;
+import com.example.foodplanneritiandroidjava.SomeContstants;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Category;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Country;
 import com.example.foodplanneritiandroidjava.model.PojoClasses.Ingredient;
@@ -42,21 +47,21 @@ import com.example.foodplanneritiandroidjava.presenter.Country.CountriesPresente
 import com.example.foodplanneritiandroidjava.presenter.Ingrediants.IngrediantsPresenter;
 import com.example.foodplanneritiandroidjava.presenter.category.CategoryPresenter;
 import com.example.foodplanneritiandroidjava.presenter.dailyMeal.DailyMealPresenter;
-import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsAdapter;
-import com.example.foodplanneritiandroidjava.view.home.Ingrediants.IngrediantsContract;
-import com.example.foodplanneritiandroidjava.view.home.category.CategoryAdapter;
-import com.example.foodplanneritiandroidjava.view.home.category.CategoryContract;
-import com.example.foodplanneritiandroidjava.view.home.countries.CountriesAdapter;
-import com.example.foodplanneritiandroidjava.view.home.countries.CountriesContract;
-import com.example.foodplanneritiandroidjava.view.home.dailyMeals.OnDailyMealContract;
+import com.example.foodplanneritiandroidjava.view.Ingrediants.IngrediantsContract;
+import com.example.foodplanneritiandroidjava.view.category.CategoryContract;
+import com.example.foodplanneritiandroidjava.view.countries.CountriesAdapter;
+import com.example.foodplanneritiandroidjava.view.countries.CountriesContract;
+import com.example.foodplanneritiandroidjava.view.dailyMeals.OnDailyMealContract;
+import com.example.foodplanneritiandroidjava.view.Ingrediants.IngrediantsAdapter;
+import com.example.foodplanneritiandroidjava.view.category.CategoryAdapter;
+import com.example.foodplanneritiandroidjava.view.login_signUp.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract , IngrediantsContract
-, CountriesContract , NetworkChangeListener {
+public class HomeFragment extends Fragment implements OnDailyMealContract, CategoryContract, IngrediantsContract
+, CountriesContract, NetworkChangeListener {
 
 
     CardView dailyMealCardView ;
@@ -82,7 +87,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     CategoryAdapter categoryAdapter ;
     IngrediantsAdapter ingrediantsAdapter ;
     CountriesAdapter countriesAdapter ;
-
+    boolean isGuest ;
     ScrollView home_scrollView ;
     /**************************************/
     private NetworkChangeReceiver networkChangeReceiver;
@@ -106,6 +111,9 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Initialize views
+        SharedPreferences prefs = requireActivity().getSharedPreferences(SomeContstants.USERSTATE, getContext().MODE_PRIVATE);
+        // Retrieve the guest status
+        boolean isGuest = prefs.getBoolean(SomeContstants.ISGUEST, false);
         dailyMealCardView = view.findViewById(R.id.dailyMealCardView);
         dailyMealImage = view.findViewById(R.id.dailyMealImage);
         dailyMealName = view.findViewById(R.id.categoryName);
@@ -142,25 +150,30 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         countries = new ArrayList<>();
 
         // Initialize adapter and set it to RecyclerView
-        categoryAdapter = new CategoryAdapter(getContext(),categories);
+        categoryAdapter = new CategoryAdapter(getContext(),categories,this);
         categoryRecycler.setAdapter(categoryAdapter);
         ingrediantsAdapter = new IngrediantsAdapter(getContext(),ingredients,this);
         ingrediantsRecycler.setAdapter(ingrediantsAdapter);
-        countriesAdapter = new CountriesAdapter(getContext(),countries);
+        countriesAdapter = new CountriesAdapter(getContext(),countries,this);
         countriesRecycler.setAdapter(countriesAdapter);
 
 
         // Initialize presenters
-        dailyPresenter = new DailyMealPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new  MealsLocalDataSource(getContext())), this);
+        dailyPresenter = new DailyMealPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(),new  MealsLocalDataSource(getContext())), this);
         dailyPresenter.geDailyMeal();
 
-        categoryPresenter = new CategoryPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())), this);
+        categoryPresenter = new CategoryPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())), this);
         categoryPresenter.getCategories();
 
-        ingrediantsPresenter = new IngrediantsPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
+        ingrediantsPresenter = new IngrediantsPresenter(new MealParentReposiatory(
+
+                new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
         ingrediantsPresenter.getIngrediants();
 
-        countriesPresenter = new CountriesPresenter(new MealParentReposiatory(new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
+        countriesPresenter = new CountriesPresenter(new MealParentReposiatory(
+                new MealsRemoteDataSource(),new MealsLocalDataSource(getContext())),this);
         countriesPresenter.getAllCountries();
 
         /**************************/
@@ -185,8 +198,8 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         dailyMealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavController navController = Navigation.findNavController(view);
 
+                NavController navController = Navigation.findNavController(view);
                 HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
                         HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.get(0).getId());
                 navController.navigate(action);
@@ -197,12 +210,18 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
         addToFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!randomMeal.isEmpty()) {
-                    Log.d("HomeFragment", "RandomMeal size: " + randomMeal.size());
-                    dailyPresenter.onAddToFavoritePressed(randomMeal.get(0));
-                    Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "No meal available to add to favorites", Toast.LENGTH_SHORT).show();
+
+                if (isGuest) {
+                    showLoginDialog();
+
+                }else {
+                    if (!randomMeal.isEmpty()) {
+                        Log.d("HomeFragment", "RandomMeal size: " + randomMeal.size());
+                        dailyPresenter.onAddToFavoritePressed(randomMeal.get(0));
+                        Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "No meal available to add to favorites", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -210,12 +229,35 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
     }
 
+    /// dialog for return user to login if guest
+    private void showLoginDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Login Required")
+                .setMessage("You need to log in to access this feature.")
+                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle login action
+                        // navigate to login to as guest
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.putExtra("Navigation", "login");
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+
+    ///
 
     private void updateMealCard(List<Meal> meal) {
         dailyMealName.setText(meal.get(0).getName());
         // Load image using Glide
         Glide.with(this)
                 .load(meal.get(0).getThumb())
+                .placeholder(R.drawable.back_7)
                 .into(dailyMealImage);
     }
 
@@ -232,6 +274,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void showDailyError(String message) {
 
+        Toast.makeText(getContext(), "error fetching daily meal"+message, Toast.LENGTH_SHORT).show();
     }
 
     // those methods implementd from Category Contract
@@ -244,6 +287,14 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void showCategoriesError(String message) {
 
+        Toast.makeText(getContext(), "error fetching categories"+message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCategoryImagePressed(String categoryName, String searchType) {
+        HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+                HomeFragmentDirections.actionHomeFragmentToMealFragment(categoryName, searchType);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     // implemented from Ingrediants Shows
@@ -255,6 +306,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void showsIngrediantsError(String message) {
 
+        Toast.makeText(getContext(), "error fetching ingrediants "+message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -284,6 +336,15 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
     @Override
     public void showCountriesError(String message) {
 
+        Toast.makeText(getContext(), "error fetching countries "+message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCountryImagePressed(String countryName, String SearchType) {
+
+        HomeFragmentDirections.ActionHomeFragmentToMealFragment action =
+                HomeFragmentDirections.actionHomeFragmentToMealFragment(countryName,SearchType);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     // this method from Network Change Listener to check the Connectivity of the network
@@ -306,7 +367,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
 
     private void disableFragment() {
         // Logic to disable specific functionality within the fragment
-        Toast.makeText(requireContext(), "Fragment Disabled Due to No Internet", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(requireContext(), "Fragment Disabled Due to No Internet", Toast.LENGTH_SHORT).show();
         home_scrollView.setVisibility(View.GONE);
         if (noInternet_animation != null) {
             noInternet_animation.setVisibility(View.VISIBLE);
@@ -323,7 +384,7 @@ public class HomeFragment extends Fragment implements OnDailyMealContract, Categ
             noInternet_animation.setVisibility(View.GONE);
             noInternet_animation.cancelAnimation();  // Stop the animation
         }
-        Toast.makeText(requireContext(), "Fragment Enabled", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(requireContext(), "Fragment Enabled", Toast.LENGTH_SHORT).show();
     }
 
 

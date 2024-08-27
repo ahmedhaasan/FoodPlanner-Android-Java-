@@ -1,4 +1,4 @@
-package com.example.foodplanneritiandroidjava.view.home.homeActivity;
+package com.example.foodplanneritiandroidjava.view.homeActivity;
 
 public interface HomeContract {
 
